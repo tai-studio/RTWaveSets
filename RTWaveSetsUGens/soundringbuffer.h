@@ -19,6 +19,7 @@ public:
     void set(int setPos, float val);
     float getLast(int back=0){ return get(lastPos-back); }
     int getLastPos(){ return lastPos; }
+    void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getLen() { return len; }
 };
 

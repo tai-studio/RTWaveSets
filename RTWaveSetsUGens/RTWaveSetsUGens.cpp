@@ -15,42 +15,49 @@ enum Transformation {
     TRANS_REPEAT=3
 };
 
-// declare struct to hold unit generator state
-struct RTWaveSetAnalysis : public Unit  {
-
+struct RTWaveSetBase : public Unit {
     /** Ringbuffer for Input Audio */
     SoundRingBuffer inBuffer;
 
     /** Ringbuffer for found ZeroCrossings */
     SoundRingBuffer zeroBuffer;
+};
+
+// declare struct to hold unit generator state
+struct RTWaveSetAnalysis : public RTWaveSetBase  {
+
+};
+
+struct RTWaveSetPlayer : public RTWaveSetBase  {
 
     /** Variables for Waveset play */
     WaveSetPlayer wsp;
 
+    /** type of transformation */
     Transformation transformation;
 };
 
 // function declarations
+void RTWaveSetBase_Ctor(RTWaveSetBase *unit);
+
 void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);
 void RTWaveSetAnalysis_next(RTWaveSetAnalysis *unit, int inNumSamples);
 void RTWaveSetAnalysis_Dtor(RTWaveSetAnalysis *unit);
-void RTWaveSetAnalysis_playNextWS(RTWaveSetAnalysis *unit);
 
-WaveSet RTWaveSetAnalysis_latesWSinRange(RTWaveSetAnalysis *unit, int minWavesetLength, int maxWavesetLength);
+void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);
+void RTWaveSetPlayer_next(RTWaveSetPlayer *unit, int inNumSamples);
+void RTWaveSetPlayer_Dtor(RTWaveSetPlayer *unit);
+void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit);
+
+WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength);
 
 /**
- * @brief RTWaveSetAnalysis_Ctor Constructor for the RTWaveSetAnalysis UGen.
+ * @brief RTWaveSetBase_Ctor Constructor of the RTWaveSet base UGEN.
  * @param unit
  */
 
-void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
-    Print("RTWaveSetAnalysis_Ctor()\n");
-    
-    // 1. set the calculation function.
-    SETCALC(RTWaveSetAnalysis_next);
-
-    // 2. initialize the unit generator state variables.
-    unit->wsp = WaveSetPlayer();
+void RTWaveSetBase_Ctor(RTWaveSetBase *unit) {
+    Print("RTWaveSetBase_Ctor()\n");
 
     // receive Audio Buffer arg
     unit->inBuffer = SoundRingBuffer(ZIN0(0),unit);
@@ -59,13 +66,47 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     // receive Zero Crossing Buffer
     unit->zeroBuffer = SoundRingBuffer(ZIN0(1),unit);
     printf("RTWaveSetAnalysis_Ctor: zeroBuffer (bufnum=%i,len=%i)\n",(int)(ZIN0(1)),unit->zeroBuffer.getLen());
+}
 
-    // receive Transformation string
+/**
+ * @brief RTWaveSetAnalysis_Ctor Constructor for the RTWaveSetAnalysis UGen.
+ * @param unit
+ */
+
+void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
+    Print("RTWaveSetAnalysis_Ctor()\n");
+
+    // 1. set the calculation function.
+    SETCALC(RTWaveSetAnalysis_next);
+
+    RTWaveSetBase_Ctor(unit);
+
+    // 3. calculate one sample of output.
+    RTWaveSetAnalysis_next(unit, 1);
+}
+
+/**
+ * @brief RTWaveSetPlayer_Ctor Constructor for the RTWaveSetPlayer UGen.
+ * @param unit
+ */
+
+void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
+    Print("RTWaveSetPlayer_Ctor()\n");
+
+    RTWaveSetBase_Ctor(unit);
+    
+    // set the calculation function.
+    SETCALC(RTWaveSetPlayer_next);
+
+    // initialize the unit generator state variables.
+    unit->wsp = WaveSetPlayer();
+
+    // receive Transformation type
     unit->transformation = (Transformation) IN0(3);
     printf("RTWaveSetAnalysis_Ctor: transformation=%i\n",unit->transformation);
 
     // 3. calculate one sample of output.
-    RTWaveSetAnalysis_next(unit, 1);
+    RTWaveSetPlayer_next(unit, 1);
 }
 
 /**
@@ -95,14 +136,35 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
             //if(unit->zcPos >= 1) {out[i]=0.5;} // trigger that there is a new WaveSet
         }
 
+        out[i] = unit->zeroBuffer.getLastPos();
+
     }
+
+}
+
+
+/**
+ * @brief RTWaveSetAnalysis_next Process the next block of audio samples.
+ * @param unit
+ * @param inNumSamples
+ */
+
+void RTWaveSetPlayer_next( RTWaveSetPlayer *unit, int inNumSamples ) {
+
+    float *in = IN(2);
+    float *out = OUT(0);
+
+
 
     // Output Processing
     for ( int i=0; i<inNumSamples; ++i) {
 
+        unit->zeroBuffer.setLastPos((int) in[i]);
+        unit->inBuffer.setLastPos((int) unit->zeroBuffer.getLast()); // TODO transfer current buffer position directly
+
         // Samples left in WaveSetPlayer?
         if(unit->wsp.left()<1 && unit->zeroBuffer.getLastPos()>=1) {
-            RTWaveSetAnalysis_playNextWS(unit);
+            RTWaveSetPlayer_playNextWS(unit);
         }
 
         // play WaveSet
@@ -121,7 +183,7 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
  * @brief RTWaveSetAnalysis_playNext Find the next WaveSet to play.
  * @param unit
  */
-void RTWaveSetAnalysis_playNextWS(RTWaveSetAnalysis *unit){
+void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit){
 
     WaveSet ws;
 
@@ -131,7 +193,7 @@ void RTWaveSetAnalysis_playNextWS(RTWaveSetAnalysis *unit){
     {
     case TRANS_REVERSE: {
         int step = 1;
-        ws = RTWaveSetAnalysis_latesWSinRange(unit,minWavesetLength,maxWavesetLength);
+        ws = RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength);
         int h = ws.end;
         ws.end = ws.start;
         ws.start = h;
@@ -145,14 +207,14 @@ void RTWaveSetAnalysis_playNextWS(RTWaveSetAnalysis *unit){
         if(param>1 && param<minWavesetLength) {
             step = (int) param;
         }
-        unit->wsp.playWS(RTWaveSetAnalysis_latesWSinRange(unit,minWavesetLength,maxWavesetLength),1,step);
+        unit->wsp.playWS(RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength),1,step);
         } break;
     case TRANS_REPEAT: {
         int repeat = 1;
         if(param>1 && param <= unit->inBuffer.getLen()/maxWavesetLength) {
             repeat = (int) param;
         }
-        unit->wsp.playWS(RTWaveSetAnalysis_latesWSinRange(unit,minWavesetLength,maxWavesetLength),repeat,1);
+        unit->wsp.playWS(RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength),repeat,1);
         } break;
     case TRANS_NO:
     default:
@@ -169,7 +231,7 @@ void RTWaveSetAnalysis_playNextWS(RTWaveSetAnalysis *unit){
  * @return The WaveSet.
  */
 
-WaveSet RTWaveSetAnalysis_latesWSinRange(RTWaveSetAnalysis *unit, int minWavesetLength, int maxWavesetLength)
+WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength)
 {
     WaveSet ws;
     ws.start = -1;
@@ -215,6 +277,10 @@ void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
 
 }
 
+void RTWaveSetPlayer_Dtor( RTWaveSetPlayer *unit ) {
+
+}
+
 // the entry point is called by the host when the plug-in is loaded
 PluginLoad(RTWaveSetAnalysis)
 {
@@ -222,4 +288,5 @@ PluginLoad(RTWaveSetAnalysis)
     ft = inTable; // store pointer to InterfaceTable
 
     DefineSimpleUnit(RTWaveSetAnalysis);
+    DefineSimpleUnit(RTWaveSetPlayer);
 }

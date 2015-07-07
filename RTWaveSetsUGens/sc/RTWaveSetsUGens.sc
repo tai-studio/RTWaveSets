@@ -9,32 +9,27 @@
 //}
 
 
-/*RTWaveSetAnalysis {
+RTWaveSetAnalysis : UGen {
         *ar { arg audioBuf, xingsBuf, in;
                 ^this.multiNew('audio', audioBuf, xingsBuf, in)
         }
 }
 
-RTWaveSetPlayer {
-        *ar { arg audioBuf, xingsBuf, idx;
-                ^this.multiNew('audio', audioBuf, xingsBuf, idx)
-        }
-}*/
 
-RTWaveSetAnalysis : UGen {
-    *transformReverse { |audioBuffer, zeroCrossingBuffer, in, speedMul=1|
-        ^this.ar(audioBuffer, zeroCrossingBuffer, in, 1, speedMul)
+RTWaveSetPlayer : UGen {
+    *transformReverse { arg audioBuf, xingsBuf, idx, speedMul=1;
+        ^this.ar(audioBuf, xingsBuf, idx, 1, speedMul)
     }
 
-    *transformForward { |audioBuffer, zeroCrossingBuffer, in, speedMul=1|
-        ^this.ar(audioBuffer, zeroCrossingBuffer, in, 2, speedMul)
+    *transformForward { arg audioBuf, xingsBuf, idx, speedMul=1;
+        ^this.ar(audioBuf, xingsBuf, idx, 2, speedMul)
     }
 
-    *transformRepeat { |audioBuffer, zeroCrossingBuffer, in, repeats=1|
-        ^this.ar(audioBuffer, zeroCrossingBuffer, in, 3, repeats)
+    *transformRepeat { arg audioBuf, xingsBuf, idx, repeats=1;
+        ^this.ar(audioBuf, xingsBuf, idx, 3, repeats)
     }
 
-    *ar { |audioBuffer, zeroCrossingBuffer, in, transformation=0, param=0|
-        ^this.multiNew('audio', audioBuffer, zeroCrossingBuffer, in, transformation, param)
+    *ar { arg audioBuf, xingsBuf, idx, transformation=0, param=0;
+        ^this.multiNew('audio', audioBuf, xingsBuf, idx, transformation, param)
     }
 }
