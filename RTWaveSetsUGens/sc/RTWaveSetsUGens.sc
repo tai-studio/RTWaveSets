@@ -9,7 +9,19 @@
 //}
 
 
-RTWaveSet : UGen {
+/*RTWaveSetAnalysis {
+        *ar { arg audioBuf, xingsBuf, in;
+                ^this.multiNew('audio', audioBuf, xingsBuf, in)
+        }
+}
+
+RTWaveSetPlayer {
+        *ar { arg audioBuf, xingsBuf, idx;
+                ^this.multiNew('audio', audioBuf, xingsBuf, idx)
+        }
+}*/
+
+RTWaveSetAnalysis : UGen {
     *transformReverse { |audioBuffer, zeroCrossingBuffer, in, speedMul=1|
         ^this.ar(audioBuffer, zeroCrossingBuffer, in, 1, speedMul)
     }
