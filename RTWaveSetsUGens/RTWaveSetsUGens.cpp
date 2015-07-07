@@ -1,7 +1,6 @@
 #include "SC_PlugIn.h"
 #include "waveset.h"
 #include "soundringbuffer.h"
-#include "soundringbuffer.cpp"
 
 static InterfaceTable *ft;
 

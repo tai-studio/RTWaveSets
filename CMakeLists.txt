@@ -192,21 +192,12 @@ endmacro()
 #-----------------------
 
 set(PLUGIN_DIRS
-    RTWaveSetsUGens
+
 )
 
 # plugins with extra lib
 set(PLUGIN_DIRS_EXTRA
-#    AuditoryModeling
-#    BetablockerUGens
-#    DEINDUGens
-#    LadspaUGen
-#    MembraneUGens
-#    NCAnalysisUGens
-#    OteyPianoUGens
-#    PitchDetection
-#    StkUGens
-#    TJUGens
+    RTWaveSetsUGens
 )
 
 #if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND ${CMAKE_CXX_COMPILER_VERSION} MATCHES "^6.0.")
@@ -269,7 +260,9 @@ install(DIRECTORY local DESTINATION "${INSTALL_DESTINATION_DISTRO}"
 #---------------------
 # plugins with extras:
 #---------------------
-
+## RTWaveSetsUGens
+file(GLOB RTWaveSetSources RTWaveSetsUGens/*cpp)
+BUILD_PLUGIN(RTWaveSetsUGens "${RTWaveSetSources}" "" "RTWaveSetsUGens")
 
 ## AuditoryModeling
 #file(GLOB AuditoryModelingSources AuditoryModeling/*cpp)
