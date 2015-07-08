@@ -10,7 +10,9 @@
 void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     printf("RTWaveSetPlayer_Ctor()\n");
 
-    RTWaveSetBase_Ctor(unit);
+    //RTWaveSetBase_Ctor(unit);
+    unit->inBuffer = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
+    unit->zeroBuffer = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
 
     // set the calculation function.
     SETCALC(RTWaveSetPlayer_next);
@@ -19,8 +21,9 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     unit->wsp = WaveSetPlayer();
 
     // receive Transformation type
-    unit->transformation = (Transformation) IN0(3);
+    unit->transformation = (Transformation) IN0(2);
     printf("RTWaveSetAnalysis_Ctor: transformation=%i\n",unit->transformation);
+
 
     // 3. calculate one sample of output.
     RTWaveSetPlayer_next(unit, 1);
@@ -37,22 +40,17 @@ void RTWaveSetPlayer_next( RTWaveSetPlayer *unit, int inNumSamples ) {
     float *in = IN(2);
     float *out = OUT(0);
 
-
-
     // Output Processing
     for ( int i=0; i<inNumSamples; ++i) {
 
-        unit->zeroBuffer.setLastPos((int) in[i]);
-        unit->inBuffer.setLastPos((int) unit->zeroBuffer.getLast()); // TODO transfer current buffer position directly
-
         // Samples left in WaveSetPlayer?
-        if(unit->wsp.left()<1 && unit->zeroBuffer.getLastPos()>=1) {
+        if(unit->wsp.left()<1 && unit->zeroBuffer->getLastPos()>=1) {
             RTWaveSetPlayer_playNextWS(unit);
         }
 
         // play WaveSet
         if(unit->wsp.left()>0) {
-            out[i] = unit->inBuffer.get(unit->wsp.next());
+            out[i] = unit->inBuffer->get(unit->wsp.next());
         }
         else{
             out[i] = 0.0;
@@ -71,7 +69,7 @@ void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit){
 
     WaveSet ws;
 
-    float param = IN0(4);
+    float param = IN0(3);
 
     switch(unit->transformation)
     {
@@ -95,14 +93,14 @@ void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit){
         } break;
     case TRANS_REPEAT: {
         int repeat = 1;
-        if(param>1 && param <= unit->inBuffer.getLen()/maxWavesetLength) {
+        if(param>1 && param <= unit->inBuffer->getLen()/maxWavesetLength) {
             repeat = (int) param;
         }
         unit->wsp.playWS(RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength),repeat,1);
         } break;
     case TRANS_NO:
     default:
-        ws = {unit->inBuffer.getLastPos()-512,unit->inBuffer.getLastPos()};
+        ws = {unit->inBuffer->getLastPos()-512,unit->inBuffer->getLastPos()};
         unit->wsp.playWS(ws,1,1);
     }
 }
@@ -123,7 +121,7 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
     ws.end = -1;
 
 
-    if(unit->zeroBuffer.getLastPos()>=1&& unit->inBuffer.getLastPos()>=maxWavesetLength)
+    if(unit->zeroBuffer->getLastPos()>=1&& unit->inBuffer->getLastPos()>=maxWavesetLength)
     // wait for at least one zerocrossing and enouph input samples for a waveset mit max length
     {
         // zerocrossings "backward-index" of the waveset
@@ -133,8 +131,8 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
         // search for for a WaveSet with the right length, beginning at the end.
         int wsLen;
         do {
-            ws.end=unit->zeroBuffer.getLast(endBack);
-            ws.start=unit->zeroBuffer.getLast(startBack);
+            ws.end=unit->zeroBuffer->getLast(endBack);
+            ws.start=unit->zeroBuffer->getLast(startBack);
             wsLen = ws.end - ws.start;
 
             // if the Waveset it soo long take the next one
@@ -150,7 +148,7 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
                 startBack++;
             }
 
-            if(startBack > unit->zeroBuffer.getLastPos()) break; // give up when reached beginning
+            if(startBack > unit->zeroBuffer->getLastPos()) break; // give up when reached beginning
 
         } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
     }

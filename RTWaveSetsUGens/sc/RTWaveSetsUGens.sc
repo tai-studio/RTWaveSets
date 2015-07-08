@@ -17,19 +17,19 @@ RTWaveSetAnalysis : UGen {
 
 
 RTWaveSetPlayer : UGen {
-    *transformReverse { arg audioBuf, xingsBuf, idx, speedMul=1;
-        ^this.ar(audioBuf, xingsBuf, idx, 1, speedMul)
+    *transformReverse { arg audioBuf, xingsBuf, speedMul=1;
+        ^this.ar(audioBuf, xingsBuf, 1, speedMul)
     }
 
-    *transformForward { arg audioBuf, xingsBuf, idx, speedMul=1;
-        ^this.ar(audioBuf, xingsBuf, idx, 2, speedMul)
+    *transformForward { arg audioBuf, xingsBuf, speedMul=1;
+        ^this.ar(audioBuf, xingsBuf, 2, speedMul)
     }
 
-    *transformRepeat { arg audioBuf, xingsBuf, idx, repeats=1;
-        ^this.ar(audioBuf, xingsBuf, idx, 3, repeats)
+    *transformRepeat { arg audioBuf, xingsBuf, repeats=1;
+        ^this.ar(audioBuf, xingsBuf, 3, repeats)
     }
 
-    *ar { arg audioBuf, xingsBuf, idx, transformation=0, param=0;
-        ^this.multiNew('audio', audioBuf, xingsBuf, idx, transformation, param)
+    *ar { arg audioBuf, xingsBuf, transformation=0, param=0;
+        ^this.multiNew('audio', audioBuf, xingsBuf, transformation, param)
     }
 }

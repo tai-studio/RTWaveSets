@@ -6,10 +6,10 @@
 
 struct RTWaveSetBase : public Unit {
     /** Ringbuffer for Input Audio */
-    SoundRingBuffer inBuffer;
+    SoundRingBuffer *inBuffer;
 
     /** Ringbuffer for found ZeroCrossings */
-    SoundRingBuffer zeroBuffer;
+    SoundRingBuffer *zeroBuffer;
 };
 
 void RTWaveSetBase_Ctor(RTWaveSetBase *unit);

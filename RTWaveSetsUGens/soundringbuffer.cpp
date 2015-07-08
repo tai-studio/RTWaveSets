@@ -1,8 +1,62 @@
 #include "soundringbuffer.h"
 
+SoundRingBuffer::SoundRingBuffer(float* data, int len) {
+    this->data = data;
+    this->len = len;
+    this->lastPos = -1;
+}
 
+void SoundRingBuffer::put(float val) {
+    lastPos++;
+    this->data[lastPos % len] = val;
+}
 
-SoundRingBuffer::SoundRingBuffer(float fbufnum, Unit* unit){
+float SoundRingBuffer::get(int getPos) {
+    if(getPos <= (lastPos - len) || getPos > lastPos){
+        printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
+        return NAN;
+    }
+
+    return data[getPos % len];
+}
+
+void SoundRingBuffer::set(int setPos, float val) {
+    this->data[setPos % len] = val;
+}
+
+/**
+ * @brief SoundRingBuffer::createInBuffer Creates a SoundRingBuffer in the memory of a given Buffer. The SoundringBuffer object is placed in the beginning of the data, the BufferContent afterwards.
+ * @param fbufnum
+ * @param unit
+ * @return
+ */
+
+SoundRingBuffer*  SoundRingBuffer::createInBuffer(float fbufnum, Unit *unit)
+{
+    SndBuf* buf = getSndBuf(fbufnum,unit);
+    void* data = (void*) buf->data;
+    int dataSize = buf->samples*sizeof(float);
+
+    // first put the SoundRingBuffer, afterwards the buffer content
+    SoundRingBuffer* srb = (SoundRingBuffer*) data;
+    float* bufferContent = (float*) (srb+1);
+    int bufferLen = (dataSize - sizeof(SoundRingBuffer))/sizeof(float);
+
+    printf("SoundRingBuffer::createInBuffer() bufferLen=%i\n",bufferLen);
+
+    *srb = SoundRingBuffer((float*) bufferContent,bufferLen);
+    return srb;
+}
+
+SoundRingBuffer*  SoundRingBuffer::getFromBuffer(float fbufnum, Unit *unit)
+{
+    SndBuf* buf = getSndBuf(fbufnum,unit);
+    SoundRingBuffer* srb = (SoundRingBuffer*) buf->data;
+    return srb;
+}
+
+SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
+{
     SndBuf* buf;
 
     if (fbufnum < 0.f) { fbufnum = 0.f; }
@@ -29,47 +83,5 @@ SoundRingBuffer::SoundRingBuffer(float fbufnum, Unit* unit){
         //unit->m_fbufnum = fbufnum;
     }
 
-    //LOCK_SNDBUF(buf);
-
-
-    // TODO warum funktioniert das nicht?
-    // SoundRingBuffer(buf);
-
-    this->sndBuf = buf;
-    this->data = buf->data;
-    this->len = buf->samples;
-    this->lastPos = -1;
-
-
-}
-
-SoundRingBuffer::SoundRingBuffer(SndBuf *buf){
-    this->sndBuf = buf;
-    this->data = buf->data;
-    this->len = buf->samples;
-    this->lastPos = -1;
-}
-
-SoundRingBuffer::SoundRingBuffer(float* data, int len) {
-    this->data = data;
-    this->len = len;
-    this->lastPos = -1;
-}
-
-void SoundRingBuffer::put(float val) {
-    lastPos++;
-    this->data[lastPos % len] = val;
-}
-
-float SoundRingBuffer::get(int getPos) {
-    if(getPos <= (lastPos - len) || getPos > lastPos){
-        printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
-        return NAN;
-    }
-
-    return data[getPos % len];
-}
-
-void SoundRingBuffer::set(int setPos, float val) {
-    this->data[setPos % len] = val;
+    return buf;
 }

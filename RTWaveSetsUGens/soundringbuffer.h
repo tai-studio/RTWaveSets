@@ -6,13 +6,10 @@
 class SoundRingBuffer
 {
 private:
-    SndBuf *sndBuf;
     float* data;
     int len;
     int lastPos;
 public:
-    SoundRingBuffer(float bufnum, Unit* unit);
-    SoundRingBuffer(SndBuf *sndBuf);
     SoundRingBuffer(float* data, int len);
     void put(float val);
     float get(int getPos);
@@ -21,6 +18,10 @@ public:
     int getLastPos(){ return lastPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getLen() { return len; }
+
+    static SndBuf* getSndBuf(float fbufnum, Unit* unit);
+    static SoundRingBuffer* createInBuffer(float bufnum, Unit* unit);
+    static SoundRingBuffer* getFromBuffer(float fbufnum, Unit *unit);
 };
 
 #endif // RINGBUFFER_H

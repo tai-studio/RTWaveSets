@@ -11,7 +11,9 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     // 1. set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
 
-    RTWaveSetBase_Ctor(unit);
+    //RTWaveSetBase_Ctor(unit);
+    unit->inBuffer = SoundRingBuffer::createInBuffer(ZIN0(0),unit);
+    unit->zeroBuffer = SoundRingBuffer::createInBuffer(ZIN0(1),unit);
 
     // 3. calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);
@@ -32,20 +34,20 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
     for ( int i=0; i<inNumSamples; ++i) {
         //out[i] = 0.0;
 
-        float prev = unit->inBuffer.getLast();
+        float prev = unit->inBuffer->getLast();
 
         // save to Buffer
-        unit->inBuffer.put(in[i]);
+        unit->inBuffer->put(in[i]);
 
         // look for a -/+ zero crossing
         if(prev <= 0.0 && in[i] > 0.0) {
             // add zero crossing position to zeroBuffer
-            unit->zeroBuffer.put(unit->inBuffer.getLastPos());
-            //if(unit->zcPos >= 1) {out[i]=0.5;} // trigger that there is a new WaveSet
+            unit->zeroBuffer->put(unit->inBuffer->getLastPos());
+            out[i] = 1.0;
         }
-
-        out[i] = unit->zeroBuffer.getLastPos();
-
+        else {
+            out[i] = 0.0;
+        }
     }
 
 }
