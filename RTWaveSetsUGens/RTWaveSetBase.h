@@ -5,13 +5,13 @@
 #include "soundringbuffer.h"
 
 struct RTWaveSetBase : public Unit {
+
     /** Ringbuffer for Input Audio */
-    SoundRingBuffer *inBuffer;
+    SoundRingBuffer *audioBuf;
 
     /** Ringbuffer for found ZeroCrossings */
-    SoundRingBuffer *zeroBuffer;
-};
+    SoundRingBuffer *xingsBuf;
 
-void RTWaveSetBase_Ctor(RTWaveSetBase *unit);
+};
 
 #endif // RTWAVESETBASE_H
