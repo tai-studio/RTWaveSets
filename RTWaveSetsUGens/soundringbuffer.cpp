@@ -1,4 +1,4 @@
-#include "soundringbuffer.h"
+#include "SoundRingBuffer.h"
 
 SoundRingBuffer::SoundRingBuffer(float* data, int len) {
     this->data = data;

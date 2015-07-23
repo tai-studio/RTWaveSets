@@ -5,6 +5,7 @@ RTWaveSetAnalysis : UGen {
 }
 
 RTWaveSetPlayer : UGen {
+
     *arTransformReverse { arg audioBuf, xingsBuf, speedMul=1;
         ^this.ar(audioBuf, xingsBuf, 1, speedMul)
     }
@@ -15,6 +16,10 @@ RTWaveSetPlayer : UGen {
 
     *arTransformRepeat { arg audioBuf, xingsBuf, repeats=1;
         ^this.ar(audioBuf, xingsBuf, 3, repeats)
+    }
+
+    *arRepeatTrigger { arg audioBuf, xingsBuf, trig;
+        ^this.multiNew('audio', audioBuf, xingsBuf, 4, trig)
     }
 
     *ar { arg audioBuf, xingsBuf, transformation=0, param=0;

@@ -11,7 +11,8 @@ enum Transformation {
     TRANS_NO=0,
     TRANS_REVERSE=1,
     TRANS_FASTER=2,
-    TRANS_REPEAT=3
+    TRANS_REPEAT=3,
+    TRANS_REPEAT_TRIG=4
 };
 
 struct RTWaveSetPlayer : public RTWaveSetBase  {
@@ -21,6 +22,14 @@ struct RTWaveSetPlayer : public RTWaveSetBase  {
 
     /** type of transformation */
     Transformation transformation;
+
+    /** Previous Trigger Input */
+    float prevTrig;
+
+    /** xings Index of last Trigger **/
+    int trigIdx;
+
+    int oldTrigIdx;
 };
 
 void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);

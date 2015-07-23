@@ -2,7 +2,7 @@
 #define RTWAVESETBASE_H
 
 #include "SC_PlugIn.h"
-#include "soundringbuffer.h"
+#include "SoundRingBuffer.h"
 
 struct RTWaveSetBase : public Unit {
 

@@ -13,6 +13,9 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     //RTWaveSetBase_Ctor(unit);
     unit->audioBuf = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
     unit->xingsBuf = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
+    unit->prevTrig = 1.0;
+    unit->trigIdx = -1;
+    unit->oldTrigIdx = -1;
 
     // set the calculation function.
     SETCALC(RTWaveSetPlayer_next);
@@ -23,7 +26,6 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     // receive Transformation type
     unit->transformation = (Transformation) IN0(2);
     printf("RTWaveSetAnalysis_Ctor: transformation=%i\n",unit->transformation);
-
 
     // 3. calculate one sample of output.
     RTWaveSetPlayer_next(unit, 1);
@@ -37,11 +39,21 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
 
 void RTWaveSetPlayer_next( RTWaveSetPlayer *unit, int inNumSamples ) {
 
-    float *in = IN(2);
     float *out = OUT(0);
+    float *trig = IN(3);
 
-    // Output Processing
+    // WaveSet Playback
     for ( int i=0; i<inNumSamples; ++i) {
+
+        if(unit->transformation==TRANS_REPEAT_TRIG)
+        {
+            if(trig[i]>0.0 && unit->prevTrig<=0.0)
+            {
+                // Trigger Now!
+                unit->trigIdx = unit->xingsBuf->getLastPos();
+            }
+            unit->prevTrig=trig[i];
+        }
 
         // Samples left in WaveSetPlayer?
         if(unit->wsp.left()<1 && unit->xingsBuf->getLastPos()>=1) {
@@ -93,11 +105,28 @@ void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit){
         } break;
     case TRANS_REPEAT: {
         int repeat = 1;
-        if(param>1 && param <= unit->audioBuf->getLen()/maxWavesetLength) {
+        if(param>1 && param <= unit->audioBuf->getLen()/maxWavesetLength) { // check if repeat Parameter is valid and doesn't exceed the buffer size
             repeat = (int) param;
         }
         unit->wsp.playWS(RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength),repeat,1);
         } break;
+    case TRANS_REPEAT_TRIG:
+            if(unit->trigIdx>0)
+            {
+                static WaveSet ws;
+
+                //ws.end = unit->xingsBuf->get(unit->trigIdx);
+                //ws.start = unit->xingsBuf->get(unit->trigIdx-1);
+
+                if(unit->trigIdx != unit->oldTrigIdx)
+                {
+                    ws = RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength);
+                    unit->oldTrigIdx = unit->trigIdx;
+                }
+
+                unit->wsp.playWS(ws,1,1);
+            }
+        break;
     case TRANS_NO:
     default:
         ws = {unit->audioBuf->getLastPos()-512,unit->audioBuf->getLastPos()};
