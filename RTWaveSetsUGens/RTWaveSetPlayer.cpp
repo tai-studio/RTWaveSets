@@ -21,7 +21,7 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
 
 
 /**
- * @brief RTWaveSetAnalysis_findLatesWSinRange Find the latest Waveset that is in the given size range.
+ * @brief Get the latest Waveset that is in the given size range.
  * @param unit
  * @param minWavesetLength
  * @param maxWavesetLength
@@ -49,13 +49,14 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
             ws.start=unit->xingsBuf->getLast(startBack);
             wsLen = ws.end - ws.start;
 
-            // if the Waveset it soo long take the next one
+            // if the Waveset it too long take the next one
             if(wsLen>maxWavesetLength)
             {
                 endBack++;
                 startBack = endBack+1;
                 printf("RTWaveSetAnalysis_latesWSinRange() Warning: skipping too long WaveSet!");
             }
+
             // if the WS is too short extend to the next zerocrossing.
             if(wsLen<minWavesetLength)
             {
@@ -67,9 +68,33 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
         } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
     }
 
+    printf("RTWaveSetPlayer_getWS() len:%i\n",ws.end-ws.start);
     return ws;
 }
 
+/**
+ * @brief Get the latest WaveSet.
+ * @param unit
+ * @param idxBack delay of N wavesets.
+ * @param numWS How many WaveSets starting vom idxBack backwards should be appended.
+ * @return
+ */
+
+WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int idxBack, int numWS){
+    WaveSet ws;
+    ws.start = -1;
+    ws.end = -1;
+
+    if(numWS<1) numWS = 1;
+
+    if(unit->xingsBuf->getLastPos()>=(numWS+idxBack))
+    {
+        ws.end = unit->xingsBuf->getLast(idxBack);
+        ws.start = unit->xingsBuf->getLast(idxBack + numWS);
+    }
+
+    return ws;
+}
 
 void RTWaveSetPlayer_Dtor( RTWaveSetPlayer *unit ) {
 

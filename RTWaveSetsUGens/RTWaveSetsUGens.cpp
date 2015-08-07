@@ -13,7 +13,6 @@ PluginLoad(RTWaveSetAnalysis)
     ft = inTable; // store pointer to InterfaceTable
 
     DefineSimpleUnit(RTWaveSetAnalysis);
-    DefineSimpleUnit(RTWaveSetPlayer);
     DefineSimpleUnit(RTWaveSetPlayerRepeat);
     DefineSimpleUnit(RTWaveSetPlayerTriggered);
 

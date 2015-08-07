@@ -3,12 +3,17 @@
 
 #include "RTWaveSetBase.h"
 
-struct RTWaveSetAnalysis : public RTWaveSetBase  {
+// TODO make length limits settable from SC
+static const int RTWaveSetAnalysis_minWavesetLength = (int) (3.0 * 44.100); // 3 ms
+// static const int RTWaveSetAnalysis_maxWavesetLength = (int) (500.0 * 44.100); // 500 ms // TODO implement max Length
 
+struct RTWaveSetAnalysis : public RTWaveSetBase  {
+    bool checkWSlen;
 };
 
 void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);
 void RTWaveSetAnalysis_next(RTWaveSetAnalysis *unit, int inNumSamples);
 void RTWaveSetAnalysis_Dtor(RTWaveSetAnalysis *unit);
+void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit);
 
 #endif // RTWAVESETANALYSIS_H

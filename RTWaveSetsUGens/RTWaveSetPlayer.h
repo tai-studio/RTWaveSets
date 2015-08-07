@@ -23,12 +23,12 @@ struct RTWaveSetPlayer : public RTWaveSetBase  {
 };
 
 void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);
-void RTWaveSetPlayer_next(RTWaveSetPlayer *unit, int inNumSamples);
+//void RTWaveSetPlayer_next(RTWaveSetPlayer *unit, int inNumSamples); // now using calc functions in inherited players
 void RTWaveSetPlayer_Dtor(RTWaveSetPlayer *unit);
 void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit);
 
 WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength);
-
+WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int idxBack=0, int numWS=1);
 
 
 #endif // RTWAVESETPLAYER_H

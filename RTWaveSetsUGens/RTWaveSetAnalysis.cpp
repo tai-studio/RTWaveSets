@@ -11,7 +11,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     // 1. set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
 
-    //RTWaveSetBase_Ctor(unit);
+    unit->checkWSlen = true;
     unit->audioBuf = SoundRingBuffer::createInBuffer(ZIN0(0),unit);
     unit->xingsBuf = SoundRingBuffer::createInBuffer(ZIN0(1),unit);
 
@@ -41,13 +41,45 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
         // look for a -/+ zero crossing
         if(prev <= 0.0 && in[i] > 0.0) {
+
             // add zero crossing position to zeroBuffer
-            unit->xingsBuf->put(unit->audioBuf->getLastPos());
+            RTWaveSetAnalysis_gotXing(unit);
+
+            // trigger Xing on output
             out[i] = 1.0;
+
         }
         else {
+            // no Xing
             out[i] = 0.0;
         }
+    }
+
+}
+
+/**
+ * @brief Check length and add zerocrossing to buffer.
+ * @param unit
+ */
+
+void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
+{
+    if(unit->checkWSlen && unit->xingsBuf->getLastPos()>=0) {
+        // check WaveSet length
+
+        int lastXing = unit->xingsBuf->getLast();
+        int currentXing = unit->audioBuf->getLastPos();
+        int wsLen = currentXing- lastXing;
+
+        if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
+            unit->xingsBuf->put(currentXing);
+            printf("RTWaveSetAnalysis_gotXing() wsLen: %i\n",wsLen);
+        }
+
+    } else {
+        // add xing without checking Length
+        unit->xingsBuf->put(unit->audioBuf->getLastPos());
+
     }
 
 }

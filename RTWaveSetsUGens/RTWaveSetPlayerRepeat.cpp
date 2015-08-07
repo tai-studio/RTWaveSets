@@ -33,8 +33,6 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
         }
     }
 
-
-
 }
 
 /**
@@ -44,14 +42,19 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
 
 void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit){
 
-    float param = IN0(3);
-
     int repeat = 1;
-    if(param>1 && param <= unit->audioBuf->getLen()/maxWavesetLength) {
-        // check if repeat Parameter is valid and doesn't exceed the buffer size
-        repeat = (int) param;
+    int backIdx = 0;
+    int numWS = 1;
+
+    float in_repeat = IN0(3);
+
+    // check if repeat Parameter is valid and doesn't exceed the buffer size
+    if(in_repeat>1 && in_repeat <= unit->audioBuf->getLen()/maxWavesetLength) {
+        repeat = (int) in_repeat;
     }
-    unit->wsp.playWS(RTWaveSetPlayer_latesWSinRange(unit,minWavesetLength,maxWavesetLength),repeat,1);
+
+    WaveSet ws = RTWaveSetPlayer_getWS(unit,backIdx,numWS);
+    unit->wsp.playWS(ws,repeat,1);
 }
 
 void RTWaveSetPlayerRepeat_Dtor(RTWaveSetPlayerRepeat *unit){
