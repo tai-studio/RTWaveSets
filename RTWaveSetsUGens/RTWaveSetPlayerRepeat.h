@@ -3,7 +3,6 @@
 
 #include "RTWaveSetPlayer.h"
 
-
 struct RTWaveSetPlayerRepeat : public RTWaveSetPlayer  {
 };
 

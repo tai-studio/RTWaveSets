@@ -44,14 +44,17 @@ void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit){
 
     int repeat = 1;
     int backIdx = 0;
-    int numWS = 1;
+    int numWS = IN0(4);
 
+    int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
+
+    // check input Parameters
     float in_repeat = IN0(3);
-
-    // check if repeat Parameter is valid and doesn't exceed the buffer size
-    if(in_repeat>1 && in_repeat <= unit->audioBuf->getLen()/maxWavesetLength) {
-        repeat = (int) in_repeat;
-    }
+    if(in_repeat>1 && in_repeat <= minWSinBuffer) repeat = (int) in_repeat;
+    if(numWS < 0) numWS = 1;
+    if(numWS > minWSinBuffer) numWS = minWSinBuffer;
+    if(backIdx<0) backIdx=0;
+    if(backIdx>minWSinBuffer) backIdx = minWSinBuffer;
 
     WaveSet ws = RTWaveSetPlayer_getWS(unit,backIdx,numWS);
     unit->wsp.playWS(ws,repeat,1);

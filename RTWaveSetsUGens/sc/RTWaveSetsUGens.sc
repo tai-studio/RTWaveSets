@@ -5,8 +5,8 @@ RTWaveSetAnalysis : UGen {
 }
 
 RTWaveSetPlayerRepeat : UGen {
-    *ar { arg audioBuf, xingsBuf, repeats=10, speed=1;
-    ^this.multiNew('audio', audioBuf, xingsBuf, 3, repeats)
+    *ar { arg audioBuf, xingsBuf, repeats=10, numWS=1, speed=1;
+    ^this.multiNew('audio', audioBuf, xingsBuf, 3, repeats, numWS, speed)
     }
 }
 
