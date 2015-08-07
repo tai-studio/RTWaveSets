@@ -8,7 +8,11 @@ struct WaveSet {
     int end;
 };
 
-class WaveSetPlayer {
+/**
+ * @brief The WaveSetPlayer class
+ */
+
+class WaveSetIterator {
 private:
     int playPos;
     WaveSet ws;
@@ -17,7 +21,7 @@ private:
     int playDir;
 
 public:
-    WaveSetPlayer();
+    WaveSetIterator();
     void playWS(WaveSet ws, int repeat=1, int step=1);
     int next();
     int left();

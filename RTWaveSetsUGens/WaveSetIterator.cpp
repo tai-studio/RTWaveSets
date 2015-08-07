@@ -1,10 +1,10 @@
-#include "WaveSetPlayer.h"
+#include "WaveSetIterator.h"
 
 /**
  * @brief WaveSetPlayer::WaveSetPlayer Constructor, just init values.
  */
 
-WaveSetPlayer::WaveSetPlayer(){
+WaveSetIterator::WaveSetIterator(){
     playPos = -1;
     ws.start = -1;
     ws.end = -1;
@@ -18,7 +18,7 @@ WaveSetPlayer::WaveSetPlayer(){
  * @return Sample position in the buffer.
  */
 
-int WaveSetPlayer::next() {
+int WaveSetIterator::next() {
     if(playPos*playDir >= ws.end*playDir && repeat > 0){
         playPos = ws.start;
         repeat--;
@@ -42,7 +42,7 @@ int WaveSetPlayer::next() {
  * @param step Step size for the playback (i.e. -1 for reverse oder 2 for double speed).
  */
 
-void WaveSetPlayer::playWS(WaveSet ws, int repeat, int step){
+void WaveSetIterator::playWS(WaveSet ws, int repeat, int step){
     this->ws = ws;
     this->repeat = repeat-1;
     this->step = step;
@@ -55,6 +55,6 @@ void WaveSetPlayer::playWS(WaveSet ws, int repeat, int step){
  * @return Number of samples left.
  */
 
-int WaveSetPlayer::left() {
+int WaveSetIterator::left() {
     return (ws.end-playPos-playDir)/step + (repeat*(ws.end-ws.start-playDir))/step;
 }

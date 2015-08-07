@@ -2,34 +2,24 @@
 #define RTWAVESETPLAYER_H
 
 #include "RTWaveSetBase.h"
-#include "WaveSetPlayer.h"
+#include "WaveSetIterator.h"
 
 static const int minWavesetLength = (int) (3.0 * 44.100); // 3 ms
 static const int maxWavesetLength = (int) (500.0 * 44.100); // 500 ms
 
-enum Transformation {
+/*enum Transformation {
     TRANS_NO=0,
     TRANS_REVERSE=1,
     TRANS_FASTER=2,
     TRANS_REPEAT=3,
     TRANS_REPEAT_TRIG=4
-};
+};*/
 
 struct RTWaveSetPlayer : public RTWaveSetBase  {
 
-    /** Variables for Waveset play */
-    WaveSetPlayer wsp;
+    /** Player */
+    WaveSetIterator wsp;
 
-    /** type of transformation */
-    Transformation transformation;
-
-    /** Previous Trigger Input */
-    float prevTrig;
-
-    /** xings Index of last Trigger **/
-    int trigIdx;
-
-    int oldTrigIdx;
 };
 
 void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);
