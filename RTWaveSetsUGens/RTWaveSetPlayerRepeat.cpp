@@ -2,6 +2,7 @@
 
 void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit){
     RTWaveSetPlayer_Ctor(unit);
+    unit->lastXingIdx = -1;
     SETCALC(RTWaveSetPlayerRepeat_next);
     RTWaveSetPlayerRepeat_next(unit, 1);
 }
@@ -16,12 +17,29 @@ void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit){
 void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
 
     float *out = OUT(0);
+    float repeat = IN0(2);
+    float numWS = IN0(3);
+    float *idxInFloat = IN(4);
+    int hold = IN0(5);
+    int idxOffset = IN0(6);
+
 
     // WaveSet Playback
     for ( int i=0; i<inNumSamples; ++i) {
+
+        //int hold = (int) holdF[i];
+        int idxIn;
+
+        if(!hold){
+            idxIn = (int) idxInFloat[i];
+        }else{
+            idxIn = unit->lastXingIdx;
+        }
+
         // Samples left in WaveSetPlayer?
         if(unit->wsp.left()<1 && unit->xingsBuf->getLastPos()>=1) {
-            RTWaveSetPlayerRepeat_playNextWS(unit);
+            printf("RTWaveSetPlayerRepeat_next: idxIn:%i idxOffset:%i hold:%i\n",idxIn,idxOffset,hold);
+            RTWaveSetPlayerRepeat_playNextWS(unit,(int) repeat,(int) numWS,idxIn + idxOffset);
         }
 
         // play WaveSet
@@ -31,6 +49,8 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
         else{
             out[i] = 0.0;
         }
+
+        unit->lastXingIdx = idxIn;
     }
 
 }
@@ -40,23 +60,19 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
  * @param unit
  */
 
-void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit){
+void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
 
-    int repeat = 1;
-    int backIdx = 0;
-    int numWS = IN0(4);
+
+    printf("RTWaveSetPlayerRepeat_playNextWS() xingIdx:%i\n",xingIdx);
 
     int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
 
     // check input Parameters
-    float in_repeat = IN0(3);
-    if(in_repeat>1 && in_repeat <= minWSinBuffer) repeat = (int) in_repeat;
+    if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1;
     if(numWS < 0) numWS = 1;
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
-    if(backIdx<0) backIdx=0;
-    if(backIdx>minWSinBuffer) backIdx = minWSinBuffer;
 
-    WaveSet ws = RTWaveSetPlayer_getWS(unit,backIdx,numWS);
+    WaveSet ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
     unit->wsp.playWS(ws,repeat,1);
 }
 

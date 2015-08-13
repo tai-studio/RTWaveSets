@@ -73,24 +73,27 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
 }
 
 /**
- * @brief Get the latest WaveSet.
+ * @brief Get a WaveSet.
  * @param unit
- * @param idxBack delay of N wavesets.
- * @param numWS How many WaveSets starting vom idxBack backwards should be appended.
+ * @param xingIdx Index of the Xing. -1 for latest xing.
+ * @param numWS How many WaveSets starting vom xingIdx backwards should be appended.
  * @return
  */
 
-WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int idxBack, int numWS){
+WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS){
     WaveSet ws;
     ws.start = -1;
     ws.end = -1;
 
     if(numWS<1) numWS = 1;
 
-    if(unit->xingsBuf->getLastPos()>=(numWS+idxBack))
+    if(xingIdx < numWS-1) xingIdx = unit->xingsBuf->getLastPos();
+    if(xingIdx > unit->xingsBuf->getLastPos()) xingIdx = unit->xingsBuf->getLastPos();
+
+    if(unit->xingsBuf->getLastPos() >= numWS)
     {
-        ws.end = unit->xingsBuf->getLast(idxBack);
-        ws.start = unit->xingsBuf->getLast(idxBack + numWS);
+        ws.end = unit->xingsBuf->get(xingIdx);
+        ws.start = unit->xingsBuf->get(xingIdx - numWS);
     }
 
     return ws;

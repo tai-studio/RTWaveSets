@@ -44,15 +44,10 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
             // add zero crossing position to zeroBuffer
             RTWaveSetAnalysis_gotXing(unit);
-
-            // trigger Xing on output
-            out[i] = 1.0;
-
         }
-        else {
-            // no Xing
-            out[i] = 0.0;
-        }
+
+        out[i] = (float) unit->xingsBuf->getLastPos();
+
     }
 
 }
@@ -69,11 +64,11 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 
         int lastXing = unit->xingsBuf->getLast();
         int currentXing = unit->audioBuf->getLastPos();
-        int wsLen = currentXing- lastXing;
+        int wsLen = currentXing - lastXing;
 
         if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
             unit->xingsBuf->put(currentXing);
-            printf("RTWaveSetAnalysis_gotXing() wsLen: %i\n",wsLen);
+            //printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
         }
 
     } else {
