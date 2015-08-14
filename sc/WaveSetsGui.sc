@@ -46,7 +46,7 @@ s.waitForBoot({
 
 	}).add;
 
-	win = Window.new("RT WaveSets", Rect(200,200,400,200));
+	win = Window.new("RT WaveSets", Rect(200,200,350,250));
 
 	directButton = Button.new(win,Rect(10,10,80,30)).states_([["Direct Off"],["Direct On"]]);
 	directButton.action = { if(directButton.value.asBoolean,
@@ -78,7 +78,7 @@ s.waitForBoot({
 		playGrain.set(\numWS,val);
 	});
 
-	holdButton = Button.new(win,Rect(140,145,80,30)).states_([["Hold Off"],["Hold On"]]);
+	holdButton = Button.new(win,Rect(140,145,160,30)).states_([["Hold Off"],["Hold On"]]);
 	holdButton.action = {
 		playGrain.set(\hold,holdButton.value);
 	};
