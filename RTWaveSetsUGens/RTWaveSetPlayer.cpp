@@ -1,5 +1,5 @@
 #include "RTWaveSetPlayer.h"
-
+// define RTWaveSetPlayer_DEBUG
 
 
 /**
@@ -8,7 +8,9 @@
  */
 
 void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
+    #ifdef RTWaveSetPlayer_DEBUG
     printf("RTWaveSetPlayer_Ctor()\n");
+    #endif
 
     unit->audioBuf = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
     unit->xingsBuf = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
@@ -54,7 +56,9 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
             {
                 endBack++;
                 startBack = endBack+1;
+                #ifdef RTWaveSetPlayer_DEBUG
                 printf("RTWaveSetAnalysis_latesWSinRange() Warning: skipping too long WaveSet!");
+                #endif
             }
 
             // if the WS is too short extend to the next zerocrossing.
@@ -68,7 +72,9 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
         } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
     }
 
+    #ifdef RTWaveSetPlayer_DEBUG
     printf("RTWaveSetPlayer_getWS() len:%i\n",ws.end-ws.start);
+    #endif
     return ws;
 }
 

@@ -1,4 +1,5 @@
 #include "RTWaveSetPlayerRepeat.h"
+// #define RTWaveSetPlayerRepeat_DEBUG
 
 void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit){
     RTWaveSetPlayer_Ctor(unit);
@@ -38,7 +39,9 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
 
         // Samples left in WaveSetPlayer?
         if(unit->wsp.left()<1 && unit->xingsBuf->getLastPos()>=1) {
+            #ifdef RTWaveSetPlayerRepeat_DEBUG
             printf("RTWaveSetPlayerRepeat_next: idxIn:%i idxOffset:%i hold:%i\n",idxIn,idxOffset,hold);
+            #endif
             RTWaveSetPlayerRepeat_playNextWS(unit,(int) repeat,(int) numWS,idxIn + idxOffset);
         }
 
@@ -63,7 +66,9 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
 void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
 
 
+    #ifdef RTWaveSetPlayerRepeat_DEBUG
     printf("RTWaveSetPlayerRepeat_playNextWS() xingIdx:%i\n",xingIdx);
+    #endif
 
     int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
 

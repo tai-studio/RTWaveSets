@@ -1,4 +1,5 @@
 #include "RTWaveSetAnalysis.h"
+// define RTWaveSetAnalysis_DEBUG
 
 /**
  * @brief RTWaveSetAnalysis_Ctor Constructor for the RTWaveSetAnalysis UGen.
@@ -6,7 +7,9 @@
  */
 
 void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
+    #ifdef RTWaveSetAnalysis_DEBUG
     printf("RTWaveSetAnalysis_Ctor()\n");
+    #endif
 
     // 1. set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
@@ -68,7 +71,9 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 
         if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
             unit->xingsBuf->put(currentXing);
-            //printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
+            // #ifdef RTWaveSetAnalysis_DEBUG
+            // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
+            // #endif
         }
 
     } else {

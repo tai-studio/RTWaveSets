@@ -1,5 +1,5 @@
 #include "WaveSetIterator.h"
-
+// #define WaveSetIterator_DEBUG
 /**
  * @brief WaveSetPlayer::WaveSetPlayer Constructor, just init values.
  */
@@ -29,7 +29,10 @@ int WaveSetIterator::next() {
         playPos+=step;
         return val;
     } else {
+        #ifdef WaveSetIterator_DEBUG
         printf("WaveSetPlayer::next() reached End of Waveset!\n");
+        #endif
+        
         return -1;
     }
 }

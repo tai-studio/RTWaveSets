@@ -1,4 +1,5 @@
 #include "SoundRingBuffer.h"
+// #define SoundRingBuffer_DEBUG
 
 SoundRingBuffer::SoundRingBuffer(float* data, int len) {
     this->data = data;
@@ -13,7 +14,10 @@ void SoundRingBuffer::put(float val) {
 
 float SoundRingBuffer::get(int getPos) {
     if(getPos <= (lastPos - len) || getPos > lastPos){
+        #ifdef SoundRingBuffer_DEBUG
         printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
+        #endif
+
         return NAN;
     }
 
@@ -42,7 +46,9 @@ SoundRingBuffer*  SoundRingBuffer::createInBuffer(float fbufnum, Unit *unit)
     float* bufferContent = (float*) (srb+1);
     int bufferLen = (dataSize - sizeof(SoundRingBuffer))/sizeof(float);
 
+    #ifdef SoundRingBuffer_DEBUG
     printf("SoundRingBuffer::createInBuffer() bufferLen=%i\n",bufferLen);
+    #endif
 
     *srb = SoundRingBuffer((float*) bufferContent,bufferLen);
     return srb;
@@ -68,8 +74,12 @@ SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
             Graph *parent = unit->mParent;
             if(localBufNum <= parent->localBufNum) {
                 buf = parent->mLocalSndBufs + localBufNum;
-            } else { \
-                if(unit->mWorld->mVerbosity > -1){ printf("SoundRingBuffer::SoundRingBuffer error: invalid buffer number: %i.\n", bufnum); }
+            } else {
+                #ifdef SoundRingBuffer_DEBUG
+                if(unit->mWorld->mVerbosity > -1){ 
+                    printf("SoundRingBuffer::SoundRingBuffer error: invalid buffer number: %i.\n", bufnum); 
+                }
+                #endif
                 buf = NULL;
             }
         } else {
@@ -77,7 +87,11 @@ SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
         }
 
         if (!buf || !buf->data) {
-            if(unit->mWorld->mVerbosity > -1){ printf("SoundRingBuffer::SoundRingBuffer error: Buffer %i not initialised.\n", bufnum); }
+            #ifdef SoundRingBuffer_DEBUG
+            if(unit->mWorld->mVerbosity > -1){ 
+                printf("SoundRingBuffer::SoundRingBuffer error: Buffer %i not initialised.\n", bufnum); 
+            }
+            #endif
             buf = NULL;
         }
         //unit->m_fbufnum = fbufnum;
