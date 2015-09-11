@@ -4,8 +4,16 @@
 void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit){
     RTWaveSetPlayer_Ctor(unit);
     unit->lastXingIdx = -1;
+    unit->prevTrig = 1.0;
     SETCALC(RTWaveSetPlayerRepeat_next);
     RTWaveSetPlayerRepeat_next(unit, 1);
+
+    unit->wsIterator = WaveSetIterator();
+    // init WaveSetIterators
+    for(int i=0;i<RTWaveSetPlayerRepeat_NumIterators;i++)
+    {
+        unit->wsIterators[i] = WaveSetIterator();
+    }
 }
 
 
@@ -21,38 +29,49 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
     float repeat = IN0(2);
     float numWS = IN0(3);
     float *idxInFloat = IN(4);
-    int hold = IN0(5);
     int idxOffset = IN0(6);
+    float *trig = IN(5);
 
 
     // WaveSet Playback
     for ( int i=0; i<inNumSamples; ++i) {
 
-        //int hold = (int) holdF[i];
-        int idxIn;
+        // get Index Input
+        int idxIn = (int) idxInFloat[i];
 
-        if(!hold){
-            idxIn = (int) idxInFloat[i];
-        }else{
-            idxIn = unit->lastXingIdx;
+        // check for Trigger and at least 2 crossings
+        if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->xingsBuf->getLastPos()>=1)
+        {
+
+            // We have a Trigger, Play!
+
+            // look for a free WaveSetIterator
+            for(int playIdx=0;playIdx<RTWaveSetPlayerRepeat_NumIterators;playIdx++)
+            {
+                WaveSetIterator* wsi = &unit->wsIterators[playIdx];
+                if(wsi->left()<1){
+                    RTWaveSetPlayerRepeat_playNextWS(wsi, unit,(int) repeat,(int) numWS,idxIn + idxOffset);
+                    break;
+                }
+
+            }
+
         }
 
-        // Samples left in WaveSetPlayer?
-        if(unit->wsp.left()<1 && unit->xingsBuf->getLastPos()>=1) {
-            #ifdef RTWaveSetPlayerRepeat_DEBUG
-            printf("RTWaveSetPlayerRepeat_next: idxIn:%i idxOffset:%i hold:%i\n",idxIn,idxOffset,hold);
-            #endif
-            RTWaveSetPlayerRepeat_playNextWS(unit,(int) repeat,(int) numWS,idxIn + idxOffset);
-        }
+        float outSum = 0.0;
+        for(int playIdx=0;playIdx<RTWaveSetPlayerRepeat_NumIterators;playIdx++)
+        {
+            WaveSetIterator* wsi = &unit->wsIterators[playIdx];
+            // play parallel WaveSets from Iterators
+            if(wsi->left()>0)
+            {
+                outSum+=unit->audioBuf->get(wsi->next());
+            }
 
-        // play WaveSet
-        if(unit->wsp.left()>0) {
-            out[i] = unit->audioBuf->get(unit->wsp.next());
         }
-        else{
-            out[i] = 0.0;
-        }
+        out[i] = outSum;
 
+        unit->prevTrig=trig[i];
         unit->lastXingIdx = idxIn;
     }
 
@@ -63,12 +82,9 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
  * @param unit
  */
 
-void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
+void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
 
-
-    #ifdef RTWaveSetPlayerRepeat_DEBUG
-    printf("RTWaveSetPlayerRepeat_playNextWS() xingIdx:%i\n",xingIdx);
-    #endif
+    printf_debug("RTWaveSetPlayerRepeat_playNextWS() xingIdx:%i\n",xingIdx);
 
     int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
 
@@ -78,7 +94,7 @@ void RTWaveSetPlayerRepeat_playNextWS(RTWaveSetPlayerRepeat *unit,int repeat, in
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
 
     WaveSet ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
-    unit->wsp.playWS(ws,repeat,1);
+    wsi->playWS(ws,repeat,1);
 }
 
 void RTWaveSetPlayerRepeat_Dtor(RTWaveSetPlayerRepeat *unit){

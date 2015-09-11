@@ -5,6 +5,8 @@
 
 
 struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
+    /** Player */
+    WaveSetIterator wsp;
 
     /** Previous Trigger Input */
     float prevTrig;

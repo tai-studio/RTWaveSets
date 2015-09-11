@@ -59,5 +59,8 @@ void WaveSetIterator::playWS(WaveSet ws, int repeat, int step){
  */
 
 int WaveSetIterator::left() {
+    if(step==0) return 0;
+    if(ws.start>=ws.end) return 0;
+
     return (ws.end-playPos-playDir)/step + (repeat*(ws.end-ws.start-playDir))/step;
 }

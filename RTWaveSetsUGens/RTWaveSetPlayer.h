@@ -17,9 +17,6 @@ static const int maxWavesetLength = (int) (500.0 * 44.100); // 500 ms
 
 struct RTWaveSetPlayer : public RTWaveSetBase  {
 
-    /** Player */
-    WaveSetIterator wsp;
-
 };
 
 void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);

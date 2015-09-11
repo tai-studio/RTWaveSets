@@ -25,6 +25,7 @@ public:
     void playWS(WaveSet ws, int repeat=1, int step=1);
     int next();
     int left();
+    int getStep(){ return step; }
 };
 
 #endif // WAVESET_H

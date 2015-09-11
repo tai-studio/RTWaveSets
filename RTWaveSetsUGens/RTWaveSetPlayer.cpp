@@ -15,9 +15,6 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     unit->audioBuf = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
     unit->xingsBuf = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
 
-    // initialize the unit generator state variables.
-    unit->wsp = WaveSetIterator();
-
 }
 
 

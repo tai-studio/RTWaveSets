@@ -1,56 +1,53 @@
 s.boot;
 
-b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav")
-
-PlayBuf
-
-Ndef(\sound, {
-
-	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2)
-
-})
 
 
 
+(
+f = {
+Ndef(\sound, {	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2); });
 
-Ndef(\sound).play
-
+//Ndef(\sound).play;
 
 q = ();
-
 q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 q.xBuf = Buffer.alloc(s, 100000, 1);
 
 
-Ndef(\wsRepeat).addSpec(\repetition, [1, 100]);
+/*Ndef(\wsRepeat).addSpec(\repetition, [1, 100]);
 Ndef(\wsRepeat).addSpec(\numWS, [1, 100]);
 Ndef(\wsRepeat).addSpec(\xingIdx, [-1, 1]);
 Ndef(\wsRepeat).addSpec(\hold, [0, 1]);
-Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);
+Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);*/
 
-(
+
 Ndef(\wsRepeat, {
-	arg repetition=5, numWS=1, xingIdx=(-1), hold=0, idxOffset=0;
-	var idx, out;
+	arg repetition=10, numWS=20, xingIdx=(-1), idxOffset=0;
+	var idx, out, trig;
+
 
 
 	idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, Ndef(\sound).ar(1));
+	trig = T2A.ar(MouseButton.kr(-1,1,0,0.1));
+	//trig = SinOsc.ar(1);
 
 	RTWaveSetPlayerRepeat.ar(
-		q.aBuf, q.xBuf, repetition, numWS, idx, hold, idxOffset
+		q.aBuf, q.xBuf, repetition, numWS, idx, trig, idxOffset
 	);
-})
+});
+
+Ndef(\wsRepeat).play;
+
+};
+
+
+//b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1,f);
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
+Ndef(\wsRepeat).set(\repetition, 20)
 
-Ndef(\wsRepeat).play
-
-Ndef(\wsRepeat).set(\hold, 0)
-Ndef(\wsRepeat).set(\hold, 1)
-
-Ndef(\wsRepeat).set(\repetition, 2)
-
-Ndef(\wsRepeat).set(\numWS, 40)
+Ndef(\wsRepeat).set(\numWS, 10)
 
 
 /*

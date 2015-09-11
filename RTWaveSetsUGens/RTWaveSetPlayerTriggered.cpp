@@ -9,6 +9,9 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     unit->oldTrigIdx = -1;
 
     RTWaveSetPlayerTriggered_next(unit,1);
+
+    // initialize the unit generator state variables.
+    unit->wsp = WaveSetIterator();
 }
 
 void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples){
