@@ -1,4 +1,6 @@
 (
+var initGUI;
+
 
 var createSlider = {
 	arg win, x, y, labelText, valAction, defaultVal=0.0;
@@ -17,81 +19,72 @@ var createSlider = {
 	slider
 };
 
-// create GUI
-s.waitForBoot({
+
+initGUI = {
 
 	var grainPlay;
 	var win;
 	var playDirect;
-	var playGrain;
 	var directButton;
 	var grainButton;
 	var holdButton;
 	var wsData;
 	var repAction;
 
-	SynthDef(\WSRepeat, {
-		arg rep=5, numWS=1, xingIdx=(-1), hold=0, idxOffset=0;
-		var idx, out;
+	Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,{
+		arg buffer;
+		Ndef(\sound, {	PlayBuf.ar(buffer.numChannels, buffer.bufnum, BufRateScale.kr(buffer.bufnum), loop: 2); });
 
 		wsData = ();
 		wsData.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 		wsData.xBuf = Buffer.alloc(s, 100000, 1);
-		wsData.idxBus = Bus.audio(s);
-
-		idx = RTWaveSetAnalysis.ar(wsData.aBuf,wsData.xBuf,SoundIn.ar(1));
-		out = RTWaveSetPlayerRepeat.ar(wsData.aBuf,wsData.xBuf,rep,numWS,idx,hold,idxOffset);
-		Out.ar(0, out);
 
 
-	}).add;
+		Ndef(\wsRepeat, {
+			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0;
+			var idx, out, trig;
+
+			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1));
+
+			RTWaveSetPlayerRepeat.ar(
+				wsData.aBuf, wsData.xBuf, repetition, numWS, idx, T2A.ar(t_trig), idxOffset
+			);
+		});
+
+		Ndef(\wsRepeat).play;
+	});
 
 	win = Window.new("RT WaveSets", Rect(200,200,350,250));
 
 	directButton = Button.new(win,Rect(10,10,80,30)).states_([["Direct Off"],["Direct On"]]);
 	directButton.action = { if(directButton.value.asBoolean,
-		{ playDirect = { SoundIn.ar([0, 1]) }.play},
+		{ playDirect = { Ndef(\sound).ar(1) }.play},
 		{ playDirect.release }) };
 
-	grainButton = Button.new(win,Rect(10,55,80,30)).states_([["WS Off"],["WS On"]]);
-	grainButton.action = { if(grainButton.value.asBoolean,
-		{
-			playGrain = Synth(\WSRepeat);
-			playGrain.set(\rep,1);
-			playGrain.set(\numWS,1);
-		},
-		{ playGrain.free }) };
-
-
+	grainButton = Button.new(win,Rect(10,55,80,30)).states_([["WS Trigger"]]);
+	grainButton.action = {
+		Ndef(\wsRepeat).set(\t_trig, 1);
+		};
 
 	createSlider.value(win,90,85,"repeats",{
 		arg val,lbl;
-		val = round(val*19+1);
+		val = round(val*99+1);
 		lbl.string = val;
-		playGrain.set(\rep,val);
+		Ndef(\wsRepeat).set(\repetition,val);
 	});
 
-	createSlider.value(win,90,115,"context",{
+	createSlider.value(win,90,115,"numWS",{
 		arg val,lbl;
 		val = round(val*19+1);
 		lbl.string = val;
-		playGrain.set(\numWS,val);
+		Ndef(\wsRepeat).set(\numWS,val);
 	});
-
-	holdButton = Button.new(win,Rect(140,145,160,30)).states_([["Hold Off"],["Hold On"]]);
-	holdButton.action = {
-		playGrain.set(\hold,holdButton.value);
-	};
-
-	createSlider.value(win,90,175,"Offset",{
-		arg val,lbl;
-		var val2;
-		val2 = round((val*100)-100);
-		lbl.string = val2;
-		playGrain.set(\idxOffset,val2);
-	},1);
 
 	win.front;
 
-});
+};
+
+// create GUI
+s.waitForBoot(initGUI);
+
 )
