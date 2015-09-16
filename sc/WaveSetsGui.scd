@@ -26,7 +26,8 @@ initGUI = {
 	var win;
 	var playDirect;
 	var directButton;
-	var grainButton;
+	var analysisOnButton;
+	var wsTriggerButton;
 	var holdButton;
 	var wsData;
 	var repAction;
@@ -41,10 +42,10 @@ initGUI = {
 
 
 		Ndef(\wsRepeat, {
-			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0;
+			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0, analysisOn=1;
 			var idx, out, trig;
 
-			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1));
+			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1), analysisOn);
 
 			RTWaveSetPlayerRepeat.ar(
 				wsData.aBuf, wsData.xBuf, repetition, numWS, idx, T2A.ar(t_trig), idxOffset
@@ -61,10 +62,17 @@ initGUI = {
 		{ playDirect = { Ndef(\sound).ar(1) }.play},
 		{ playDirect.release }) };
 
-	grainButton = Button.new(win,Rect(10,55,80,30)).states_([["WS Trigger"]]);
-	grainButton.action = {
+	analysisOnButton = Button.new(win,Rect(10,55,80,30)).states_([["Analysis On"],["Analysis Off"]]);
+	analysisOnButton.action = { if(analysisOnButton.value.asBoolean,
+		{ Ndef(\wsRepeat).set(\analysisOn, -1) },
+		{ Ndef(\wsRepeat).set(\analysisOn, 1) }) };
+
+	wsTriggerButton = Button.new(win,Rect(10,55+45,80,30)).states_([["WS Trigger"]]);
+	wsTriggerButton.action = {
 		Ndef(\wsRepeat).set(\t_trig, 1);
 		};
+
+
 
 	createSlider.value(win,90,85,"repeats",{
 		arg val,lbl;
@@ -79,6 +87,15 @@ initGUI = {
 		lbl.string = val;
 		Ndef(\wsRepeat).set(\numWS,val);
 	});
+
+	createSlider.value(win,90,175,"Offset",{
+		arg val,lbl;
+		var val2;
+		val2 = round((val*100)-100);
+		lbl.string = val2;
+		Ndef(\wsRepeat).set(\idxOffset,val2);
+	},1);
+
 
 	win.front;
 

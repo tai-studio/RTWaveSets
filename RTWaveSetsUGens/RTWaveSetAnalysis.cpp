@@ -32,26 +32,31 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
     float *in = IN(2);
     float *out = OUT(0);
+    float analysisOn = IN0(3);
+
+
 
     // Input Processing
-    for ( int i=0; i<inNumSamples; ++i) {
-        //out[i] = 0.0;
-
+    for ( int i=0; i<inNumSamples; ++i)
+    {
         float prev = unit->audioBuf->getLast();
 
-        // save to Buffer
-        unit->audioBuf->put(in[i]);
+        if(analysisOn > 0.0)
+        {
+            // save to Buffer
+            unit->audioBuf->put(in[i]);
 
-        // look for a -/+ zero crossing
-        if(prev <= 0.0 && in[i] > 0.0) {
+            // look for a -/+ zero crossing
+            if(prev <= 0.0 && in[i] > 0.0) {
 
-            // add zero crossing position to zeroBuffer
-            RTWaveSetAnalysis_gotXing(unit);
+                // add zero crossing position to zeroBuffer
+                RTWaveSetAnalysis_gotXing(unit);
+            }
         }
 
         out[i] = (float) unit->xingsBuf->getLastPos();
 
-    }
+}
 
 }
 

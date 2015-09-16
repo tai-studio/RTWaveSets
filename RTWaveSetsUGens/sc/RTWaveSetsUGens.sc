@@ -1,6 +1,6 @@
 RTWaveSetAnalysis : UGen {
-        *ar { arg audioBuf, xingsBuf, in;
-                ^this.multiNew('audio', audioBuf, xingsBuf, in)
+        *ar { arg audioBuf, xingsBuf, in, analysisOn=1;
+                ^this.multiNew('audio', audioBuf, xingsBuf, in, analysisOn)
         }
 }
 
