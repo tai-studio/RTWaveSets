@@ -48,7 +48,7 @@ initGUI = {
 			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1), analysisOn);
 
 			RTWaveSetPlayerRepeat.ar(
-				wsData.aBuf, wsData.xBuf, repetition, numWS, idx, T2A.ar(t_trig), idxOffset
+				wsData.aBuf, wsData.xBuf, repetition, numWS, idx-numWS, T2A.ar(t_trig), idxOffset
 			);
 		});
 

@@ -79,7 +79,7 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
  * @brief Get a WaveSet.
  * @param unit
  * @param xingIdx Index of the Xing. -1 for latest xing.
- * @param numWS How many WaveSets starting vom xingIdx backwards should be appended.
+ * @param numWS How many WaveSets starting vom xingIdx forward should be appended.
  * @return
  */
 
@@ -88,16 +88,27 @@ WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS){
     ws.start = -1;
     ws.end = -1;
 
-    if(numWS<1) numWS = 1;
+    int startIdx = xingIdx;
+    int endIdx = xingIdx + numWS;
 
-    if(xingIdx < numWS-1) xingIdx = unit->xingsBuf->getLastPos();
-    if(xingIdx > unit->xingsBuf->getLastPos()) xingIdx = unit->xingsBuf->getLastPos();
-
-    if(unit->xingsBuf->getLastPos() >= numWS)
-    {
-        ws.end = unit->xingsBuf->get(xingIdx);
-        ws.start = unit->xingsBuf->get(xingIdx - numWS);
+    // check validity of parameters
+    if(numWS<1) {
+        printf("RTWaveSetPlayer Warning: numWS < 1");
+        return ws;
     }
+
+    float start = unit->xingsBuf->get(startIdx);
+    float end = unit->xingsBuf->get(endIdx);
+
+    if(isnan(end) || isnan(start) || end<1 || start<0)
+    {
+        printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
+        return ws;
+    }
+
+    // cast to int
+    ws.end = (int) end;
+    ws.start = (int) start;
 
     return ws;
 }

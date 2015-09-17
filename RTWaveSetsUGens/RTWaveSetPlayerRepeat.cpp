@@ -1,5 +1,4 @@
 #include "RTWaveSetPlayerRepeat.h"
-// #define RTWaveSetPlayerRepeat_DEBUG
 
 void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit){
     RTWaveSetPlayer_Ctor(unit);
@@ -43,7 +42,7 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
         if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->xingsBuf->getLastPos()>=1)
         {
 
-            // We have a Trigger, Play!
+            // We have a Trigger, get WaveSet and set Iterator:
 
             // look for a free WaveSetIterator
             for(int playIdx=0;playIdx<RTWaveSetPlayerRepeat_NumIterators;playIdx++)
@@ -54,10 +53,16 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
                     break;
                 }
 
+                if(playIdx==RTWaveSetPlayerRepeat_NumIterators-1)
+                {
+                    printf("RTWaveSetPlayerRepeat Warning: Number of parallel WaveSet playback exceeded!\n");
+                }
+
             }
 
         }
 
+        // Play WaveSets from Iterators
         float outSum = 0.0;
         for(int playIdx=0;playIdx<RTWaveSetPlayerRepeat_NumIterators;playIdx++)
         {
@@ -84,8 +89,6 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
 
 void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
 
-    printf_debug("RTWaveSetPlayerRepeat_playNextWS() xingIdx:%i\n",xingIdx);
-
     int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
 
     // check input Parameters
@@ -94,6 +97,12 @@ void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
 
     WaveSet ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
+
+    printf_debug("RTWaveSetPlayerRepeat_playNextWS() xingIdx(%i,%i) bufferIdx(%i,%i) xingBufRange(%i,%i) audioBufRange(%i,%i)\n",
+                 xingIdx,xingIdx+numWS,ws.start,ws.end,
+                 unit->xingsBuf->getLastPos()-unit->xingsBuf->getLen(),unit->xingsBuf->getLastPos(),
+                 unit->audioBuf->getLastPos()-unit->audioBuf->getLen(),unit->audioBuf->getLastPos());
+
     wsi->playWS(ws,repeat,1);
 }
 

@@ -7,9 +7,8 @@
  */
 
 void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
-    #ifdef RTWaveSetAnalysis_DEBUG
-    printf("RTWaveSetAnalysis_Ctor()\n");
-    #endif
+
+    printf_debug("RTWaveSetAnalysis_Ctor()\n");
 
     // 1. set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
@@ -26,6 +25,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
  * @brief RTWaveSetAnalysis_next Process the next block of audio samples.
  * @param unit
  * @param inNumSamples
+ * TODO: Handle broken WaveSets when analysis was switched Off and ON.
  */
 
 void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
@@ -33,8 +33,6 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
     float *in = IN(2);
     float *out = OUT(0);
     float analysisOn = IN0(3);
-
-
 
     // Input Processing
     for ( int i=0; i<inNumSamples; ++i)

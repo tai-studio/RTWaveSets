@@ -5,9 +5,6 @@
 
 #define RTWaveSetPlayerRepeat_NumIterators 10
 
-#define printf_debug printf
-#define RTWaveSetPlayerRepeat_DEBUG
-
 struct RTWaveSetPlayerRepeat : public RTWaveSetPlayer  {
 
 
