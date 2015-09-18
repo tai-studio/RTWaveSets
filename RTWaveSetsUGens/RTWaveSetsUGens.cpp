@@ -3,6 +3,7 @@
 #include "RTWaveSetPlayer.h"
 #include "RTWaveSetPlayerRepeat.h"
 #include "RTWaveSetPlayerTriggered.h"
+#include "RTWaveSetSelector.h"
 
 static InterfaceTable *ft;
 
@@ -15,5 +16,5 @@ PluginLoad(RTWaveSetAnalysis)
     DefineSimpleUnit(RTWaveSetAnalysis);
     DefineSimpleUnit(RTWaveSetPlayerRepeat);
     DefineSimpleUnit(RTWaveSetPlayerTriggered);
-
+    DefineSimpleUnit(RTWaveSetSelector);
 }

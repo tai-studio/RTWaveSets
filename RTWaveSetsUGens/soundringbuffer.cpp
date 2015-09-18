@@ -14,10 +14,7 @@ void SoundRingBuffer::put(float val) {
 
 float SoundRingBuffer::get(int getPos) {
     if(getPos <= (lastPos - len) || getPos > lastPos){
-        #ifdef SoundRingBuffer_DEBUG
         printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
-        #endif
-
         return NAN;
     }
 

@@ -19,15 +19,17 @@ Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);*/
 
 
 Ndef(\wsRepeat, {
-	arg t_trig=0, repetition=10, numWS=20, idxOffset=0, analysisOn=1, rate=1;
-	var idx, out, trig;
+	arg t_trig=0, repetition=10, numWS=1, idxOffset=0, analysisOn=1, rate=1, desiredLen=250;
+	var idx, idx2, out, trig;
 
 	idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, Ndef(\sound).ar(1), analysisOn);
+
+	idx2 = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen);
 	//trig = T2A.ar(MouseButton.kr(-1,1,0,0.1));
 	trig = T2A.ar(t_trig);
 
 	RTWaveSetPlayerRepeat.ar(
-		q.aBuf, q.xBuf, repetition, numWS, idx-numWS, trig, idxOffset, rate
+		q.aBuf, q.xBuf, repetition, numWS, idx2-numWS, trig, idxOffset, rate
 	);
 });
 
@@ -40,12 +42,12 @@ Ndef(\wsRepeat).play;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
-Ndef(\wsRepeat).set(\repetition, 10)
+Ndef(\wsRepeat).set(\repetition, 1)
 Ndef(\wsRepeat).set(\t_trig, 1)
-Ndef(\wsRepeat).set(\numWS,10)
+Ndef(\wsRepeat).set(\numWS,1)
 Ndef(\wsRepeat).set(\analysisOn, -1)
 Ndef(\wsRepeat).set(\analysisOn, 1)
-Ndef(\wsRepeat).set(\rate, 0.3)
+Ndef(\wsRepeat).set(\rate, 1)
 
 
 /*
@@ -53,20 +55,27 @@ Notes:
 
 ## RTWaveSetAnalysis
 
-~ would be great to have a trigger to turn analysis/recording of material on/off
+~ would be great to have a trigger to turn analysis/recording of material on/off (DONE)
+
 + for longer periods of silence: just pause analysis and recording (?)
 
 
 ## RTWaveSetPlayerRepeat
+
 ~ Trigger: each time a trigger is received (A trigger occurs when at argument trig that signal changes from negative value to positive value), spawn a sound from the player, following the following parameters:
-~	Wave idx (w0)
+
+~	Wave idx (w0) (DONE)
+
 ~	number of included waves (wave idx is first, then the N following)
-		(n=4): w0, w1, w2, w3
+    (n=4): w0, w1, w2, w3 (DONE)
+
 +	number of repetitions
 		could be either interleaved (r=2): w0, w1, w2, w3, w0, w1, w2, w3
 		or blocked (r=2): w0, w0, w1, w1, w2, w2, w3, w3
+   (TODO: this feature will need bigger changes in the playback code)
+
 ~   playback rate: 1 == normal playback, 1.5 == faster, -0.275 slowly backwards
-    (so far implemented without interpolation, just repeat/skip samples)
+    (DONE, but so far implemented without interpolation, just repeat/skip samples)
 
 ---
 + = TODO

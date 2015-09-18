@@ -4,6 +4,12 @@ RTWaveSetAnalysis : UGen {
         }
 }
 
+RTWaveSetSelector : UGen {
+        *ar { arg audioBuf, xingsBuf, desiredLen;
+                ^this.multiNew('audio', audioBuf, xingsBuf, desiredLen)
+        }
+}
+
 RTWaveSetPlayerRepeat : UGen {
     *ar { arg audioBuf, xingsBuf, repeats, numWS, xingIdx, trig, idxOffset, rate;
     ^this.multiNew('audio', audioBuf, xingsBuf, repeats, numWS, xingIdx, trig, idxOffset, rate)
