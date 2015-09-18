@@ -4,14 +4,15 @@
 #include "SC_PlugIn.h"
 #include "SoundRingBuffer.h"
 
+//#define RTWaveSet_DEBUG
 
 #ifdef RTWaveSet_DEBUG
-    #define printf_debug(fmt,...) printf(fmt,...)
+    #define printf_debug printf
 #else
-    #define printf_debug(fmt,...)
+    #define printf_debug(...)
 #endif
 
-#define printf_warn(fmt,...) printf(fmt,...)
+#define printf_warn printf
 
 struct RTWaveSetBase : public Unit {
 

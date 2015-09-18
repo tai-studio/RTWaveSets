@@ -28,8 +28,9 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
     float repeat = IN0(2);
     float numWS = IN0(3);
     float *idxInFloat = IN(4);
-    int idxOffset = IN0(6);
     float *trig = IN(5);
+    int idxOffset = IN0(6);
+    float rate = IN0(7);
 
 
     // WaveSet Playback
@@ -49,7 +50,7 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
             {
                 WaveSetIterator* wsi = &unit->wsIterators[playIdx];
                 if(wsi->left()<1){
-                    RTWaveSetPlayerRepeat_playNextWS(wsi, unit,(int) repeat,(int) numWS,idxIn + idxOffset);
+                    RTWaveSetPlayerRepeat_playNextWS(wsi, unit,(int) repeat,(int) numWS,idxIn + idxOffset,rate);
                     break;
                 }
 
@@ -80,6 +81,7 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
         unit->lastXingIdx = idxIn;
     }
 
+
 }
 
 /**
@@ -87,7 +89,7 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
  * @param unit
  */
 
-void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx){
+void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx, float rate){
 
     int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
 
@@ -98,12 +100,14 @@ void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat
 
     WaveSet ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
 
-    printf_debug("RTWaveSetPlayerRepeat_playNextWS() xingIdx(%i,%i) bufferIdx(%i,%i) xingBufRange(%i,%i) audioBufRange(%i,%i)\n",
+    printf_debug("RTWaveSetPlayerRepeat_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) xingIdx(%i,%i) bufferIdx(%i,%i) xingBufRange(%i,%i) audioBufRange(%i,%i)\n",
+                 repeat,numWS,xingIdx,rate,
                  xingIdx,xingIdx+numWS,ws.start,ws.end,
                  unit->xingsBuf->getLastPos()-unit->xingsBuf->getLen(),unit->xingsBuf->getLastPos(),
                  unit->audioBuf->getLastPos()-unit->audioBuf->getLen(),unit->audioBuf->getLastPos());
 
-    wsi->playWS(ws,repeat,1);
+    wsi->playWS(ws,repeat,rate);
+    printf_debug("wsi->left() = %i\n",wsi->left());
 }
 
 void RTWaveSetPlayerRepeat_Dtor(RTWaveSetPlayerRepeat *unit){

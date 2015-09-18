@@ -3,7 +3,7 @@
 
 #include "RTWaveSetPlayer.h"
 
-#define RTWaveSetPlayerRepeat_NumIterators 10
+#define RTWaveSetPlayerRepeat_NumIterators (30)
 
 struct RTWaveSetPlayerRepeat : public RTWaveSetPlayer  {
 
@@ -23,6 +23,6 @@ struct RTWaveSetPlayerRepeat : public RTWaveSetPlayer  {
 void RTWaveSetPlayerRepeat_Ctor(RTWaveSetPlayerRepeat *unit);
 void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples);
 void RTWaveSetPlayerRepeat_Dtor(RTWaveSetPlayerRepeat *unit);
-void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi, RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx);
+void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi, RTWaveSetPlayerRepeat *unit,int repeat, int numWS, int xingIdx, float rate);
 
 #endif // RTWAVESETPLAYERREPEAT_H

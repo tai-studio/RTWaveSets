@@ -14,18 +14,17 @@ struct WaveSet {
 
 class WaveSetIterator {
 private:
-    int playPos;
+    double playPos;
     WaveSet ws;
     int repeat;
-    int step;
-    int playDir;
+    float playRate;
 
 public:
     WaveSetIterator();
-    void playWS(WaveSet ws, int repeat=1, int step=1);
+    void playWS(WaveSet ws, int repeat=1, float rate=1.0);
     int next();
     int left();
-    int getStep(){ return step; }
+    int getPlayRate(){ return playRate; }
 };
 
 #endif // WAVESET_H

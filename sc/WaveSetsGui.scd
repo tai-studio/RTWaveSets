@@ -1,9 +1,8 @@
 (
 var initGUI;
 
-
 var createSlider = {
-	arg win, x, y, labelText, valAction, defaultVal=0.0;
+	arg win, x, y, labelText, defaultVal, valAction;
 
 	var view, slider, label;
 	view = CompositeView.new(win,Rect(x,y,320,30));
@@ -40,22 +39,21 @@ initGUI = {
 		wsData.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 		wsData.xBuf = Buffer.alloc(s, 100000, 1);
 
-
 		Ndef(\wsRepeat, {
-			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0, analysisOn=1;
+			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0, analysisOn=1, rate=1;
 			var idx, out, trig;
 
 			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1), analysisOn);
 
 			RTWaveSetPlayerRepeat.ar(
-				wsData.aBuf, wsData.xBuf, repetition, numWS, idx-numWS, T2A.ar(t_trig), idxOffset
+				wsData.aBuf, wsData.xBuf, repetition, numWS, idx-numWS, T2A.ar(t_trig), idxOffset, rate
 			);
 		});
 
 		Ndef(\wsRepeat).play;
 	});
 
-	win = Window.new("RT WaveSets", Rect(200,200,350,250));
+	win = Window.new("RT WaveSets", Rect(200,200,350,150));
 
 	directButton = Button.new(win,Rect(10,10,80,30)).states_([["Direct Off"],["Direct On"]]);
 	directButton.action = { if(directButton.value.asBoolean,
@@ -66,35 +64,42 @@ initGUI = {
 	analysisOnButton.action = { if(analysisOnButton.value.asBoolean,
 		{ Ndef(\wsRepeat).set(\analysisOn, -1) },
 		{ Ndef(\wsRepeat).set(\analysisOn, 1) }) };
+	analysisOnButton.action.value;
 
 	wsTriggerButton = Button.new(win,Rect(10,55+45,80,30)).states_([["WS Trigger"]]);
 	wsTriggerButton.action = {
 		Ndef(\wsRepeat).set(\t_trig, 1);
 		};
 
-
-
-	createSlider.value(win,90,85,"repeats",{
+	createSlider.value(win,100,10,"repeats",0.1,{
 		arg val,lbl;
 		val = round(val*99+1);
 		lbl.string = val;
 		Ndef(\wsRepeat).set(\repetition,val);
 	});
 
-	createSlider.value(win,90,115,"numWS",{
+	createSlider.value(win,100,40,"numWS",0.1,{
 		arg val,lbl;
 		val = round(val*19+1);
 		lbl.string = val;
 		Ndef(\wsRepeat).set(\numWS,val);
 	});
 
-	createSlider.value(win,90,175,"Offset",{
+	createSlider.value(win,100,70,"Offset",1,{
 		arg val,lbl;
 		var val2;
 		val2 = round((val*100)-100);
 		lbl.string = val2;
 		Ndef(\wsRepeat).set(\idxOffset,val2);
-	},1);
+	});
+
+	createSlider.value(win,100,100,"Rate",0.75,{
+	arg val,lbl;
+		var val2;
+		val2 = round(((val*4)-2)*10)/10;
+		lbl.string = val2;
+		Ndef(\wsRepeat).set(\rate,val2);
+	});
 
 
 	win.front;
