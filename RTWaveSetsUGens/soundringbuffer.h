@@ -16,8 +16,10 @@ public:
     void set(int setPos, float val);
     float getLast(int back=0){ return get(lastPos-back); }
     int getLastPos(){ return lastPos; }
+    int getFirstPos(){ int firstPos = lastPos-len+1; if(firstPos<0) firstPos=0; return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getLen() { return len; }
+    bool isInRange(int pos) { return (pos >= getFirstPos() && pos <= lastPos); }
 
     static SndBuf* getSndBuf(float fbufnum, Unit* unit);
     static SoundRingBuffer* createInBuffer(float bufnum, Unit* unit);

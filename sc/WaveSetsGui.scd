@@ -40,20 +40,21 @@ initGUI = {
 		wsData.xBuf = Buffer.alloc(s, 100000, 1);
 
 		Ndef(\wsRepeat, {
-			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0, analysisOn=1, rate=1;
-			var idx, out, trig;
+			arg t_trig=0, repetition=10, numWS=20, xingIdx=(-1), idxOffset=0, analysisOn=1, rate=1, desiredLen=(-1);
+			var idx, idx2, out, trig;
 
 			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1), analysisOn);
+			idx2 = RTWaveSetSelector.ar(wsData.aBuf, wsData.xBuf, desiredLen);
 
 			RTWaveSetPlayerRepeat.ar(
-				wsData.aBuf, wsData.xBuf, repetition, numWS, idx-numWS, T2A.ar(t_trig), idxOffset, rate
+				wsData.aBuf, wsData.xBuf, repetition, numWS, idx2-numWS, T2A.ar(t_trig), idxOffset, rate
 			);
 		});
 
 		Ndef(\wsRepeat).play;
 	});
 
-	win = Window.new("RT WaveSets", Rect(200,200,350,150));
+	win = Window.new("RT WaveSets", Rect(200,200,350,170));
 
 	directButton = Button.new(win,Rect(10,10,80,30)).states_([["Direct Off"],["Direct On"]]);
 	directButton.action = { if(directButton.value.asBoolean,
@@ -101,6 +102,13 @@ initGUI = {
 		Ndef(\wsRepeat).set(\rate,val2);
 	});
 
+	createSlider.value(win,100,130,"Length",0,{
+	arg val,lbl;
+		var val2;
+		val2 = round((val*301)-1);
+		lbl.string = val2;
+		Ndef(\wsRepeat).set(\desiredLen, val2);
+	});
 
 	win.front;
 

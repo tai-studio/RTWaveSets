@@ -12,14 +12,14 @@ q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 q.xBuf = Buffer.alloc(s, 100000, 1);
 
 
-// addSped does not work?
+// addSpec does not work?
 /*Ndef(\wsRepeat).addSpec(\repetition, [1, 100]);
 Ndef(\wsRepeat).addSpec(\numWS, [1, 100]);
 Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);*/
 
 
 Ndef(\wsRepeat, {
-	arg t_trig=0, repetition=10, numWS=1, idxOffset=0, analysisOn=1, rate=1, desiredLen=250;
+	arg t_trig=0, repetition=10, numWS=1, idxOffset=0, analysisOn=1, rate=1, desiredLen=(-1);
 	var idx, idx2, out, trig;
 
 	idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, Ndef(\sound).ar(1), analysisOn);
@@ -42,9 +42,10 @@ Ndef(\wsRepeat).play;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
-Ndef(\wsRepeat).set(\repetition, 1)
+Ndef(\wsRepeat).set(\repetition, 150)
 Ndef(\wsRepeat).set(\t_trig, 1)
-Ndef(\wsRepeat).set(\numWS,1)
+Ndef(\wsRepeat).set(\desiredLen, -1)
+Ndef(\wsRepeat).set(\numWS,7)
 Ndef(\wsRepeat).set(\analysisOn, -1)
 Ndef(\wsRepeat).set(\analysisOn, 1)
 Ndef(\wsRepeat).set(\rate, 1)
