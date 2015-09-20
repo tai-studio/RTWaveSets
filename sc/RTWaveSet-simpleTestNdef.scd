@@ -42,9 +42,9 @@ Ndef(\wsRepeat).play;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
-Ndef(\wsRepeat).set(\repetition, 150)
+Ndef(\wsRepeat).set(\repetition, 1)
 Ndef(\wsRepeat).set(\t_trig, 1)
-Ndef(\wsRepeat).set(\desiredLen, -1)
+Ndef(\wsRepeat).set(\desiredLen, 4) // in ms
 Ndef(\wsRepeat).set(\numWS,7)
 Ndef(\wsRepeat).set(\analysisOn, -1)
 Ndef(\wsRepeat).set(\analysisOn, 1)

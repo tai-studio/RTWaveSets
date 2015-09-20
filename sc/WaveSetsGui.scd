@@ -54,7 +54,7 @@ initGUI = {
 		Ndef(\wsRepeat).play;
 	});
 
-	win = Window.new("RT WaveSets", Rect(200,200,350,170));
+	win = Window.new("RT WaveSets", Rect(200,200,360,170));
 
 	directButton = Button.new(win,Rect(10,10,80,30)).states_([["Direct Off"],["Direct On"]]);
 	directButton.action = { if(directButton.value.asBoolean,
@@ -105,8 +105,14 @@ initGUI = {
 	createSlider.value(win,100,130,"Length",0,{
 	arg val,lbl;
 		var val2;
-		val2 = round((val*301)-1);
-		lbl.string = val2;
+		val2 = round((val*100))/10;
+		if(val2==0,{
+			lbl.string = "OFF";
+			val2=(-1);
+		},{
+			lbl.string = format("% ms",val2);
+		});
+
 		Ndef(\wsRepeat).set(\desiredLen, val2);
 	});
 

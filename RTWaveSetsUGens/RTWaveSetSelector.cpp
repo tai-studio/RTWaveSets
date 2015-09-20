@@ -28,7 +28,11 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 {
     float *out = OUT(0);
-    int inDesiredLen = (int) IN0(2);
+
+    // receive input for desired length
+    float inDesiredLenMs = IN0(2);
+    int inDesiredLen = (int) (inDesiredLenMs * unit->mRate->mSampleRate / 1000.0)+0.5f;
+    if(inDesiredLen < 0) inDesiredLen = -1;
 
     // check if we have to restart Searching
     if(inDesiredLen != unit->desiredLen
