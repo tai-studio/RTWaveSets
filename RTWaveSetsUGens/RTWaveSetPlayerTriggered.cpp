@@ -24,13 +24,13 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         if(trig[i]>0.0 && unit->prevTrig<=0.0)
         {
             // Trigger Now!
-            unit->trigIdx = unit->xingsBuf->getLastPos();
+            unit->trigIdx = unit->wsBuf->getLastPos();
         }
         unit->prevTrig=trig[i];
 
 
         // Samples left in WaveSetPlayer?
-        if(unit->wsp.left()<1 && unit->xingsBuf->getLastPos()>=1) {
+        if(unit->wsp.left()<1 && unit->wsBuf->getLastPos()>=1) {
             RTWaveSetPlayerTriggered_playNextWS(unit);
         }
 

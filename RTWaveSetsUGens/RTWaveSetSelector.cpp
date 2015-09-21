@@ -8,12 +8,12 @@
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 {
     unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->xingsBuf = FloatRingBuffer::getFromBuffer(ZIN0(1),unit);
+    unit->wsBuf = WaveSetRingBuffer::getFromBuffer(ZIN0(1),unit);
     //unit->xingLenBuffer = RingBufferBuffer(unit->xingLenData,RTWaveSetSelector_xingLenBufferLen);
 
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;
-    unit->bestIdx = unit->xingsBuf->getFirstPos()+1;
+    unit->bestIdx = unit->wsBuf->getFirstPos()+1;
     unit->bestLen = INT16_MAX;
     unit->desiredLen = -1;
     RTWaveSetSelector_next(unit, 1);
@@ -36,12 +36,12 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 
     // check if we have to restart Searching
     if(inDesiredLen != unit->desiredLen
-            || !unit->xingsBuf->isInRange(unit->bestIdx) // out of xing buffer range?
-            || !unit->audioBuf->isInRange(unit->xingsBuf->get(unit->bestIdx)) // out of audio buffer range?
+            || !unit->wsBuf->isInRange(unit->bestIdx) // out of xing buffer range?
+            || !unit->audioBuf->isInRange(unit->wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
             )
     {
         unit->desiredLen = inDesiredLen;
-        unit->searchIdx = unit->xingsBuf->getFirstPos()+1;
+        unit->searchIdx = unit->wsBuf->getFirstPos();
         unit->bestIdx = unit->searchIdx;
         unit->bestLen = INT16_MAX;
         printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i).\n",inDesiredLen);
@@ -50,16 +50,16 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
     // search for best WS idx
     if(unit->desiredLen==-1)
     {
-       unit->bestIdx = unit->xingsBuf->getLastPos();
+       unit->bestIdx = unit->wsBuf->getLastPos();
     }
     else
     {
         int oldBestIdx = unit->bestIdx;
 
         int idx;
-        for(idx = unit->searchIdx; idx<unit->xingsBuf->getLastPos(); idx++)
+        for(idx = unit->searchIdx; idx<unit->wsBuf->getLastPos(); idx++)
         {
-            int len = unit->xingsBuf->get(idx) - unit->xingsBuf->get(idx-1);
+            int len = unit->wsBuf->get(idx).getLenth();
             if (abs(unit->desiredLen-len) <= abs(unit->desiredLen-unit->bestLen))
             {
                 unit->bestIdx = idx;

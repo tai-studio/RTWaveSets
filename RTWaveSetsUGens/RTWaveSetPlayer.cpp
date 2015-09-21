@@ -13,7 +13,7 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     #endif
 
     unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->xingsBuf = FloatRingBuffer::getFromBuffer(ZIN0(1),unit);
+    unit->wsBuf = WaveSetRingBuffer::getFromBuffer(ZIN0(1),unit);
 
 }
 
@@ -34,7 +34,7 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
     ws.end = -1;
 
 
-    if(unit->xingsBuf->getLastPos()>=1&& unit->audioBuf->getLastPos()>=maxWavesetLength)
+    if(unit->wsBuf->getLastPos()>=1&& unit->audioBuf->getLastPos()>=maxWavesetLength)
     // wait for at least one zerocrossing and enouph input samples for a waveset mit max length
     {
         // zerocrossings "backward-index" of the waveset
@@ -44,8 +44,8 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
         // search for for a WaveSet with the right length, beginning at the end.
         int wsLen;
         do {
-            ws.end=unit->xingsBuf->getLast(endBack);
-            ws.start=unit->xingsBuf->getLast(startBack);
+            ws.end=unit->wsBuf->getLast(endBack).start;
+            ws.start=unit->wsBuf->getLast(startBack).start;
             wsLen = ws.end - ws.start;
 
             // if the Waveset it too long take the next one
@@ -64,7 +64,7 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
                 startBack++;
             }
 
-            if(startBack > unit->xingsBuf->getLastPos()) break; // give up when reached beginning
+            if(startBack > unit->wsBuf->getLastPos()) break; // give up when reached beginning
 
         } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
     }
@@ -89,7 +89,7 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS)
     ws.end = -1;
 
     int startIdx = xingIdx;
-    int endIdx = xingIdx + numWS;
+    int endIdx = xingIdx + numWS - 1;
 
     // check validity of parameters
     if(numWS<1) {
@@ -97,8 +97,8 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS)
         return ws;
     }
 
-    float start = unit->xingsBuf->get(startIdx);
-    float end = unit->xingsBuf->get(endIdx);
+    int start = unit->wsBuf->get(startIdx).start;
+    int end = unit->wsBuf->get(endIdx).end;
 
     if(isnan(end) || isnan(start) || end<1 || start<0)
     {
@@ -107,8 +107,8 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS)
     }
 
     // cast to int
-    ws.end = (int) end;
-    ws.start = (int) start;
+    ws.end = end;
+    ws.start = start;
 
     return ws;
 }

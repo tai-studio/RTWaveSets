@@ -40,7 +40,7 @@ void RTWaveSetPlayerRepeat_next(RTWaveSetPlayerRepeat *unit, int inNumSamples){
         int idxIn = (int) idxInFloat[i];
 
         // check for Trigger and at least 2 crossings
-        if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->xingsBuf->getLastPos()>=1)
+        if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->wsBuf->getLastPos()>=1)
         {
 
             // We have a Trigger, get WaveSet and set Iterator:
@@ -100,12 +100,12 @@ void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat
 
     WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
 
-    printf_debug("RTWaveSetPlayerRepeat_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i xingIdx(%i,%i) bufferIdx(%i,%i) xingBufRange(%i,%i) audioBufRange(%i,%i)\n",
+    printf_debug("RTWaveSetPlayerRepeat_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
                  repeat,numWS,xingIdx,rate,
                  ws.end-ws.start,
-                 xingIdx,xingIdx+numWS,ws.start,ws.end,
-                 unit->xingsBuf->getLastPos()-unit->xingsBuf->getLen(),unit->xingsBuf->getLastPos(),
-                 unit->audioBuf->getLastPos()-unit->audioBuf->getLen(),unit->audioBuf->getLastPos());
+                 xingIdx,xingIdx+numWS-1,ws.start,ws.end,
+                 unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
+                 unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
 
     wsi->playWS(ws,repeat,rate);
     printf_debug("wsi->left() = %i\n",wsi->left());

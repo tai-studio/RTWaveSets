@@ -15,7 +15,8 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
 
     unit->checkWSlen = true;
     unit->audioBuf = FloatRingBuffer::createInBuffer(ZIN0(0),unit);
-    unit->xingsBuf = FloatRingBuffer::createInBuffer(ZIN0(1),unit);
+    unit->wsBuf = WaveSetRingBuffer::createInBuffer(ZIN0(1),unit);
+    unit->lastXing = -1;
 
     // 3. calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);
@@ -52,7 +53,7 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
             }
         }
 
-        out[i] = (float) unit->xingsBuf->getLastPos();
+        out[i] = (float) unit->wsBuf->getLastPos();
 
 }
 
@@ -65,24 +66,29 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
 void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 {
-    if(unit->checkWSlen && unit->xingsBuf->getLastPos()>=0) {
-        // check WaveSet length
+    int currentXing = unit->audioBuf->getLastPos();
 
-        int lastXing = unit->xingsBuf->getLast();
-        int currentXing = unit->audioBuf->getLastPos();
-        int wsLen = currentXing - lastXing;
+    if(unit->lastXing!=-1) {
+        if(unit->checkWSlen) {
+            // check WaveSet length
+            int wsLen = currentXing - unit->lastXing;
 
-        if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
-            unit->xingsBuf->put(currentXing);
-            // #ifdef RTWaveSetAnalysis_DEBUG
-            // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
-            // #endif
+            if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
+                unit->wsBuf->put({unit->lastXing, currentXing});
+                unit->lastXing = currentXing;
+                // #ifdef RTWaveSetAnalysis_DEBUG
+                // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
+                // #endif
+            }
+
+        } else {
+            unit->wsBuf->put({unit->lastXing, currentXing});
+            unit->lastXing = currentXing;
+            // add xing without checking Length
+            //unit->xingsBuf->put({unit->audioBuf->getLastPos(),0});
         }
-
-    } else {
-        // add xing without checking Length
-        unit->xingsBuf->put(unit->audioBuf->getLastPos());
-
+      } else {
+        unit->lastXing = currentXing;
     }
 
 }

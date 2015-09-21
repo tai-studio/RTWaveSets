@@ -14,13 +14,27 @@
 
 #define printf_warn printf
 
+class WaveSet {
+public:
+    WaveSet(int start, int end){
+        this->start = start;
+        this->end = end;
+    }
+    int getLenth() { return end-start; }
+    int start;
+    int end;
+};
+
+typedef RingBuffer<WaveSet> WaveSetRingBuffer;
+typedef RingBuffer<float> FloatRingBuffer;
+
 struct RTWaveSetBase : public Unit {
 
     /** Ringbuffer for Input Audio */
     FloatRingBuffer *audioBuf;
 
     /** Ringbuffer for found ZeroCrossings */
-    FloatRingBuffer *xingsBuf;
+    WaveSetRingBuffer *wsBuf;
 
 };
 

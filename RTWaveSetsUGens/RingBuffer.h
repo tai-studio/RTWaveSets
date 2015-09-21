@@ -29,8 +29,6 @@ public:
     static RingBuffer<T>* getFromBuffer(float fbufnum, Unit *unit);
 };
 
-typedef RingBuffer<float> FloatRingBuffer;
-
 #include "RingBuffer.cpp" // Implementation of template classes have to be available in the header
 
 #endif // RINGBUFFER_H

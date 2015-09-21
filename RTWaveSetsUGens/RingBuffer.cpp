@@ -22,7 +22,7 @@ template <typename T>
 T RingBuffer<T>::get(int getPos) {
     if(getPos <= (lastPos - len) || getPos > lastPos){
         printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
-        return NAN;
+        throw "Index Out of Range!";
     }
 
     return data[getPos % len];

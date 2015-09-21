@@ -47,7 +47,7 @@ initGUI = {
 			idx2 = RTWaveSetSelector.ar(wsData.aBuf, wsData.xBuf, desiredLen);
 
 			RTWaveSetPlayerRepeat.ar(
-				wsData.aBuf, wsData.xBuf, repetition, numWS, idx2-numWS, T2A.ar(t_trig), idxOffset, rate
+				wsData.aBuf, wsData.xBuf, repetition, numWS, idx2-numWS+1, T2A.ar(t_trig), idxOffset, rate
 			);
 		});
 

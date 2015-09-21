@@ -9,6 +9,7 @@ static const int RTWaveSetAnalysis_minWavesetLength = (int) (0.5 * 44.100); // 0
 
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
     bool checkWSlen;
+    int lastXing;
 };
 
 void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);

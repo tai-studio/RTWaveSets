@@ -29,7 +29,7 @@ Ndef(\wsRepeat, {
 	trig = T2A.ar(t_trig);
 
 	RTWaveSetPlayerRepeat.ar(
-		q.aBuf, q.xBuf, repetition, numWS, idx2-numWS, trig, idxOffset, rate
+		q.aBuf, q.xBuf, repetition, numWS, idx2-numWS+1, trig, idxOffset, rate
 	);
 });
 
@@ -42,9 +42,9 @@ Ndef(\wsRepeat).play;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
-Ndef(\wsRepeat).set(\repetition, 1)
+Ndef(\wsRepeat).set(\repetition, 100)
 Ndef(\wsRepeat).set(\t_trig, 1)
-Ndef(\wsRepeat).set(\desiredLen, 4) // in ms
+Ndef(\wsRepeat).set(\desiredLen, 10) // in ms
 Ndef(\wsRepeat).set(\numWS,7)
 Ndef(\wsRepeat).set(\analysisOn, -1)
 Ndef(\wsRepeat).set(\analysisOn, 1)
