@@ -14,8 +14,8 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     SETCALC(RTWaveSetAnalysis_next);
 
     unit->checkWSlen = true;
-    unit->audioBuf = SoundRingBuffer::createInBuffer(ZIN0(0),unit);
-    unit->xingsBuf = SoundRingBuffer::createInBuffer(ZIN0(1),unit);
+    unit->audioBuf = FloatRingBuffer::createInBuffer(ZIN0(0),unit);
+    unit->xingsBuf = FloatRingBuffer::createInBuffer(ZIN0(1),unit);
 
     // 3. calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);

@@ -7,7 +7,7 @@
 
 struct RTWaveSetSelector : public RTWaveSetBase  {
     float xingLenData[RTWaveSetSelector_xingLenBufferLen]; // TODO allocate dynamic depending on xingBuffer length
-    //SoundRingBuffer xingLenBuffer;
+    //RingBufferBuffer xingLenBuffer;
 
     int searchIdx;
     int bestLen;

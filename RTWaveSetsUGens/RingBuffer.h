@@ -3,18 +3,21 @@
 
 #include "SC_PlugIn.h"
 
-class SoundRingBuffer
+
+
+template <typename T>
+class RingBuffer
 {
 private:
-    float* data;
+    T* data;
     int len;
     int lastPos;
 public:
-    SoundRingBuffer(float* data, int len);
-    void put(float val);
-    float get(int getPos);
-    void set(int setPos, float val);
-    float getLast(int back=0){ return get(lastPos-back); }
+    RingBuffer(T* data, int len);
+    void put(T val);
+    T get(int getPos);
+    void set(int setPos, T val);
+    T getLast(int back=0){ return get(lastPos-back); }
     int getLastPos(){ return lastPos; }
     int getFirstPos(){ int firstPos = lastPos-len+1; if(firstPos<0) firstPos=0; return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
@@ -22,8 +25,12 @@ public:
     bool isInRange(int pos) { return (pos >= getFirstPos() && pos <= lastPos); }
 
     static SndBuf* getSndBuf(float fbufnum, Unit* unit);
-    static SoundRingBuffer* createInBuffer(float bufnum, Unit* unit);
-    static SoundRingBuffer* getFromBuffer(float fbufnum, Unit *unit);
+    static RingBuffer<T>* createInBuffer(float bufnum, Unit* unit);
+    static RingBuffer<T>* getFromBuffer(float fbufnum, Unit *unit);
 };
+
+typedef RingBuffer<float> FloatRingBuffer;
+
+#include "RingBuffer.cpp" // Implementation of template classes have to be available in the header
 
 #endif // RINGBUFFER_H

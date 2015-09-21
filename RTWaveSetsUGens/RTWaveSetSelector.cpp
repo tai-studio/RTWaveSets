@@ -7,9 +7,9 @@
 
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 {
-    unit->audioBuf = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->xingsBuf = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
-    //unit->xingLenBuffer = SoundRingBuffer(unit->xingLenData,RTWaveSetSelector_xingLenBufferLen);
+    unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
+    unit->xingsBuf = FloatRingBuffer::getFromBuffer(ZIN0(1),unit);
+    //unit->xingLenBuffer = RingBufferBuffer(unit->xingLenData,RTWaveSetSelector_xingLenBufferLen);
 
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;

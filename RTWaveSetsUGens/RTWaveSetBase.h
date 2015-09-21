@@ -2,7 +2,7 @@
 #define RTWAVESETBASE_H
 
 #include "SC_PlugIn.h"
-#include "SoundRingBuffer.h"
+#include "RingBuffer.h"
 
 //#define RTWaveSet_DEBUG
 
@@ -17,10 +17,10 @@
 struct RTWaveSetBase : public Unit {
 
     /** Ringbuffer for Input Audio */
-    SoundRingBuffer *audioBuf;
+    FloatRingBuffer *audioBuf;
 
     /** Ringbuffer for found ZeroCrossings */
-    SoundRingBuffer *xingsBuf;
+    FloatRingBuffer *xingsBuf;
 
 };
 

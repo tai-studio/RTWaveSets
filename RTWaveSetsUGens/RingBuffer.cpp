@@ -1,18 +1,25 @@
-#include "SoundRingBuffer.h"
-// #define SoundRingBuffer_DEBUG
+#include "RingBuffer.h"
+// #define RingBufferBuffer_DEBUG
 
-SoundRingBuffer::SoundRingBuffer(float* data, int len) {
+#ifndef RINGBUFFER_CPP
+#define RINGBUFFER_CPP
+
+
+template <typename T>
+RingBuffer<T>::RingBuffer(T* data, int len) {
     this->data = data;
     this->len = len;
     this->lastPos = -1;
 }
 
-void SoundRingBuffer::put(float val) {
+template <typename T>
+void RingBuffer<T>::put(T val) {
     lastPos++;
     this->data[lastPos % len] = val;
 }
 
-float SoundRingBuffer::get(int getPos) {
+template <typename T>
+T RingBuffer<T>::get(int getPos) {
     if(getPos <= (lastPos - len) || getPos > lastPos){
         printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->len,this->lastPos);
         return NAN;
@@ -21,44 +28,48 @@ float SoundRingBuffer::get(int getPos) {
     return data[getPos % len];
 }
 
-void SoundRingBuffer::set(int setPos, float val) {
+template <typename T>
+void RingBuffer<T>::set(int setPos, T val) {
     this->data[setPos % len] = val;
 }
 
 /**
- * @brief SoundRingBuffer::createInBuffer Creates a SoundRingBuffer in the memory of a given Buffer. The SoundringBuffer object is placed in the beginning of the data, the BufferContent afterwards.
+ * @brief RingBufferBuffer::createInBuffer Creates a RingBufferBuffer in the memory of a given Buffer. The RingBufferBuffer object is placed in the beginning of the data, the BufferContent afterwards.
  * @param fbufnum
  * @param unit
  * @return
  */
 
-SoundRingBuffer*  SoundRingBuffer::createInBuffer(float fbufnum, Unit *unit)
+template <typename T>
+RingBuffer<T>*  RingBuffer<T>::createInBuffer(float fbufnum, Unit *unit)
 {
     SndBuf* buf = getSndBuf(fbufnum,unit);
     void* data = (void*) buf->data;
     int dataSize = buf->samples*sizeof(float);
 
-    // first put the SoundRingBuffer, afterwards the buffer content
-    SoundRingBuffer* srb = (SoundRingBuffer*) data;
-    float* bufferContent = (float*) (srb+1);
-    int bufferLen = (dataSize - sizeof(SoundRingBuffer))/sizeof(float);
+    // first put the RingBufferBuffer, afterwards the buffer content
+    RingBuffer* srb = (RingBuffer*) data;
+    T* bufferContent = (T*) (srb+1);
+    int bufferLen = (dataSize - sizeof(RingBuffer))/sizeof(T);
 
-    #ifdef SoundRingBuffer_DEBUG
-    printf("SoundRingBuffer::createInBuffer() bufferLen=%i\n",bufferLen);
+    #ifdef RingBufferBuffer_DEBUG
+    printf("RingBufferBuffer::createInBuffer() bufferLen=%i\n",bufferLen);
     #endif
 
-    *srb = SoundRingBuffer((float*) bufferContent,bufferLen);
+    *srb = RingBuffer((T*) bufferContent,bufferLen);
     return srb;
 }
 
-SoundRingBuffer*  SoundRingBuffer::getFromBuffer(float fbufnum, Unit *unit)
+template <typename T>
+RingBuffer<T>*  RingBuffer<T>::getFromBuffer(float fbufnum, Unit *unit)
 {
     SndBuf* buf = getSndBuf(fbufnum,unit);
-    SoundRingBuffer* srb = (SoundRingBuffer*) buf->data;
+    RingBuffer* srb = (RingBuffer*) buf->data;
     return srb;
 }
 
-SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
+template <typename T>
+SndBuf* RingBuffer<T>::getSndBuf(float fbufnum, Unit* unit)
 {
     SndBuf* buf;
 
@@ -72,9 +83,9 @@ SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
             if(localBufNum <= parent->localBufNum) {
                 buf = parent->mLocalSndBufs + localBufNum;
             } else {
-                #ifdef SoundRingBuffer_DEBUG
+                #ifdef RingBufferBuffer_DEBUG
                 if(unit->mWorld->mVerbosity > -1){ 
-                    printf("SoundRingBuffer::SoundRingBuffer error: invalid buffer number: %i.\n", bufnum); 
+                    printf("RingBufferBuffer::RingBufferBuffer error: invalid buffer number: %i.\n", bufnum);
                 }
                 #endif
                 buf = NULL;
@@ -84,9 +95,9 @@ SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
         }
 
         if (!buf || !buf->data) {
-            #ifdef SoundRingBuffer_DEBUG
+            #ifdef RingBufferBuffer_DEBUG
             if(unit->mWorld->mVerbosity > -1){ 
-                printf("SoundRingBuffer::SoundRingBuffer error: Buffer %i not initialised.\n", bufnum); 
+                printf("RingBufferBuffer::RingBufferBuffer error: Buffer %i not initialised.\n", bufnum);
             }
             #endif
             buf = NULL;
@@ -96,3 +107,5 @@ SndBuf* SoundRingBuffer::getSndBuf(float fbufnum, Unit* unit)
 
     return buf;
 }
+
+#endif

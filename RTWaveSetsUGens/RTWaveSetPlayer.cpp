@@ -12,8 +12,8 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
     printf("RTWaveSetPlayer_Ctor()\n");
     #endif
 
-    unit->audioBuf = SoundRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->xingsBuf = SoundRingBuffer::getFromBuffer(ZIN0(1),unit);
+    unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
+    unit->xingsBuf = FloatRingBuffer::getFromBuffer(ZIN0(1),unit);
 
 }
 
