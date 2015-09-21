@@ -59,7 +59,7 @@ int WaveSetIterator::next() {
  * @param step Step size for the playback (i.e. -1 for reverse oder 2 for double speed).
  */
 
-void WaveSetIterator::playWS(WaveSet ws, int repeat, float playRate){
+void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
     this->ws = ws;
     this->repeat = repeat-1;
     this->playRate = playRate;

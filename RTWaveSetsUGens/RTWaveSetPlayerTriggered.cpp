@@ -52,7 +52,7 @@ void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit){
 void RTWaveSetPlayerTriggered_playNextWS(RTWaveSetPlayerTriggered *unit){
     if(unit->trigIdx>0)
     {
-        static WaveSet ws;
+        static WaveSetPlay ws;
 
         if(unit->trigIdx != unit->oldTrigIdx)
         {

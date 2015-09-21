@@ -3,7 +3,7 @@
 
 #include "SC_PlugIn.h"
 
-struct WaveSet {
+struct WaveSetPlay {
     int start;
     int end;
 };
@@ -15,13 +15,13 @@ struct WaveSet {
 class WaveSetIterator {
 private:
     double playPos;
-    WaveSet ws;
+    WaveSetPlay ws;
     int repeat;
     float playRate;
 
 public:
     WaveSetIterator();
-    void playWS(WaveSet ws, int repeat=1, float rate=1.0);
+    void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
     int next();
     int left();
     int getPlayRate(){ return playRate; }

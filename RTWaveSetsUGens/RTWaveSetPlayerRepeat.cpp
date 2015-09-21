@@ -98,7 +98,7 @@ void RTWaveSetPlayerRepeat_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerRepeat
     if(numWS < 0) numWS = 1;
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
 
-    WaveSet ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
+    WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
 
     printf_debug("RTWaveSetPlayerRepeat_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i xingIdx(%i,%i) bufferIdx(%i,%i) xingBufRange(%i,%i) audioBufRange(%i,%i)\n",
                  repeat,numWS,xingIdx,rate,

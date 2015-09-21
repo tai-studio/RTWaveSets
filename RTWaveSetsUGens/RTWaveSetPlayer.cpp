@@ -27,9 +27,9 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
  * @return The WaveSet.
  */
 
-WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength)
+WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength)
 {
-    WaveSet ws;
+    WaveSetPlay ws;
     ws.start = -1;
     ws.end = -1;
 
@@ -83,8 +83,8 @@ WaveSet RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLeng
  * @return
  */
 
-WaveSet RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS){
-    WaveSet ws;
+WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS){
+    WaveSetPlay ws;
     ws.start = -1;
     ws.end = -1;
 
