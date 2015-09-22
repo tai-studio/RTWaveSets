@@ -28,7 +28,7 @@ public:
     int end;
 
     /**
-     * @brief Average Amplitude of the WaveSet.
+     * @brief Amplitude of the WaveSet.
      */
     float amp;
 

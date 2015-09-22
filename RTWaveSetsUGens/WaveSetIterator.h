@@ -9,7 +9,11 @@ struct WaveSetPlay {
 };
 
 /**
- * @brief The WaveSetPlayer class
+ * @brief Iterator used to get the samples of wavesets for playback.
+ * Impelemented features:
+ *  Repeats of a WaveSet
+ *  playback rate: 1 == normal playback, 1.5 == faster, -0.275 slowly backwards
+ *                (so far implemented without interpolation, just repeat/skip samples)
  */
 
 class WaveSetIterator {

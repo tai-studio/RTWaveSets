@@ -99,7 +99,7 @@ void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
 }
 
 /**
- * @brief Calculate the average Amplitude.
+ * @brief Calculate the RMS of the WaveSets signal.
  * @param unit
  * @return
  */
@@ -110,9 +110,10 @@ float RTWaveSetAnalysis_calcAmp(RTWaveSetAnalysis *unit, int start, int end){
 
     for(int idx=start;idx<end;idx++) // TODO inclusive or exclusive end? also relevant for length
     {
-        amp += fabs(unit->audioBuf->get(idx));
+        float val = unit->audioBuf->get(idx);
+        amp += val*val;
     }
 
-    amp = amp / (end-start);
+    amp = sqrtf(amp / (end-start));
     return amp;
 }

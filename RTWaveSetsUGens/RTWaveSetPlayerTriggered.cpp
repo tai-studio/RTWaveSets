@@ -39,7 +39,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         // get Index Input
         int idxIn = (int) idxInFloat[i];
 
-        // check for Trigger and at least 2 crossings
+        // check for Trigger and at least one waveset
         if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->wsBuf->getLastPos()>=1)
         {
 
