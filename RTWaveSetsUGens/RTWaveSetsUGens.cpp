@@ -1,7 +1,6 @@
 #include "SC_PlugIn.h"
 #include "RTWaveSetAnalysis.h"
 #include "RTWaveSetPlayer.h"
-#include "RTWaveSetPlayerRepeat.h"
 #include "RTWaveSetPlayerTriggered.h"
 #include "RTWaveSetSelector.h"
 
@@ -14,7 +13,6 @@ PluginLoad(RTWaveSetAnalysis)
     ft = inTable; // store pointer to InterfaceTable
 
     DefineSimpleUnit(RTWaveSetAnalysis);
-    DefineSimpleUnit(RTWaveSetPlayerRepeat);
     DefineSimpleUnit(RTWaveSetPlayerTriggered);
     DefineSimpleUnit(RTWaveSetSelector);
 }

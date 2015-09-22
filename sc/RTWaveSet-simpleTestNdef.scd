@@ -28,7 +28,7 @@ Ndef(\wsRepeat, {
 	//trig = T2A.ar(MouseButton.kr(-1,1,0,0.1));
 	trig = T2A.ar(t_trig);
 
-	RTWaveSetPlayerRepeat.ar(
+	RTWaveSetPlayerTriggered.ar(
 		q.aBuf, q.xBuf, repetition, numWS, idx2-numWS+1, trig, idxOffset, rate
 	);
 });

@@ -46,7 +46,7 @@ initGUI = {
 			idx = RTWaveSetAnalysis.ar(wsData.aBuf, wsData.xBuf, Ndef(\sound).ar(1), analysisOn);
 			idx2 = RTWaveSetSelector.ar(wsData.aBuf, wsData.xBuf, desiredLen, desiredAmp);
 
-			RTWaveSetPlayerRepeat.ar(
+			RTWaveSetPlayerTriggered.ar(
 				wsData.aBuf, wsData.xBuf, repetition, numWS, idx2-numWS+1, T2A.ar(t_trig), idxOffset, rate
 			);
 		});

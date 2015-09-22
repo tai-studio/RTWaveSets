@@ -3,23 +3,26 @@
 
 #include "RTWaveSetPlayer.h"
 
+#define RTWaveSetPlayerTriggered_NumIterators (30)
 
 struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
-    /** Player */
-    WaveSetIterator wsp;
+
+
+    int lastXingIdx;
 
     /** Previous Trigger Input */
     float prevTrig;
 
-    /** xings Index of last Trigger **/
-    int trigIdx;
 
-    int oldTrigIdx;
+    WaveSetIterator wsIterator;
+
+    /** Iterators for parallel WS Playbacks */
+    WaveSetIterator wsIterators[RTWaveSetPlayerTriggered_NumIterators];
 };
 
 void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit);
 void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples);
-void RTWaveSetPlayerTriggered_playNextWS(RTWaveSetPlayerTriggered *unit);
 void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit);
+void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi, RTWaveSetPlayerTriggered *unit,int repeat, int numWS, int xingIdx, float rate);
 
 #endif // RTWaveSetPlayerTriggered_H
