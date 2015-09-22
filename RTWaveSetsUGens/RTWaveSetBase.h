@@ -3,6 +3,7 @@
 
 #include "SC_PlugIn.h"
 #include "RingBuffer.h"
+#include "WaveSet.h"
 
 //#define RTWaveSet_DEBUG
 
@@ -13,17 +14,6 @@
 #endif
 
 #define printf_warn printf
-
-class WaveSet {
-public:
-    WaveSet(int start, int end){
-        this->start = start;
-        this->end = end;
-    }
-    int getLenth() { return end-start; }
-    int start;
-    int end;
-};
 
 typedef RingBuffer<WaveSet> WaveSetRingBuffer;
 typedef RingBuffer<float> FloatRingBuffer;

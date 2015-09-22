@@ -1,5 +1,5 @@
-#ifndef WAVESET_H
-#define WAVESET_H
+#ifndef WAVESETITERATOR_H
+#define WAVESETITERATOR_H
 
 #include "SC_PlugIn.h"
 
@@ -27,4 +27,4 @@ public:
     int getPlayRate(){ return playRate; }
 };
 
-#endif // WAVESET_H
+#endif // WAVESETITERATOR_H

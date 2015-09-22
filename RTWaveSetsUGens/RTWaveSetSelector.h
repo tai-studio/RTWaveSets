@@ -10,9 +10,13 @@ struct RTWaveSetSelector : public RTWaveSetBase  {
     //RingBufferBuffer xingLenBuffer;
 
     int searchIdx;
-    int bestLen;
+    float bestDiff;
     int bestIdx;
     int desiredLen;
+    float desiredAmp;
+
+    float lenWeight;
+    float ampWeight;
 };
 
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit);

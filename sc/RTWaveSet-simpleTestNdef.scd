@@ -19,12 +19,12 @@ Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);*/
 
 
 Ndef(\wsRepeat, {
-	arg t_trig=0, repetition=10, numWS=1, idxOffset=0, analysisOn=1, rate=1, desiredLen=(-1);
+		arg t_trig=0, repetition=10, numWS=1, idxOffset=0, analysisOn=1, rate=1, desiredLen=(-1), desiredAmp=(-1);
 	var idx, idx2, out, trig;
 
 	idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, Ndef(\sound).ar(1), analysisOn);
 
-	idx2 = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen);
+	idx2 = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen, desiredAmp);
 	//trig = T2A.ar(MouseButton.kr(-1,1,0,0.1));
 	trig = T2A.ar(t_trig);
 
@@ -42,14 +42,22 @@ Ndef(\wsRepeat).play;
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 )
 
-Ndef(\wsRepeat).set(\repetition, 100)
 Ndef(\wsRepeat).set(\t_trig, 1)
-Ndef(\wsRepeat).set(\desiredLen, 10) // in ms
-Ndef(\wsRepeat).set(\numWS,7)
+Ndef(\wsRepeat).set(\repetition, 100)
+Ndef(\wsRepeat).set(\numWS,5)
 Ndef(\wsRepeat).set(\analysisOn, -1)
 Ndef(\wsRepeat).set(\analysisOn, 1)
 Ndef(\wsRepeat).set(\rate, 1)
 
+Ndef(\wsRepeat).set(\desiredLen, -1) // in ms
+Ndef(\wsRepeat).set(\desiredLen, 0) // in ms
+Ndef(\wsRepeat).set(\desiredLen, 4) // in ms
+Ndef(\wsRepeat).set(\desiredLen, 10) // in ms
+
+Ndef(\wsRepeat).set(\desiredAmp, -1)
+Ndef(\wsRepeat).set(\desiredAmp, 0)
+Ndef(\wsRepeat).set(\desiredAmp, 0.2)
+Ndef(\wsRepeat).set(\desiredAmp, 1)
 
 /*
 Notes:

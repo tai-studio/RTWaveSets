@@ -13,7 +13,6 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     // 1. set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
 
-    unit->checkWSlen = true;
     unit->audioBuf = FloatRingBuffer::createInBuffer(ZIN0(0),unit);
     unit->wsBuf = WaveSetRingBuffer::createInBuffer(ZIN0(1),unit);
     unit->lastXing = -1;
@@ -69,23 +68,20 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
     int currentXing = unit->audioBuf->getLastPos();
 
     if(unit->lastXing!=-1) {
-        if(unit->checkWSlen) {
-            // check WaveSet length
-            int wsLen = currentXing - unit->lastXing;
+        int start = unit->lastXing;
+        int end = currentXing;
+        int wsLen = end - start;
 
-            if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
-                unit->wsBuf->put({unit->lastXing, currentXing});
-                unit->lastXing = currentXing;
-                // #ifdef RTWaveSetAnalysis_DEBUG
-                // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
-                // #endif
-            }
+        // check WaveSet length
+        if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
+            float amp = RTWaveSetAnalysis_calcAmp(unit,start,end);
 
-        } else {
-            unit->wsBuf->put({unit->lastXing, currentXing});
+            WaveSet ws(unit->lastXing, currentXing, amp);
+            unit->wsBuf->put(ws);
             unit->lastXing = currentXing;
-            // add xing without checking Length
-            //unit->xingsBuf->put({unit->audioBuf->getLastPos(),0});
+            // #ifdef RTWaveSetAnalysis_DEBUG
+            // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
+            // #endif
         }
       } else {
         unit->lastXing = currentXing;
@@ -100,4 +96,23 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 
 void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
 
+}
+
+/**
+ * @brief Calculate the average Amplitude.
+ * @param unit
+ * @return
+ */
+
+float RTWaveSetAnalysis_calcAmp(RTWaveSetAnalysis *unit, int start, int end){
+
+    float amp = 0.0;
+
+    for(int idx=start;idx<end;idx++) // TODO inclusive or exclusive end? also relevant for length
+    {
+        amp += fabs(unit->audioBuf->get(idx));
+    }
+
+    amp = amp / (end-start);
+    return amp;
 }

@@ -14,8 +14,13 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;
     unit->bestIdx = unit->wsBuf->getFirstPos()+1;
-    unit->bestLen = INT16_MAX;
+    unit->bestDiff = 99999.0;
     unit->desiredLen = -1;
+    unit->desiredAmp = -1;
+
+    unit->lenWeight = 1;
+    unit->ampWeight = 200;
+
     RTWaveSetSelector_next(unit, 1);
 }
 
@@ -34,21 +39,26 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
     int inDesiredLen = (int) (inDesiredLenMs * unit->mRate->mSampleRate / 1000.0)+0.5f;
     if(inDesiredLen < 0) inDesiredLen = -1;
 
+    //receive input for desired amplitude
+    float inDesiredAmp = IN0(3);
+
     // check if we have to restart Searching
     if(inDesiredLen != unit->desiredLen
+            || inDesiredAmp != unit->desiredAmp
             || !unit->wsBuf->isInRange(unit->bestIdx) // out of xing buffer range?
             || !unit->audioBuf->isInRange(unit->wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
             )
     {
         unit->desiredLen = inDesiredLen;
+        unit->desiredAmp = inDesiredAmp;
         unit->searchIdx = unit->wsBuf->getFirstPos();
         unit->bestIdx = unit->searchIdx;
-        unit->bestLen = INT16_MAX;
-        printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i).\n",inDesiredLen);
+        unit->bestDiff = 9999999.0;
+        printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i, desiredAmp %f).\n",unit->desiredLen,unit->desiredAmp);
     }
 
     // search for best WS idx
-    if(unit->desiredLen==-1)
+    if(unit->desiredLen==-1 && unit->desiredAmp<0)
     {
        unit->bestIdx = unit->wsBuf->getLastPos();
     }
@@ -59,17 +69,28 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
         int idx;
         for(idx = unit->searchIdx; idx<unit->wsBuf->getLastPos(); idx++)
         {
-            int len = unit->wsBuf->get(idx).getLenth();
-            if (abs(unit->desiredLen-len) <= abs(unit->desiredLen-unit->bestLen))
+            WaveSet ws = unit->wsBuf->get(idx);
+            float diff=0.0;
+
+            if(unit->desiredLen!=-1) {
+                diff+=unit->lenWeight * abs(unit->desiredLen-ws.getLength());
+            }
+
+            if(unit->desiredAmp>=0) {
+                diff+=unit->ampWeight * fabs(unit->desiredAmp-ws.amp);
+            }
+
+            if (diff <= unit->bestDiff)
             {
                 unit->bestIdx = idx;
-                unit->bestLen = len;
+                unit->bestDiff = diff;
             }
         }
         unit->searchIdx = idx;
 
         if(oldBestIdx != unit->bestIdx) {
-            printf_debug("RTWaveSetSelector: bestLen=%i, bestIdx=%i\n",unit->bestLen,unit->bestIdx);
+            WaveSet ws = unit->wsBuf->get(unit->bestIdx);
+            printf_debug("RTWaveSetSelector: bestIdx=%i len=%i, amp=%f\n",unit->bestIdx,ws.getLength(),ws.amp);
         }
 
     }
