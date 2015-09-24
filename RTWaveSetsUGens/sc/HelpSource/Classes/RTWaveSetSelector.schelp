@@ -1,0 +1,34 @@
+TITLE:: RTWaveSetSelector
+summary:: Select wavesets by criteria.
+categories:: UGens>Unclassified
+related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered
+
+DESCRIPTION::
+Use the results of a RTWaveSetAnalysis UGen and select wavesets by criteria.
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: audioBuf
+Buffer with signal data from RTWaveSetAnalysis.
+
+ARGUMENT:: wsBuf
+Buffer with waveset data from RTWaveSetAnalysis.
+
+ARGUMENT:: desiredDur
+The desired length of the waveset in ms. Pass -1 to ignore the length.
+
+ARGUMENT:: desiredAmp
+The desired amplitude (RMS) 0..1. Pass -1 to ignore the amplitude.
+
+returns:: Output is the index of the waveset which is closest to the given combination of criteria.
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::

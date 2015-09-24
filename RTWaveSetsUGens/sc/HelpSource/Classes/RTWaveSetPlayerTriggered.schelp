@@ -1,0 +1,49 @@
+TITLE:: RTWaveSetPlayerTriggered
+summary:: Play wavesets on trigger.
+categories:: UGens>Unclassified
+related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetSelector
+
+DESCRIPTION::
+Use the results of a RTWaveSetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).
+
+There are several parameters to adjust the playback. These are grabbed on trigger and can not influence a runnging playback.
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: audioBuf
+Buffer with signal data from RTWaveSetAnalysis.
+
+ARGUMENT:: wsBuf
+Buffer with waveset data from RTWaveSetAnalysis.
+
+ARGUMENT:: repeats
+Number of playback repetitions of the waveset group.
+
+ARGUMENT:: numWS
+Number of wavesets starting from the given index forward that well be combined to a group and played.
+
+ARGUMENT:: xingIdx
+Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group.
+
+ARGUMENT:: trig
+Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible.
+
+ARGUMENT:: idxOffset
+(describe argument here)
+
+ARGUMENT:: rate
+Playback rate i.e. 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.
+(So far implemented without interpolation, just repeat/skip samples.)
+
+returns:: Output is the playback signal.
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::
