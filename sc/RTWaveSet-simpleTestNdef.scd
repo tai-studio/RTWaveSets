@@ -1,22 +1,45 @@
-s.boot;
+(
+s.waitForBoot{
+	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
+	q = ();
+	q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
+	q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
 
+};
 
-b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1,f);
 
 /*
 b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
 */
-
-Ndef(\sound, {	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2); });
-Ndef(\sound).play;
-
-NdefMixer(s)
-
-q = ();
-q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
-q.xBuf = Buffer.alloc(s, 100000, 1);
+)
+100 * s.sampleRate
+4409996
 
 (
+NdefMixer(s);
+Ndef(\sound, {	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2); });
+)
+
+/*
+Ndef(\sound).play;
+*/
+
+
+(
+Ndef(\analysis).addSpec(\analyse, [0, 1, \lin, 1]);
+
+Ndef(\analysis, {
+	var analyse     = \analyse.kr(1);
+
+	RTWaveSetAnalysis.ar(q.aBuf, q.xBuf,
+		Ndef(\sound).ar(1),
+		analyse
+	);
+})
+)
+
+(
+r{
 // addSpec >> install JITLibExtensions quark
 Ndef(\wsRepeat).addSpec(\repetitions, [1, 100, \lin, 1]);
 Ndef(\wsRepeat).addSpec(\numWS, [1, 100]);
@@ -24,7 +47,11 @@ Ndef(\wsRepeat).addSpec(\idxOffset, [0, 100]);
 Ndef(\wsRepeat).addSpec(\trigRate, [1, 100]);
 Ndef(\wsRepeat).addSpec(\rt, [0, 1, \lin, 1 ]);
 Ndef(\wsRepeat).addSpec(\wsDur, [0, 1, \lin]);
+Ndef(\wsRepeat).addSpec(\wsFreq, [10, 10000, \exp]);
+Ndef(\wsRepeat).addSpec(\wsAmp, [0, 1, \lin]);
 Ndef(\wsRepeat).addSpec(\setDur, [0, 1, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\setAmp, [0, 1, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\numWS, [1, 100, \lin, 1]);
 
 
 Ndef(\wsRepeat, {
@@ -32,34 +59,39 @@ Ndef(\wsRepeat, {
 	var idx, rtIdx, selectorIdx, out;
 
 	// trig        = T2A.ar(\trig.tr(0)); // audiorate trigger
-	trig        = Impulse.ar(\trigRate.kr(10));
+	trig        = Impulse.ar(\trigRate.kr(1));
 	repetitions = \repetitions.kr(10);
 	numWS       = \numWS.kr(1);
 	idxOffset   = \idxOffset.kr(0);
 	rate        = \rate.kr(1);
-	wsDur       = \wsDur.kr(-1);
+	wsDur       = (1/ \wsFreq.kr(0)) * 1000;
 	wsAmp       = \wsAmp.kr(-1);
-	analyse     = \analyse.kr(1);
 	rt          = \rt.kr(0); // if 1, rtIdx is used, otherwise analysis.
 
 	wsDur       = Select.kr(\setDur.kr(0), [-1, wsDur]);
+	wsDur       = Select.kr(\setAmp.kr(0), [-1, wsDur]);
 
 
 	// analysis returns idx of last recorded WS
-	rtIdx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf,
-		Ndef(\sound).ar(1),
-		analyse
-	);
-	// select WS index based on desired amplitude / duration
-	selectorIdx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, wsDur, wsAmp);
+		rtIdx = Ndef(\analysis).ar[0];
+		rtIdx.poll;
 
-	idx = Select.kr(rt, [selectorIdx, rtIdx]);
-
-
+	SinOsc.ar()!2;
+	// // select WS index based on desired amplitude / duration
+	// selectorIdx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, wsDur, wsAmp);
+	//
+	//
+	// idx = Select.kr(rt, [selectorIdx, rtIdx]);
+	//
+	// // [selectorIdx, idx].poll;
+	//
+	//
 	RTWaveSetPlayerTriggered.ar(q.aBuf, q.xBuf,
-		repetitions, numWS, idx, trig, idxOffset, rate
-	)!2;
+		repetitions, numWS, rtIdx, trig, 0, rate);
 });
+0.5.wait;
+Server.killAll;
+}.play;
 )
 Ndef(\wsRepeat).play;
 

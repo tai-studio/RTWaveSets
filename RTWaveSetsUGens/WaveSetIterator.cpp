@@ -26,6 +26,10 @@ int WaveSetIterator::next() {
     // end of playback?
     if(repeat>=0) {
         val = (int) playPos;
+
+        // printf("WaveSetPlayer::next(): playPos %lf \n", playPos);
+        // printf("WaveSetPlayer::next(): val     %i \n", val);
+
         playPos+=playRate;
     }
     else {
