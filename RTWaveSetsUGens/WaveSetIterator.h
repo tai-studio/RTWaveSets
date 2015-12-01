@@ -27,7 +27,7 @@ public:
     WaveSetIterator();
     void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
     int next();
-    int left();
+    int left(); // TODO find better name
     int getPlayRate(){ return playRate; }
 };
 

@@ -13,9 +13,6 @@ struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
     /** Previous Trigger Input */
     float prevTrig;
 
-
-    WaveSetIterator wsIterator;
-
     /** Iterators for parallel WS Playbacks */
     WaveSetIterator wsIterators[RTWaveSetPlayerTriggered_NumIterators];
 };

@@ -4,15 +4,16 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     RTWaveSetPlayer_Ctor(unit);
     unit->lastXingIdx = -1;
     unit->prevTrig = 1.0;
-    SETCALC(RTWaveSetPlayerTriggered_next);
-    RTWaveSetPlayerTriggered_next(unit, 1);
 
-    unit->wsIterator = WaveSetIterator();
     // init WaveSetIterators
     for(int i=0;i<RTWaveSetPlayerTriggered_NumIterators;i++)
     {
         unit->wsIterators[i] = WaveSetIterator();
+        if(unit->wsIterators[i].left()!=0) printf("RTWaveSetPlayerTriggered_Ctor() Error! WaveSetIterator initialized unproperly.");
     }
+
+    SETCALC(RTWaveSetPlayerTriggered_next);
+    RTWaveSetPlayerTriggered_next(unit, 1);
 }
 
 
@@ -45,6 +46,8 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 
             // We have a Trigger, get WaveSet and set Iterator:
 
+
+
             // look for a free WaveSetIterator
             for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
             {
@@ -71,7 +74,8 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             // play parallel WaveSets from Iterators
             if(wsi->left()>0)
             {
-                outSum+=unit->audioBuf->get(wsi->next());
+                int idx = wsi->next();
+                outSum+=unit->audioBuf->get(idx);
             }
 
         }
@@ -97,6 +101,7 @@ void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTri
     if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1;
     if(numWS < 0) numWS = 1;
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
+    // TODO: check if xingIdx is in Buffer Range
 
     WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
 

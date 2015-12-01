@@ -27,8 +27,11 @@ int WaveSetIterator::next() {
     if(repeat>=0) {
         val = (int) playPos;
 
-        // printf("WaveSetPlayer::next(): playPos %lf \n", playPos);
-        // printf("WaveSetPlayer::next(): val     %i \n", val);
+        if(val < 0 || val >= INT32_MAX){
+            printf("WaveSetPlayer::next(): Error! invalid playPos:%lf val:%i start:%i end:%i repeat:%i playRate:%f\n", playPos, val, ws.start, ws.end, repeat, playRate);
+            val = -1;
+            repeat = -1; // stop playback
+        }
 
         playPos+=playRate;
     }
@@ -69,10 +72,12 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
     this->playRate = playRate;
 
     if(playRate>0) {
-        playPos = ws.start;
+        playPos = (double) ws.start;
     } else {
-        playPos = ws.end;
+        playPos = (double) ws.end;
     }
+
+    printf("WaveSetPlayer::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
 }
 
 /**
