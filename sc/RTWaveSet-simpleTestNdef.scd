@@ -78,7 +78,7 @@ Ndef(\wsRepeat, {
 
 	SinOsc.ar()!2;
 	// // select WS index based on desired amplitude / duration
-	// selectorIdx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, wsDur, wsAmp);
+	// selectorIdx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, wsDur*1000, wsAmp);
 	//
 	//
 	// idx = Select.kr(rt, [selectorIdx, rtIdx]);

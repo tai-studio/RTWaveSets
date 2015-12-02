@@ -43,7 +43,7 @@ Ndef(\wsRepeat, {
 	var idx, idx2, out, trig;
 	trig = Impulse.ar(\trigRate.kr(1));
 
-	idx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen, desiredAmp);
+	idx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen/1000, desiredAmp);
 
 	// ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 	RTWaveSetPlayerTriggered.ar(

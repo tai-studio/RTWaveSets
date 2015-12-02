@@ -35,8 +35,8 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
     float *out = OUT(0);
 
     // receive input for desired length
-    float inDesiredLenMs = IN0(2);
-    int inDesiredLen = (int) (inDesiredLenMs * unit->mRate->mSampleRate / 1000.0)+0.5f;
+    float inDesiredLenSec = IN0(2);
+    int inDesiredLen = (int) (inDesiredLenSec * unit->mRate->mSampleRate)+0.5f;
     if(inDesiredLen < 0) inDesiredLen = -1;
 
     //receive input for desired amplitude
