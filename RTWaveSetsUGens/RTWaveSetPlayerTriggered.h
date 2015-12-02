@@ -3,7 +3,7 @@
 
 #include "RTWaveSetPlayer.h"
 
-#define RTWaveSetPlayerTriggered_NumIterators (30)
+#define RTWaveSetPlayerTriggered_NumIterators (100)
 
 struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
 

@@ -74,8 +74,13 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             // play parallel WaveSets from Iterators
             if(wsi->left()>0)
             {
-                int idx = wsi->next();
-                outSum+=unit->audioBuf->get(idx);
+                    int idx = wsi->next();
+                    if(unit->audioBuf->isInRange(idx)) {
+                        outSum += unit->audioBuf->get(idx);
+                    } else {
+                        printf("WaveSet playback failed! (out of audio buffer Range)\n");
+                        *wsi = WaveSetIterator(); // stop playback by resetting
+                    }
             }
 
         }
@@ -95,10 +100,10 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 
 void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTriggered *unit,int repeat, int numWS, int xingIdx, float rate){
 
-    int minWSinBuffer = unit->audioBuf->getLen()/maxWavesetLength;
+    int minWSinBuffer = unit->audioBuf->getSize()/maxWavesetLength;
 
     // check input Parameters
-    if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1;
+    //if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1; // TODO is this necessary?
     if(numWS < 0) numWS = 1;
     if(numWS > minWSinBuffer) numWS = minWSinBuffer;
     // TODO: check if xingIdx is in Buffer Range

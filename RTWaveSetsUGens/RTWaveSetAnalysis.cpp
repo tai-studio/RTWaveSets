@@ -54,7 +54,15 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
         out[i] = (float) unit->wsBuf->getLastPos();
 
-}
+    }
+
+    // Remove obsolete wavesets
+    if(unit->wsBuf->getLen()>0 && unit->audioBuf->getFirstPos()>0){
+        while(! unit->audioBuf->isInRange(unit->wsBuf->getFirst().start - 44100)) // TODO magic number
+        {
+            unit->wsBuf->pop();
+        }
+    }
 
 }
 

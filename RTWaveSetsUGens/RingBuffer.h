@@ -10,18 +10,24 @@ class RingBuffer
 {
 private:
     T* data;
-    int len;
+    int size;
+    int firstPos;
     int lastPos;
 public:
-    RingBuffer(T* data, int len);
+    RingBuffer(T* data, int size);
     void put(T val);
+    void pop(){ setFirstPos(firstPos+1); }
     T get(int getPos);
     void set(int setPos, T val);
     T getLast(int back=0){ return get(lastPos-back); }
+    T getFirst(int forward=0){ return get(firstPos+forward); }
     int getLastPos(){ return lastPos; }
-    int getFirstPos(){ int firstPos = lastPos-len+1; if(firstPos<0) firstPos=0; return firstPos; }
+    void setFirstPos(int firstPos);
+    void validateFirstPos();
+    int getFirstPos(){ return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
-    int getLen() { return len; }
+    int getSize() { return size; }
+    int getLen(){ return lastPos - firstPos; }
     bool isInRange(int pos) { return (pos >= getFirstPos() && pos <= lastPos); }
 
     static SndBuf* getSndBuf(float fbufnum, Unit* unit);
