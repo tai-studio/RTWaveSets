@@ -86,8 +86,10 @@ Ndef(\wsRepeat, {
 	// // [selectorIdx, idx].poll;
 	//
 	//
+
 	RTWaveSetPlayerTriggered.ar(q.aBuf, q.xBuf,
-		repetitions, numWS, rtIdx, trig, 0, rate);
+		trig, rtIdx, rate, numWS, repetitions);
+
 });
 0.5.wait;
 Server.killAll;

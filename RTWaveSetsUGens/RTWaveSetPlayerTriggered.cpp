@@ -25,14 +25,16 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
 
 void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples){
 
-    float *out = OUT(0);
-    float repeat = IN0(2);
-    float numWS = IN0(3);
-    float *idxInFloat = IN(4);
-    float *trig = IN(5);
-    int idxOffset = IN0(6);
-    float rate = IN0(7);
+    // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
+    // Inputs:
+    float *trig = IN(2);
+    float *idxInFloat = IN(3);
+    float rate = IN0(4);
+    float groupSize = IN0(5);
+    float repeat = IN0(6);
+    // Outputs:
+    float *out = OUT(0);
 
     // WaveSet Playback
     for ( int i=0; i<inNumSamples; ++i) {
@@ -53,7 +55,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             {
                 WaveSetIterator* wsi = &unit->wsIterators[playIdx];
                 if(wsi->left()<1){
-                    RTWaveSetPlayerTriggered_playNextWS(wsi, unit,(int) repeat,(int) numWS,idxIn + idxOffset,rate);
+                    RTWaveSetPlayerTriggered_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
                     break;
                 }
 
@@ -98,22 +100,22 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
  * @param unit
  */
 
-void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTriggered *unit,int repeat, int numWS, int xingIdx, float rate){
+void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTriggered *unit,int repeat, int groupSize, int xingIdx, float rate){
 
     int minWSinBuffer = unit->audioBuf->getSize()/maxWavesetLength;
 
     // check input Parameters
     //if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1; // TODO is this necessary?
-    if(numWS < 0) numWS = 1;
-    if(numWS > minWSinBuffer) numWS = minWSinBuffer;
+    if(groupSize < 0) groupSize = 1;
+    if(groupSize > minWSinBuffer) groupSize = minWSinBuffer;
     // TODO: check if xingIdx is in Buffer Range
 
-    WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,numWS);
+    WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
 
     printf_debug("RTWaveSetPlayerTriggered_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
-                 repeat,numWS,xingIdx,rate,
+                 repeat,groupSize,xingIdx,rate,
                  ws.end-ws.start,
-                 xingIdx,xingIdx+numWS-1,ws.start,ws.end,
+                 xingIdx,xingIdx+groupSize-1,ws.start,ws.end,
                  unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
                  unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
 

@@ -18,24 +18,22 @@ Buffer with signal data from RTWaveSetAnalysis.
 ARGUMENT:: wsBuf
 Buffer with waveset data from RTWaveSetAnalysis.
 
-ARGUMENT:: repeats
-Number of playback repetitions of the waveset group.
-
-ARGUMENT:: numWS
-Number of wavesets starting from the given index forward that well be combined to a group and played.
-
-ARGUMENT:: xingIdx
-Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group.
-
 ARGUMENT:: trig
-Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible.
+Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible. (audio rate)
 
-ARGUMENT:: idxOffset
-(describe argument here)
+ARGUMENT:: idx
+Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)
 
 ARGUMENT:: rate
 Playback rate i.e. 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.
 (So far implemented without interpolation, just repeat/skip samples.)
+(control rate)
+
+ARGUMENT:: groupSize
+Number of wavesets starting from the given index forward that well be combined to a group and played. (control rate)
+
+ARGUMENT:: repeat
+Number of playback repetitions of the waveset group. (control rate)
 
 returns:: Output is the playback signal.
 

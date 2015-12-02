@@ -35,8 +35,11 @@ r{
 		// analysis returns idx of last recorded WS
 		rtIdx = Ndef(\analysis).ar[0];
 
+		/*RTWaveSetPlayerTriggered.ar(q.aBuf, q.xBuf,
+			0, 1, rtIdx, trig, 0, 1);*/
 		RTWaveSetPlayerTriggered.ar(q.aBuf, q.xBuf,
-			0, 1, rtIdx, trig, 0, 1);
+			trig, rtIdx);
+
 	});
 	0.5.wait;
 	Server.killAll;

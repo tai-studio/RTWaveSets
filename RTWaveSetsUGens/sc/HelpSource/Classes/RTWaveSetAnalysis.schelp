@@ -20,8 +20,8 @@ Buffer used to store found wavesets. It's size limits the number of wavesets of 
 ARGUMENT:: in
 Input signal to be analysed.
 
-ARGUMENT:: analysisOn
-Enable (>0) or pause (<=0) the analysis.
+ARGUMENT:: active
+Enable (>0) or pause (<=0) the analysis. (control rate)
 
 returns:: Output is the index of the latest waveset.
 

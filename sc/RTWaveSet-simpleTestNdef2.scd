@@ -21,7 +21,7 @@ Ndef(\sound, {	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), lo
 
 Ndef(\wsAnalysis).addSpec(\analysisOn, [-1, 1]);
 Ndef(\wsRepeat).addSpec(\repetition, [1, 100]);
-Ndef(\wsRepeat).addSpec(\numWS, [1, 100]);
+Ndef(\wsRepeat).addSpec(\groupSize, [1, 100]);
 Ndef(\wsRepeat).addSpec(\trigRate, [1, 100, \lin, 1]);
 Ndef(\wsRepeat).addSpec(\rate, [-2, 2]);
 Ndef(\wsRepeat).addSpec(\desiredLen, [-1, 10]);
@@ -39,15 +39,15 @@ Ndef(\wsAnalysis, {
 
 
 Ndef(\wsRepeat, {
-	arg repetition=10, numWS=10, rate=1, desiredLen=(-1), desiredAmp=(-1);
+	arg repetition=10, groupSize=10, rate=1, desiredLen=(-1), desiredAmp=(-1);
 	var idx, idx2, out, trig;
 	trig = Impulse.ar(\trigRate.kr(1));
 
 	idx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, desiredLen, desiredAmp);
 
+	// ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 	RTWaveSetPlayerTriggered.ar(
-		q.aBuf, q.xBuf, repetition, numWS, idx-numWS+1, trig, 0, rate
-	);
+		q.aBuf, q.xBuf, trig, idx-groupSize+1,  rate, groupSize, repetition);
 }).play;
 
 )

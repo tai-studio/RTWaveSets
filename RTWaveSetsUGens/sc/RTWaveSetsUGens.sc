@@ -1,6 +1,6 @@
 RTWaveSetAnalysis : UGen {
-        *ar { arg audioBuf, wsBuf, in, analysisOn=1;
-                ^this.multiNew('audio', audioBuf, wsBuf, in, analysisOn)
+        *ar { arg audioBuf, wsBuf, in, active=1;
+                ^this.multiNew('audio', audioBuf, wsBuf, in, active)
         }
 }
 
@@ -11,7 +11,7 @@ RTWaveSetSelector : UGen {
 }
 
 RTWaveSetPlayerTriggered : UGen {
-    *ar { arg audioBuf, wsBuf, repeats, numWS, xingIdx, trig, idxOffset, rate;
-    ^this.multiNew('audio', audioBuf, wsBuf, repeats, numWS, xingIdx, trig, idxOffset, rate)
+    *ar { arg audioBuf, wsBuf, trig, idx, rate=1, groupSize=1, repeat=1;
+    ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
     }
 }
