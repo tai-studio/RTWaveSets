@@ -2,8 +2,8 @@ Server.killAll;
 
 (
 s.waitForBoot{
-	// b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
-	b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0, -1);
+	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
+	// b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", 0, -1);
 	q = ();
 	q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 	q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
@@ -42,7 +42,7 @@ r{
 
 	});
 	0.5.wait;
-	Server.killAll;
+	// Server.killAll;
 }.play;
 )
 Ndef(\wsRepeat).play;

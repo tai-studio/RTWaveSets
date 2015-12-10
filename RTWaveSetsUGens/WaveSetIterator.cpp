@@ -76,8 +76,10 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
     } else {
         playPos = (double) ws.end;
     }
+    #ifdef WaveSetIterator_DEBUG
+    printf("WaveSetIterator::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
+    #endif
 
-    printf("WaveSetPlayer::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
 }
 
 /**

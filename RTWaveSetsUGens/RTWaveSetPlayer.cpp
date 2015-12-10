@@ -93,7 +93,7 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS)
 
     // check validity of parameters
     if(numWS<1) {
-        printf("RTWaveSetPlayer Warning: numWS < 1");
+        printf("RTWaveSetPlayer Warning: numWS < 1\n");
         return ws;
     }
 
