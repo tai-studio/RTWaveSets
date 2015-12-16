@@ -17,7 +17,7 @@ ARGUMENT:: wsBuf
 Buffer with waveset data from RTWaveSetAnalysis.
 
 ARGUMENT:: dur
-The desired length of the waveset in ms. Pass -1 to ignore the length. (control rate input)
+The desired length of the waveset in seconds. Pass -1 to ignore the length. (control rate input)
 
 ARGUMENT:: rms
 The desired amplitude (RMS) 0..1. Pass -1 to ignore the amplitude. (control rate input)

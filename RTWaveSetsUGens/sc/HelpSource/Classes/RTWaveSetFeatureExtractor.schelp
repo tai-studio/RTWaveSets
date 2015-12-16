@@ -1,0 +1,48 @@
+TITLE:: RTWaveSetFeatureExtractor
+summary:: Get the feature values of a waveset.
+categories:: UGens>Unclassified
+related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetSelector
+
+DESCRIPTION::
+Get the values of waveset features that was calculated during analysis. Available Features:
+
+list::
+## \dur: length of the waveset in seconds
+## \rms: Root Mean Square Amplitude of the waveset signal
+::
+
+CLASSMETHODS::
+
+METHOD:: kr
+
+ARGUMENT:: audioBuf
+Buffer with signal data from RTWaveSetAnalysis.
+
+ARGUMENT:: wsBuf
+Buffer with waveset data from RTWaveSetAnalysis.
+
+ARGUMENT:: feature
+Specify feature as symbol. (\dur, \rms)
+
+ARGUMENT:: idx
+Index of the waveset in question.
+
+returns:: value of the feature
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(
+q = ();
+q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
+q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
+{
+var idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
+RTWaveSetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms, idx).poll;
+}.play;
+)
+::

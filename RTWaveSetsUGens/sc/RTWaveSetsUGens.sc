@@ -15,3 +15,12 @@ RTWaveSetPlayerTriggered : UGen {
     ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
     }
 }
+
+RTWaveSetFeatureExtractor : UGen {
+
+	*kr { arg audioBuf, wsBuf, feature, idx;
+        var featureID = switch(feature,\dur , 0, \rms, 1);
+		^this.multiNew('control', audioBuf, wsBuf, featureID, idx)
+	}
+    
+}
