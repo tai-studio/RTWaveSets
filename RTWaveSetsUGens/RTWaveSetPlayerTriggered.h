@@ -20,6 +20,5 @@ struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
 void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit);
 void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples);
 void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit);
-void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi, RTWaveSetPlayerTriggered *unit,int repeat, int numWS, int xingIdx, float rate);
 
 #endif // RTWaveSetPlayerTriggered_H

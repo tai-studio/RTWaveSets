@@ -16,6 +16,12 @@ RTWaveSetPlayerTriggered : UGen {
     }
 }
 
+RTWaveSetPlayerContinuous : UGen {
+    *ar { arg audioBuf, wsBuf, idx, rate=1, groupSize=1, repeat=1;
+    ^this.multiNew('audio', audioBuf, wsBuf, idx, rate, groupSize, repeat)
+    }
+}
+
 RTWaveSetFeatureExtractor : UGen {
 
 	*kr { arg audioBuf, wsBuf, feature, idx;

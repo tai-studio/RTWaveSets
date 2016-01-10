@@ -41,20 +41,16 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         // get Index Input
         int idxIn = (int) idxInFloat[i];
 
-        // check for Trigger and at least one waveset
-        if(trig[i]>0.0 && unit->prevTrig<=0.0 && unit->wsBuf->getLastPos()>=1)
+        // check for Trigger and valid idx input
+        if(trig[i]>0.0 && unit->prevTrig<=0.0 && idxIn >= 0 && idxIn <= unit->wsBuf->getLastPos())
         {
-
             // We have a Trigger, get WaveSet and set Iterator:
-
-
-
             // look for a free WaveSetIterator
             for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
             {
                 WaveSetIterator* wsi = &unit->wsIterators[playIdx];
                 if(wsi->endOfPlay()){
-                    RTWaveSetPlayerTriggered_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
+                    RTWaveSetPlayer_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
                     break;
                 }
 
@@ -94,31 +90,6 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 
 }
 
-/**
- * @brief Load the next WaveSet to play.
- * @param unit
- */
-
-void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTriggered *unit,int repeat, int groupSize, int xingIdx, float rate){
-
-    int minWSinBuffer = unit->audioBuf->getSize()/maxWavesetLength;
-
-    // check input Parameters
-    if(groupSize < 0) groupSize = 1;
-    if(groupSize > minWSinBuffer) groupSize = minWSinBuffer;
-    // TODO: check if xingIdx is in Buffer Range
-
-    WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
-
-    printf_debug("RTWaveSetPlayerTriggered_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
-                 repeat,groupSize,xingIdx,rate,
-                 ws.end-ws.start,
-                 xingIdx,xingIdx+groupSize-1,ws.start,ws.end,
-                 unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
-                 unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
-
-    wsi->playWS(ws,repeat,rate);
-}
 
 void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit){
     RTWaveSetPlayer_Dtor(unit);

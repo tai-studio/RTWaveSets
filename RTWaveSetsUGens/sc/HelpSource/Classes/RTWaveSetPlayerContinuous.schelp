@@ -1,0 +1,42 @@
+TITLE:: RTWaveSetPlayerContinuous
+summary:: Play wavesets continuously.
+categories:: UGens>Unclassified
+related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetSelector
+
+DESCRIPTION::
+Use the results of a RTWaveSetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: audioBuf
+Buffer with signal data from RTWaveSetAnalysis.
+
+ARGUMENT:: wsBuf
+Buffer with waveset data from RTWaveSetAnalysis.
+
+ARGUMENT:: idx
+Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)
+
+ARGUMENT:: rate
+Playback rate i.e. 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.
+(So far implemented without interpolation, just repeat/skip samples.)
+(control rate)
+
+ARGUMENT:: groupSize
+Number of wavesets starting from the given index forward that well be combined to a group and played. (control rate)
+
+ARGUMENT:: repeat
+Number of playback repetitions of the waveset group. (control rate)
+
+returns:: Output is the playback signal.
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::
