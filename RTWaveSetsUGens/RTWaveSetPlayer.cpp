@@ -83,16 +83,16 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
  * @return
  */
 
-WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int xingIdx, int numWS){
+WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSize){
     WaveSetPlay ws;
     ws.start = -1;
     ws.end = -1;
 
-    int startIdx = xingIdx;
-    int endIdx = xingIdx + numWS - 1;
+    int startIdx = wsIdx;
+    int endIdx = wsIdx + groupSize - 1;
 
     // check validity of parameters
-    if(numWS<1) {
+    if(groupSize<1) {
         printf("RTWaveSetPlayer Warning: numWS < 1\n");
         return ws;
     }

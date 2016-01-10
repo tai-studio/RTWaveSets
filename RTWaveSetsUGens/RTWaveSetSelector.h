@@ -9,7 +9,7 @@ struct RTWaveSetSelector : public RTWaveSetBase  {
     float bestDiff;
     int bestIdx;
     int desiredLen;
-    float desiredAmp;
+    float desiredRMS;
 
     float lenWeight;
     float ampWeight;

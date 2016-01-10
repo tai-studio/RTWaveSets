@@ -58,7 +58,7 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
     // Remove obsolete wavesets
     if(unit->wsBuf->getLen()>0 && unit->audioBuf->getFirstPos()>0){
-        while(! unit->audioBuf->isInRange(unit->wsBuf->getFirst().start - 44100)) // TODO magic number
+        while(! unit->audioBuf->isInRange(unit->wsBuf->getFirst().start - 1.0 * unit->mCalcRate)) // remove wavesets out of range with 1 second padding
         {
             unit->wsBuf->pop();
         }
@@ -82,7 +82,7 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 
         // check WaveSet length
         if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
-            float amp = RTWaveSetAnalysis_calcAmp(unit,start,end);
+            float amp = RTWaveSetAnalysis_calcRMS(unit,start,end);
 
             WaveSet ws(unit->lastXing, currentXing, amp);
             unit->wsBuf->put(ws);
@@ -112,7 +112,7 @@ void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
  * @return
  */
 
-float RTWaveSetAnalysis_calcAmp(RTWaveSetAnalysis *unit, int start, int end){
+float RTWaveSetAnalysis_calcRMS(RTWaveSetAnalysis *unit, int start, int end){
 
     float amp = 0.0;
 

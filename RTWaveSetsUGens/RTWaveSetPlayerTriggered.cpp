@@ -9,7 +9,6 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     for(int i=0;i<RTWaveSetPlayerTriggered_NumIterators;i++)
     {
         unit->wsIterators[i] = WaveSetIterator();
-        if(unit->wsIterators[i].left()!=0) printf("RTWaveSetPlayerTriggered_Ctor() Error! WaveSetIterator initialized unproperly.");
     }
 
     SETCALC(RTWaveSetPlayerTriggered_next);
@@ -54,7 +53,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
             {
                 WaveSetIterator* wsi = &unit->wsIterators[playIdx];
-                if(wsi->left()<1){
+                if(wsi->endOfPlay()){
                     RTWaveSetPlayerTriggered_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
                     break;
                 }
@@ -74,7 +73,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         {
             WaveSetIterator* wsi = &unit->wsIterators[playIdx];
             // play parallel WaveSets from Iterators
-            if(wsi->left()>0)
+            if(!wsi->endOfPlay())
             {
                     int idx = wsi->next();
                     if(unit->audioBuf->isInRange(idx)) {
@@ -105,7 +104,6 @@ void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTri
     int minWSinBuffer = unit->audioBuf->getSize()/maxWavesetLength;
 
     // check input Parameters
-    //if(!(repeat>1 && repeat <= minWSinBuffer)) repeat = 1; // TODO is this necessary?
     if(groupSize < 0) groupSize = 1;
     if(groupSize > minWSinBuffer) groupSize = minWSinBuffer;
     // TODO: check if xingIdx is in Buffer Range
@@ -120,7 +118,6 @@ void RTWaveSetPlayerTriggered_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayerTri
                  unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
 
     wsi->playWS(ws,repeat,rate);
-    printf_debug("wsi->left() = %i\n",wsi->left());
 }
 
 void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit){

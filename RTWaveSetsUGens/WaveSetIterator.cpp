@@ -83,25 +83,14 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
 }
 
 /**
- * @brief Number of samples that are left in current playing waveset.
- * @return Number of samples left.
+ * @brief Returns true if reached the end of playback.
  */
 
-int WaveSetIterator::left() {
-    if(playRate==0) return 0;
-    if(ws.start>=ws.end) return 0;
+bool WaveSetIterator::endOfPlay() {
 
-    // simplified Version 1/0:
-    if(repeat<0) return 0;
-    else return 1;
+    if(playRate==0) return true;
+    if(ws.start>=ws.end) return true;
+    if(repeat<0) return true;
 
-    // full Version (not working):
-    /*if(playRate>0) { // forward
-        return float(ws.end-playPos+1 + repeat*(ws.end-ws.start+1)) / fabsf(playRate);
-    }else{ // backward
-        return float(playPos-ws.start+1 + repeat*(ws.end-ws.start+1)) / fabsf(playRate);
-    }*/
-
-
-
+    return false;
 }

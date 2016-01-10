@@ -15,7 +15,7 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
     unit->bestIdx = unit->wsBuf->getFirstPos()+1;
     unit->bestDiff = 99999.0;
     unit->desiredLen = -1;
-    unit->desiredAmp = -1;
+    unit->desiredRMS = -1;
 
     unit->lenWeight = 1;
     unit->ampWeight = 200;
@@ -31,6 +31,8 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 
 void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 {
+    // TODO split to several functions
+
     float *out = OUT(0);
 
     // receive input for desired length
@@ -43,21 +45,21 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 
     // check if we have to restart Searching
     if(inDesiredLen != unit->desiredLen
-            || inDesiredAmp != unit->desiredAmp
+            || inDesiredAmp != unit->desiredRMS
             || !unit->wsBuf->isInRange(unit->bestIdx) // out of xing buffer range?
             || !unit->audioBuf->isInRange(unit->wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
             )
     {
         unit->desiredLen = inDesiredLen;
-        unit->desiredAmp = inDesiredAmp;
+        unit->desiredRMS = inDesiredAmp;
         unit->searchIdx = unit->wsBuf->getFirstPos();
         unit->bestIdx = unit->searchIdx;
         unit->bestDiff = 9999999.0;
-        printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i, desiredAmp %f).\n",unit->desiredLen,unit->desiredAmp);
+        printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i, desiredAmp %f).\n",unit->desiredLen,unit->desiredRMS);
     }
 
     // search for best WS idx
-    if(unit->desiredLen==-1 && unit->desiredAmp<0)
+    if(unit->desiredLen==-1 && unit->desiredRMS<0)
     {
        unit->bestIdx = unit->wsBuf->getLastPos();
     }
@@ -75,8 +77,8 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
                 diff+=unit->lenWeight * abs(unit->desiredLen-ws.getLength());
             }
 
-            if(unit->desiredAmp>=0) {
-                diff+=unit->ampWeight * fabs(unit->desiredAmp-ws.amp);
+            if(unit->desiredRMS>=0) {
+                diff+=unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
             }
 
             if (diff <= unit->bestDiff)
@@ -98,7 +100,6 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
     for (int i=0; i<inNumSamples; ++i)
     {
         out[i]=unit->bestIdx;
-        // TODO implement selection rules
     }
 
 }

@@ -16,8 +16,8 @@ void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);
 void RTWaveSetPlayer_Dtor(RTWaveSetPlayer *unit);
 void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit);
 
-WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength);
-WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int idxBack=0, int numWS=1);
+WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength); // TODO still needed? min WS length is checked during analysis
+WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSize);
 
 
 #endif // RTWAVESETPLAYER_H

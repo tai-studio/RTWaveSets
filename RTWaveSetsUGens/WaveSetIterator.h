@@ -19,7 +19,7 @@ struct WaveSetPlay {
 class WaveSetIterator {
 private:
     double playPos;
-    WaveSetPlay ws;
+    WaveSetPlay ws; // TODO replace struct by simple startPos, endPos variables
     int repeat;
     float playRate;
 
@@ -27,7 +27,7 @@ public:
     WaveSetIterator();
     void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
     int next();
-    int left(); // TODO find better name
+    bool endOfPlay();
     int getPlayRate(){ return playRate; }
 };
 
