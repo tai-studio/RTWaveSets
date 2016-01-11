@@ -48,8 +48,8 @@ Ndef(\wsRepeat, {
 	RTWaveSetPlayerTriggered.ar(
 		q.aBuf, q.xBuf, trig2, idx-groupSize+1,  rate, groupSize, repetition);
 
-	RTWaveSetPlayerContinuous.ar(
-		q.aBuf, q.xBuf, idx-groupSize+1,  rate, groupSize, repetition);
+	/*RTWaveSetPlayerContinuous.ar(
+		q.aBuf, q.xBuf, idx-groupSize+1,  rate, groupSize, repetition);*/
 }).play;
 
 
