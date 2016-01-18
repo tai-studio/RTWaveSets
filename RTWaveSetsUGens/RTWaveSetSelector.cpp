@@ -1,4 +1,5 @@
 #include "RTWaveSetSelector.h"
+#include <float.h>
 
 /**
  * @brief UGen Constructor.
@@ -13,7 +14,7 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;
     unit->bestIdx = unit->wsBuf->getFirstPos()+1;
-    unit->bestDiff = 99999.0;
+    unit->bestDiff = FLT_MAX;
     unit->desiredLen = -1;
     unit->desiredRMS = -1;
 
@@ -37,7 +38,7 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 
     // receive input for desired length
     float inDesiredLenSec = IN0(2);
-    int inDesiredLen = (int) (inDesiredLenSec * unit->mRate->mSampleRate)+0.5f;
+    int inDesiredLen = (int) (inDesiredLenSec * unit->mWorld->mFullRate.mSampleRate)+0.5f;
     if(inDesiredLen < 0) inDesiredLen = -1;
 
     //receive input for desired amplitude
@@ -54,7 +55,7 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
         unit->desiredRMS = inDesiredAmp;
         unit->searchIdx = unit->wsBuf->getFirstPos();
         unit->bestIdx = unit->searchIdx;
-        unit->bestDiff = 9999999.0;
+        unit->bestDiff = FLT_MAX;
         printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i, desiredAmp %f).\n",unit->desiredLen,unit->desiredRMS);
     }
 
@@ -74,11 +75,13 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
             float diff=0.0;
 
             if(unit->desiredLen!=-1) {
-                diff+=unit->lenWeight * abs(unit->desiredLen-ws.getLength());
+                float diffLen = unit->lenWeight * abs(unit->desiredLen-ws.getLength());
+                diff += diffLen*diffLen;
             }
 
             if(unit->desiredRMS>=0) {
-                diff+=unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
+                float diffRMS = unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
+                diff += diffRMS*diffRMS;
             }
 
             if (diff <= unit->bestDiff)
