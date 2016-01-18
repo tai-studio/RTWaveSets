@@ -18,7 +18,7 @@ ARGUMENT:: wsBuf
 Buffer used to store found wavesets. It's size limits the number of wavesets of the past that are available. (Additional limited by the size of audioBuf.)
 
 ARGUMENT:: in
-Input signal to be analysed.
+Input signal to be analysed. It's recommended to remove a DC offset from the signal i.e. using the LeadDC UGen.
 
 ARGUMENT:: active
 Enable (>0) or pause (<=0) the analysis. (control rate)

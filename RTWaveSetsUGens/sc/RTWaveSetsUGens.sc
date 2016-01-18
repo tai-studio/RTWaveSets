@@ -1,6 +1,6 @@
 RTWaveSetAnalysis : UGen {
 	*ar { arg audioBuf, wsBuf, in, active=1;
-		^this.multiNew('audio', audioBuf, wsBuf, LeakDC.ar(in), active)
+		^this.multiNew('audio', audioBuf, wsBuf, in, active)
 	}
 }
 
