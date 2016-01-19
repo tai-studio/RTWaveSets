@@ -17,7 +17,7 @@ WaveSetIterator::WaveSetIterator(){
 
 /**
  * @brief Get the position of the next Sample of the waveset.
- * @return Sample position in the buffer.
+ * @return Sample position in the buffer or -1 if end is reached.
  */
 
 int WaveSetIterator::next() {
@@ -88,9 +88,10 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
 
 bool WaveSetIterator::endOfPlay() {
 
+    if(repeat<0) return true;
     if(playRate==0) return true;
     if(ws.start>=ws.end) return true;
-    if(repeat<0) return true;
+
 
     return false;
 }

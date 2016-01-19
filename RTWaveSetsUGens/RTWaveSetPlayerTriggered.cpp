@@ -2,7 +2,6 @@
 
 void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     RTWaveSetPlayer_Ctor(unit);
-    unit->lastXingIdx = -1;
     unit->prevTrig = 1.0;
 
     // init WaveSetIterators
@@ -10,6 +9,7 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     {
         unit->wsIterators[i] = WaveSetIterator();
     }
+    unit->lastActiveIteratorIdx = -1;
 
     SETCALC(RTWaveSetPlayerTriggered_next);
     RTWaveSetPlayerTriggered_next(unit, 1);
@@ -50,7 +50,13 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             {
                 WaveSetIterator* wsi = &unit->wsIterators[playIdx];
                 if(wsi->endOfPlay()){
+                    // got a free Iterator: start Playback and exit loop
+
                     RTWaveSetPlayer_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
+                    if(unit->lastActiveIteratorIdx < playIdx){
+                        unit->lastActiveIteratorIdx = playIdx;
+                    }
+
                     break;
                 }
 
@@ -65,7 +71,8 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 
         // Play WaveSets from Iterators
         float outSum = 0.0;
-        for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
+        int lastPlayedIterator=-1;
+        for(int playIdx=0;playIdx<=unit->lastActiveIteratorIdx;playIdx++)
         {
             WaveSetIterator* wsi = &unit->wsIterators[playIdx];
             // play parallel WaveSets from Iterators
@@ -74,6 +81,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
                     int idx = wsi->next();
                     if(unit->audioBuf->isInRange(idx)) {
                         outSum += unit->audioBuf->get(idx);
+                        lastPlayedIterator = playIdx;
                     } else {
                         printf("WaveSet playback failed! (out of audio buffer Range)\n");
                         *wsi = WaveSetIterator(); // stop playback by resetting
@@ -84,7 +92,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         out[i] = outSum;
 
         unit->prevTrig=trig[i];
-        unit->lastXingIdx = idxIn;
+        unit->lastActiveIteratorIdx = lastPlayedIterator;
     }
 
 
