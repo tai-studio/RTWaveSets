@@ -25,10 +25,10 @@ Playback rate i.e. 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.
 (control rate)
 
 ARGUMENT:: groupSize
-Number of wavesets starting from the given index forward that well be combined to a group and played. (control rate)
+Number of wavesets that will be combined to a group and played. The group will be expanded forward and backward from the given idx. If the end or beginning is reached the group will be extended in the possible direction. (control rate input)
 
 ARGUMENT:: repeat
-Number of playback repetitions of the waveset group. (control rate)
+Number of playback repetitions of the waveset group. (control rate input)
 
 returns:: Output is the playback signal.
 

@@ -78,8 +78,8 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
 /**
  * @brief Get a WaveSet.
  * @param unit
- * @param xingIdx Index of the Xing. -1 for latest xing.
- * @param numWS How many WaveSets starting vom xingIdx forward should be appended.
+ * @param wsIdx Index of the WaveSet.
+ * @param groupSize How many WaveSets starting vom xingIdx forward should be appended.
  * @return
  */
 
@@ -88,27 +88,43 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
     ws.start = -1;
     ws.end = -1;
 
-    int startIdx = wsIdx;
-    int endIdx = wsIdx + groupSize - 1;
-
-    // check validity of parameters
-    if(groupSize<1) {
-        printf("RTWaveSetPlayer Warning: numWS < 1\n");
-        return ws;
-    }
-
-    int start = unit->wsBuf->get(startIdx).start;
-    int end = unit->wsBuf->get(endIdx).end;
-
-    if(isnan(end) || isnan(start) || end<1 || start<0)
+    if(unit->wsBuf->isInRange(wsIdx) && groupSize<unit->wsBuf->getLen())
     {
-        printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
-        return ws;
-    }
+        int startIdx = wsIdx-groupSize/2;
+        int endIdx = startIdx + groupSize - 1;
 
-    // cast to int
-    ws.end = end;
-    ws.start = start;
+        // shift back if we are at the end
+        if(endIdx>unit->wsBuf->getLastPos())
+        {
+            endIdx = unit->wsBuf->getLastPos();
+            startIdx = endIdx - groupSize + 1;
+        }
+
+        // shift forward if we are on the beginning
+        if(startIdx<unit->wsBuf->getFirstPos()){
+            startIdx = unit->wsBuf->getFirstPos();
+            endIdx = startIdx + groupSize - 1;
+        }
+
+        // check validity of parameters
+        if(groupSize<1) {
+            printf("RTWaveSetPlayer Warning: numWS < 1\n");
+            return ws;
+        }
+
+        int start = unit->wsBuf->get(startIdx).start;
+        int end = unit->wsBuf->get(endIdx).end;
+
+        if(isnan(end) || isnan(start) || end<1 || start<0)
+        {
+            printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
+            return ws;
+        }
+
+        // cast to int
+        ws.end = end;
+        ws.start = start;
+    }
 
     return ws;
 }
@@ -120,23 +136,25 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
 
 void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate){
 
-    int minWSinBuffer = unit->audioBuf->getSize()/maxWavesetLength;
-
     // check input Parameters
     if(groupSize < 0) groupSize = 1;
-    if(groupSize > minWSinBuffer) groupSize = minWSinBuffer;
-    // TODO: check if xingIdx is in Buffer Range
 
-    WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
+    if(unit->wsBuf->isInRange(xingIdx)){
+        WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
 
-    printf_debug("RTWaveSetPlayerContinuous_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
-                 repeat,groupSize,xingIdx,rate,
-                 ws.end-ws.start,
-                 xingIdx,xingIdx+groupSize-1,ws.start,ws.end,
-                 unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
-                 unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
+        printf_debug("RTWaveSetPlayerContinuous_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
+                     repeat,groupSize,xingIdx,rate,
+                     ws.end-ws.start,
+                     xingIdx,xingIdx+groupSize-1,ws.start,ws.end,
+                     unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
+                     unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
 
-    wsi->playWS(ws,repeat,rate);
+        wsi->playWS(ws,repeat,rate);
+    }
+    else{
+        printf("RTWaveSetPlayer_playNextWS() Error: Waveset idx out of range!");
+    }
+
 }
 
 void RTWaveSetPlayer_Dtor( RTWaveSetPlayer *unit ) {
