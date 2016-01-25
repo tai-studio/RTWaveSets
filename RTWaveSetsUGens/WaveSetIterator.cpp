@@ -20,15 +20,15 @@ WaveSetIterator::WaveSetIterator(){
  * @return Sample position in the buffer or -1 if end is reached.
  */
 
-int WaveSetIterator::next() {
+float WaveSetIterator::next() {
 
-    int val;
+    float val;
     // end of playback?
     if(repeat>=0) {
-        val = (int) playPos;
+        val = playPos;
 
         if(val < 0 || val >= INT32_MAX){
-            printf("WaveSetPlayer::next(): Error! invalid playPos:%lf val:%i start:%i end:%i repeat:%i playRate:%f\n", playPos, val, ws.start, ws.end, repeat, playRate);
+            printf("WaveSetPlayer::next(): Error! invalid playPos:%lf val:%f start:%i end:%i repeat:%i playRate:%f\n", playPos, val, ws.start, ws.end, repeat, playRate);
             val = -1;
             repeat = -1; // stop playback
         }

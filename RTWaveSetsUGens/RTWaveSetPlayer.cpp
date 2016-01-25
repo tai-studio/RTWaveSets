@@ -160,3 +160,67 @@ void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int r
 void RTWaveSetPlayer_Dtor( RTWaveSetPlayer *unit ) {
 
 }
+
+/**
+ * @brief Calculate the current sample for playback at given position.
+ * If idx has an fractional and there is enouph data availabel cubic or linear interpolation is used if possible.
+ * @param unit
+ * @param idx
+ * @return value of the sample
+ * TODO: use really played samples at repeats and waveset gaps not the continuous recording for interpolation.
+ */
+
+float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
+{
+    float sampleVal;
+
+    // check if interpolation is needed
+    bool doInterpolation = fabs(ceilf(idx)-idx)>0.01; // interpolate only > 1% offset
+
+    static int cnt = 0;
+
+    if(doInterpolation)
+    {
+        int idxInt = (int) idx;
+        float idxFrac = idx - (float) idxInt;
+
+        // check the available data range for interpolation
+        if(unit->audioBuf->isInRange(idxInt-1) && unit->audioBuf->isInRange(idxInt+2))
+        {
+            // cubic interpolation:
+            float y0 = unit->audioBuf->get(idxInt-1);
+            float y1 = unit->audioBuf->get(idxInt);
+            float y2 = unit->audioBuf->get(idxInt+1);
+            float y3 = unit->audioBuf->get(idxInt+2);
+
+            sampleVal = cubicinterp(idxFrac,y0,y1,y2,y3);
+
+            if(cnt++>1000)
+            {
+                cnt=0;
+                printf("interpolation: %3f,%3f,%3f,%3f,%3f=%3f\n",idxFrac,y0,y1,y2,y3,sampleVal);
+            }
+        }
+        else if(unit->audioBuf->isInRange(idxInt+1))
+        {
+            // linear iterpolation:
+            float y1 = unit->audioBuf->get(idxInt);
+            float y2 = unit->audioBuf->get(idxInt+1);
+            sampleVal = lininterp(idxFrac,y1,y2);
+        }
+        else{
+            // no interpolation:
+            doInterpolation = false;
+        }
+
+    }
+
+    if(!doInterpolation)
+    {
+        // no interpolation:
+        sampleVal= unit->audioBuf->get((int) (idx+0.5f));
+    }
+
+    return sampleVal;
+
+}

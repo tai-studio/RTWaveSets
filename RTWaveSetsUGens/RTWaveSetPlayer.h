@@ -19,5 +19,6 @@ void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit);
 WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength); // TODO still needed? min WS length is checked during analysis
 WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSize);
 void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate);
+float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx);
 
 #endif // RTWAVESETPLAYER_H

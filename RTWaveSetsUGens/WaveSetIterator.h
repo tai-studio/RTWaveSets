@@ -26,7 +26,7 @@ private:
 public:
     WaveSetIterator();
     void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
-    int next();
+    float next();
     bool endOfPlay();
     int getPlayRate(){ return playRate; }
 };

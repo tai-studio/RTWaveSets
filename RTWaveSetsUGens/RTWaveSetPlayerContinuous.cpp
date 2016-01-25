@@ -48,7 +48,7 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
             out[i]=0.0;
         }
         else {
-            out[i] = unit->audioBuf->get(unit->wsIterator.next());
+            out[i] = RTWaveSetPlayer_getSample(unit,unit->wsIterator.next());
         }
     }
 
