@@ -79,7 +79,7 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
  * @brief Get a WaveSet.
  * @param unit
  * @param wsIdx Index of the WaveSet.
- * @param groupSize How many WaveSets starting vom xingIdx forward should be appended.
+ * @param groupSize How many sourrounding WaveSets should be appended.
  * @return
  */
 
@@ -198,7 +198,7 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
             if(cnt++>1000)
             {
                 cnt=0;
-                printf("interpolation: %3f,%3f,%3f,%3f,%3f=%3f\n",idxFrac,y0,y1,y2,y3,sampleVal);
+                //printf("interpolation: %3f,%3f,%3f,%3f,%3f=%3f\n",idxFrac,y0,y1,y2,y3,sampleVal);
             }
         }
         else if(unit->audioBuf->isInRange(idxInt+1))
