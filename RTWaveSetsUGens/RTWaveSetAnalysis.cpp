@@ -16,6 +16,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     unit->audioBuf = FloatRingBuffer::createInBuffer(ZIN0(0),unit);
     unit->wsBuf = WaveSetRingBuffer::createInBuffer(ZIN0(1),unit);
     unit->lastXing = -1;
+    unit->lastAnalysisOn = -1;
 
     // 3. calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);
@@ -37,21 +38,27 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
     // Input Processing
     for ( int i=0; i<inNumSamples; ++i)
     {
-        float prev = unit->audioBuf->getLast();
 
-        if(analysisOn > 0.0)
+        if(analysisOn > 0.0) // analysis is running...
         {
             // save to Buffer
             unit->audioBuf->put(in[i]);
 
-            // look for a -/+ zero crossing
-            if(prev <= 0.0 && in[i] > 0.0) {
+            // do analysis only if we have at least two continuous samples
+            if(unit->lastAnalysisOn > 0.0)
+            {
+                float prev = unit->audioBuf->getLast(1);
 
-                // add zero crossing position to zeroBuffer
-                RTWaveSetAnalysis_gotXing(unit);
+                // look for a -/+ zero crossing
+                if(prev <= 0.0 && in[i] > 0.0)
+                {
+                    // add zero crossing position to zeroBuffer
+                    RTWaveSetAnalysis_gotXing(unit);
+                }
             }
         }
 
+        unit->lastAnalysisOn = analysisOn;
         out[i] = (float) unit->wsBuf->getLastPos();
 
     }
