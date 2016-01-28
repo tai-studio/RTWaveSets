@@ -177,8 +177,6 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
     // check if interpolation is needed
     bool doInterpolation = fabs(ceilf(idx)-idx)>0.01; // interpolate only > 1% offset
 
-    static int cnt = 0;
-
     if(doInterpolation)
     {
         int idxInt = (int) idx;
@@ -194,12 +192,6 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
             float y3 = unit->audioBuf->get(idxInt+2);
 
             sampleVal = cubicinterp(idxFrac,y0,y1,y2,y3);
-
-            if(cnt++>1000)
-            {
-                cnt=0;
-                //printf("interpolation: %3f,%3f,%3f,%3f,%3f=%3f\n",idxFrac,y0,y1,y2,y3,sampleVal);
-            }
         }
         else if(unit->audioBuf->isInRange(idxInt+1))
         {
