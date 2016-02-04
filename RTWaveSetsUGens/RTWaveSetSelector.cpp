@@ -8,8 +8,7 @@
 
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 {
-    unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->wsBuf = WaveSetRingBuffer::getFromBuffer(ZIN0(1),unit);
+    RTWaveSetBase_Ctor(unit);
 
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;

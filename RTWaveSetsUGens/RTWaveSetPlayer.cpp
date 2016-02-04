@@ -8,12 +8,7 @@
  */
 
 void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
-    #ifdef RTWaveSetPlayer_DEBUG
-    printf("RTWaveSetPlayer_Ctor()\n");
-    #endif
-
-    unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->wsBuf = WaveSetRingBuffer::getFromBuffer(ZIN0(1),unit);
+    RTWaveSetBase_Ctor(unit);
 
 }
 

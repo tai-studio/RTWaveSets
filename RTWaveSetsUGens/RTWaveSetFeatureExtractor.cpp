@@ -7,8 +7,7 @@
 
 void RTWaveSetFeatureExtractor_Ctor(RTWaveSetFeatureExtractor *unit)
 {
-    unit->audioBuf = FloatRingBuffer::getFromBuffer(ZIN0(0),unit);
-    unit->wsBuf = WaveSetRingBuffer::getFromBuffer(ZIN0(1),unit);
+    RTWaveSetBase_Ctor(unit);
 
     SETCALC(RTWaveSetFeatureExtractor_next);
 
