@@ -3,12 +3,9 @@
 
 #include "RTWaveSetBase.h"
 
-// TODO make length limits settable from SC
-static const int RTWaveSetAnalysis_minWavesetLength = (int) (0.5 * 44.100); // 0.5 ms
-// static const int RTWaveSetAnalysis_maxWavesetLength = (int) (500.0 * 44.100); // 500 ms // TODO implement max Length
-
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
     float lastAnalysisOn;
+    int minWavesetLength;
     int lastXing;
 };
 

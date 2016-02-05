@@ -17,6 +17,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
 
     unit->lastXing = -1;
     unit->lastAnalysisOn = -1;
+    unit->minWavesetLength = -1;
 
     // calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);
@@ -34,6 +35,8 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
     float *in = IN(2);
     float *out = OUT(0);
     float analysisOn = IN0(3);
+    float inMinWaveSetLengthSec = IN0(4);
+    unit->minWavesetLength = int (inMinWaveSetLengthSec * unit->mWorld->mFullRate.mSampleRate + 0.5f); // convert in samples and round
 
     // Input Processing
     for ( int i=0; i<inNumSamples; ++i)
@@ -88,7 +91,7 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
         int wsLen = end - start;
 
         // check WaveSet length
-        if(wsLen > RTWaveSetAnalysis_minWavesetLength) {
+        if(wsLen > unit->minWavesetLength) {
             float amp = RTWaveSetAnalysis_calcRMS(unit,start,end);
 
             WaveSet ws(unit->lastXing, currentXing, amp);

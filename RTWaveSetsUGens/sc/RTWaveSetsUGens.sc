@@ -13,8 +13,8 @@ RTWaveSetData {
 }
 
 RTWaveSetAnalysis : UGen {
-	*ar { arg wsData, in, active=1;
-		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, in, active)
+	*ar { arg wsData, in, active=1, minWSLen=0.0005;
+		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, in, active, minWSLen)
 	}
 }
 
