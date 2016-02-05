@@ -10,15 +10,15 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
 
     printf_debug("RTWaveSetAnalysis_Ctor()\n");
 
-    // 1. set the calculation function.
+    RTWaveSetBase_Ctor(unit);
+
+    // set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
 
-    unit->audioBuf = FloatRingBuffer::createInBuffer(ZIN0(0),unit);
-    unit->wsBuf = WaveSetRingBuffer::createInBuffer(ZIN0(1),unit);
     unit->lastXing = -1;
     unit->lastAnalysisOn = -1;
 
-    // 3. calculate one sample of output.
+    // calculate one sample of output.
     RTWaveSetAnalysis_next(unit, 1);
 }
 

@@ -29,5 +29,8 @@ struct RTWaveSetBase : public Unit {
 };
 
 void RTWaveSetBase_Ctor(RTWaveSetBase* unit);
+SndBuf* RTWaveSetBase_getSndBuf(float fbufnum, Unit* unit);
+template <typename T>
+RingBuffer<T>* RTWaveSetBase_createRingBufferInBuffer(float fbufnum, Unit *unit);
 
 #endif // RTWAVESETBASE_H

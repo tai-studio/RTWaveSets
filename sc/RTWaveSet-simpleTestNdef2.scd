@@ -1,13 +1,13 @@
 Server.killAll;
 
 (
-var wsData;
+
 s.waitForBoot{
 	/*
 	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
 	*/
 	b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,r);
-	wsData = RTWaveSetData();
+	q = RTWaveSetData();
 	NdefMixer(s);
 
 };
@@ -29,7 +29,7 @@ Ndef(\wsRepeat).addSpec(\desiredAmp, [-1, 1]);
 Ndef(\wsAnalysis, {
 	arg analysisOn=1;
 
-	RTWaveSetAnalysis.ar(wsData, Ndef(\sound).ar(1), analysisOn);
+	RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
 
 });
 
@@ -40,15 +40,15 @@ Ndef(\wsRepeat, {
 	trig = Impulse.ar(\trigRate.kr(1));
 	//trig = Impulse.ar(EnvGen.ar(Env.perc, trig, 100,0,0.5)); // try to create "clouds"
 
-	idx = RTWaveSetSelector.ar(wsData, desiredLen/1000, desiredAmp);
-
-	RTWaveSetFeatureExtractor.kr(wsData, \rms, idx).poll;
+	idx = RTWaveSetSelector.ar(q, desiredLen/1000, desiredAmp);
+	idx.poll;
+	//RTWaveSetFeatureExtractor.kr(q, \rms, idx).poll;
 
 	RTWaveSetPlayerTriggered.ar(
-		wsData, trig, idx-groupSize+1,  rate, groupSize, repetition);
+		q, trig, idx-groupSize+1,  rate, groupSize, repetition);
 
 	/*RTWaveSetPlayerContinuous.ar(
-		wsData, idx-groupSize+1,  rate, groupSize, repetition);*/
+		q, idx-groupSize+1,  rate, groupSize, repetition);*/
 }).play;
 
 }
