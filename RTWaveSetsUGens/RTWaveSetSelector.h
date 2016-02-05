@@ -11,6 +11,11 @@ struct RTWaveSetSelector : public RTWaveSetBase  {
     int desiredLen;
     float desiredRMS;
 
+    /**
+     * @brief Only search in the x last wavesets. -1 for no limit.
+     */
+    int lookBackLimit;
+
     float lenWeight;
     float ampWeight;
 };

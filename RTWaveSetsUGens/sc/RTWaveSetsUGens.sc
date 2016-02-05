@@ -19,8 +19,8 @@ RTWaveSetAnalysis : UGen {
 }
 
 RTWaveSetSelector : UGen {
-	*ar { arg wsData, dur=(-1), rms=(-1);
-		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, dur, rms)
+	*ar { arg wsData, dur=(-1), rms=(-1), lookBackLimit=(-1);
+		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, dur, rms, lookBackLimit)
 	}
 }
 

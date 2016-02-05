@@ -23,26 +23,26 @@ Ndef(\wsRepeat).addSpec(\groupSize, [1, 100]);
 Ndef(\wsRepeat).addSpec(\trigRate, [1, 100, \lin, 1]);
 Ndef(\wsRepeat).addSpec(\rate, [-2, 2]);
 Ndef(\wsRepeat).addSpec(\desiredLen, [-1, 10]);
-Ndef(\wsRepeat).addSpec(\desiredAmp, [-1, 1]);
-
+Ndef(\wsRepeat).addSpec(\desiredRMS, [-1, 1]);
+Ndef(\wsRepeat).addSpec(\selLookBack, [-1, 100]);
 
 Ndef(\wsAnalysis, {
 	arg analysisOn=1;
 
 	RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
 
-});
+}).poll;
 
 
 Ndef(\wsRepeat, {
-	arg repetition=10, groupSize=10, rate=1, desiredLen=(-1), desiredAmp=(-1);
+		arg repetition=10, groupSize=10, rate=1, desiredLen=(-1), desiredRMS=(-1), selLookBack=(-1);
 	var idx, idx2, out, trig, trig2;
 	trig = Impulse.ar(\trigRate.kr(1));
 	//trig = Impulse.ar(EnvGen.ar(Env.perc, trig, 100,0,0.5)); // try to create "clouds"
 
-	idx = RTWaveSetSelector.ar(q, desiredLen/1000, desiredAmp);
+	idx = RTWaveSetSelector.ar(q, desiredLen/1000, desiredRMS, selLookBack);
 	idx.poll;
-	//RTWaveSetFeatureExtractor.kr(q, \rms, idx).poll;
+	//RTWaveSetFeatureExtractor.kr(q, \dur, idx).poll;
 
 	RTWaveSetPlayerTriggered.ar(
 		q, trig, idx-groupSize+1,  rate, groupSize, repetition);

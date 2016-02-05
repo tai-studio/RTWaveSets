@@ -19,6 +19,9 @@ The desired length of the waveset in seconds. Pass -1 to ignore the length. (con
 ARGUMENT:: rms
 The desired amplitude (RMS) 0..1. Pass -1 to ignore the amplitude. (control rate input)
 
+ARGUMENT:: lookBackLimit
+Consider only the newest x wavesets for the selection. Set -1 to consider all wavesets.
+
 returns:: Output is the index of the waveset which is closest to the given combination of criteria.
 
 INSTANCEMETHODS::
