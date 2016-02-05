@@ -1,16 +1,10 @@
 (
 s.waitForBoot{
 	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
-	q = ();
-	q.aBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
-	q.xBuf = Buffer.alloc(s, 1 * s.sampleRate, 1);
-
+	//b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
+	q = RTWaveSetData();
 };
 
-
-/*
-b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
-*/
 )
 
 (
@@ -29,7 +23,7 @@ Ndef(\analysis).addSpec(\analyse, [0, 1, \lin, 1]);
 Ndef(\analysis, {
 	var analyse     = \analyse.kr(1);
 
-	RTWaveSetAnalysis.ar(q.aBuf, q.xBuf,
+	RTWaveSetAnalysis.ar(q,
 		LeakDC.ar(Ndef(\sound).ar(1), 0.99),
 		analyse
 	);
@@ -76,7 +70,7 @@ Ndef(\wsRepeat, {
 
 	// SinOsc.ar()!2;
 	// select WS index based on desired amplitude / duration
-	selectorIdx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, wsDur + [0, 0.0001], wsAmp);
+	selectorIdx = RTWaveSetSelector.ar(q, wsDur + [0, 0.0001], wsAmp);
 
 
 	// idx = Select.kr(rt, [selectorIdx, rtIdx]);
@@ -87,7 +81,7 @@ Ndef(\wsRepeat, {
 	//
 	//
 
-	(RTWaveSetPlayerTriggered.ar(q.aBuf, q.xBuf,
+	(RTWaveSetPlayerTriggered.ar(q,
 		trig, idx-(numWS-1), rate + [0, 0.124], numWS, repetitions)).tanh;
 });
 )
@@ -151,7 +145,7 @@ TODO: interpolation
 
 Also great to have:
 Intermediate units, which, based on (more or less) high-level parameters, calculate indices:
-RTWaveSetDurAmp2Idx.ar(q.aBuf, q.xBuf, dur, amp)
+RTWaveSetDurAmp2Idx.ar(q, dur, amp)
 -> amp == -1 : ignore amp
 -> dur == -1 : ignore dur
 returns index of the wave that is closest to given [dur, amp] combination
@@ -161,6 +155,6 @@ Is amp for Amplitude? I decided to use Root Mean Square.
 Selection by duration works great but selection by amp worked not as expected for me.
 Weight for a comibnation of amp and dur criteria are hard coded so far.
 
-RTWaveSetPeakIdx.ar(q.aBuf, q.xBuf, windowSize)
+RTWaveSetPeakIdx.ar(q, windowSize)
 
 */

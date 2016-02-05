@@ -1,7 +1,7 @@
 TITLE:: RTWaveSetAnalysis
 summary:: Provides waveset analysis of a realtime signal.
-categories:: UGens>Analysis
-related:: Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetSelector
+categories:: UGens>RTWaveSets
+related:: Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetFeatureExtractor
 
 DESCRIPTION::
 A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWaveSetPlayerTriggered for playback and RTWaveSetSelector for waveset selection by criteria.
@@ -11,11 +11,8 @@ CLASSMETHODS::
 METHOD:: ar
 Analyse an input signal.
 
-ARGUMENT:: audioBuf
-Buffer used to store the incoming audiosignal for waveset playback. It's size limits the time the signal of the past is available for playback. (Additional limited by the size of wsBuf.)
-
-ARGUMENT:: wsBuf
-Buffer used to store found wavesets. It's size limits the number of wavesets of the past that are available. (Additional limited by the size of audioBuf.)
+ARGUMENT:: wsData
+RTWaveSetData object containing buffers for waveset data.
 
 ARGUMENT:: in
 Input signal to be analysed. It's recommended to remove a DC offset from the signal i.e. using the LeadDC UGen.

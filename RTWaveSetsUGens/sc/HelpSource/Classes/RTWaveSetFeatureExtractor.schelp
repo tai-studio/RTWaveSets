@@ -1,7 +1,7 @@
 TITLE:: RTWaveSetFeatureExtractor
 summary:: Get the feature values of a waveset.
-categories:: UGens>Unclassified
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetSelector
+categories:: UGens>RTWaveSets
+related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetData
 
 DESCRIPTION::
 Get the values of waveset features that was calculated during analysis. Available Features:
@@ -15,11 +15,8 @@ CLASSMETHODS::
 
 METHOD:: kr
 
-ARGUMENT:: audioBuf
-Buffer with signal data from RTWaveSetAnalysis.
-
-ARGUMENT:: wsBuf
-Buffer with waveset data from RTWaveSetAnalysis.
+ARGUMENT:: wsData
+RTWaveSetData object containing buffers with waveset data.
 
 ARGUMENT:: feature
 Specify feature as symbol. (\dur, \rms)
