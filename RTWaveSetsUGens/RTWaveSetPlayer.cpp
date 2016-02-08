@@ -205,7 +205,8 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
     if(!doInterpolation)
     {
         // no interpolation:
-        sampleVal= unit->audioBuf->get((int) (idx+0.5f));
+        int idxRound = (int) (idx+0.5f);
+        sampleVal= unit->audioBuf->get(idxRound);
     }
 
     return sampleVal;

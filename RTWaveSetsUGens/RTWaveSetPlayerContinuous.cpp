@@ -43,13 +43,29 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
             }
         }
 
+        float outSample = 0.0;
+
         // Play WaveSets from Iterator
-        if(unit->wsIterator.endOfPlay()) {
-            out[i]=0.0;
+        try
+        {
+            if(!unit->wsIterator.endOfPlay()) {
+                float nextIdx = unit->wsIterator.next();
+                if(unit->audioBuf->isInRange((int)nextIdx)){
+                    outSample = RTWaveSetPlayer_getSample(unit,nextIdx);
+                }
+                else{
+                    printf("WaveSet playback failed! (out of audio buffer Range)\n");
+                    unit->wsIterator = WaveSetIterator(); // stop playback by resetting
+                }
+            }
         }
-        else {
-            out[i] = RTWaveSetPlayer_getSample(unit,unit->wsIterator.next());
+        catch(...)
+        {
+            printf("WaveSet playback failed! (unknown exception)\n");
+            unit->wsIterator = WaveSetIterator(); // stop playback by resetting
         }
+
+        out[i] = outSample;
     }
 
 

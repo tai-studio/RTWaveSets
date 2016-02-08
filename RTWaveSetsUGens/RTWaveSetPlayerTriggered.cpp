@@ -75,19 +75,26 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         for(int playIdx=0;playIdx<=unit->lastActiveIteratorIdx;playIdx++)
         {
             WaveSetIterator* wsi = &unit->wsIterators[playIdx];
-            // play parallel WaveSets from Iterators
-            if(!wsi->endOfPlay())
+            try
             {
-                    float idx = wsi->next();
-                    if(unit->audioBuf->isInRange((int)idx)) {
-                        outSum += RTWaveSetPlayer_getSample(unit,idx);
-                        lastPlayedIterator = playIdx;
-                    } else {
-                        printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                        *wsi = WaveSetIterator(); // stop playback by resetting
-                    }
+                // play parallel WaveSets from Iterators
+                if(!wsi->endOfPlay())
+                {
+                        float idx = wsi->next();
+                        if(unit->audioBuf->isInRange((int)idx)) {
+                            outSum += RTWaveSetPlayer_getSample(unit,idx);
+                            lastPlayedIterator = playIdx;
+                        } else {
+                            printf("WaveSet playback failed! (out of audio buffer Range)\n");
+                            *wsi = WaveSetIterator(); // stop playback by resetting
+                        }
+                }
             }
-
+            catch(...)
+            {
+                printf("WaveSet playback failed! (unknown exception)\n");
+                *wsi = WaveSetIterator(); // stop playback by resetting
+            }
         }
         out[i] = outSum;
 
