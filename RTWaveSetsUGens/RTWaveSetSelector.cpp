@@ -14,9 +14,9 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
     unit->searchIdx = -1;
     unit->bestIdx = unit->wsBuf->getFirstPos()+1;
     unit->bestDiff = FLT_MAX;
-    unit->lookBackLimit = -1;
     unit->desiredLen = -1;
     unit->desiredRMS = -1;
+    unit->startSearchIdx = -1;
 
     // TODO replace fixed weight by a dynamic one, e.g. based on average values
     unit->lenWeight = 1;
@@ -34,50 +34,99 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 
 void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 {
-    // TODO split to several functions
-
     float *out = OUT(0);
 
     // receive input for desired length
     float inDesiredLenSec = IN0(2);
-    int inDesiredLen = (int) (inDesiredLenSec * unit->mWorld->mFullRate.mSampleRate)+0.5f;
-    if(inDesiredLen < 0) inDesiredLen = -1;
+    int inDesiredLen = (int) (inDesiredLenSec * unit->mWorld->mFullRate.mSampleRate)+0.5f; // convert to samples
 
     // receive input for desired amplitude
     float inDesiredAmp = IN0(3);
 
     // receive lookBackLimit input
-    unit->lookBackLimit = (int) IN0(4);
+    int inLookBackLimit = (int) IN0(4);
 
-    // find WS idx to start searching depending on lookBackLimit
-    int startSearchIdx;
-    if(unit->lookBackLimit>=0) {
-        startSearchIdx = unit->wsBuf->getLastPos() - unit->lookBackLimit;
-    } else {
-        startSearchIdx = unit->wsBuf->getFirstPos();
+    // update serach paramters
+    RTWaveSetSelector_setSearchParams(unit,inDesiredLen,inDesiredAmp, inLookBackLimit);
+
+    // search
+    RTWaveSetSelector_findBestIdx(unit);
+
+    // Output
+    for (int i=0; i<inNumSamples; ++i)
+    {
+        out[i]=unit->bestIdx;
     }
 
-    if(unit->searchIdx<startSearchIdx) unit->searchIdx = startSearchIdx;
+}
+
+
+/**
+ * @brief Set the search parameters, restart search if necessary.
+ */
+
+void RTWaveSetSelector_setSearchParams(RTWaveSetSelector *unit, float desiredLen, float desiredAmp,int lookBackLimit){
+
+    // find WS idx to start searching depending on lookBackLimit
+    int inStartSearchIdx;
+    if(lookBackLimit>=0 && lookBackLimit < unit->wsBuf->getLen()) {
+        inStartSearchIdx = unit->wsBuf->getLastPos() - lookBackLimit;
+    } else {
+        inStartSearchIdx = unit->wsBuf->getFirstPos();
+    }
+
+    if(unit->searchIdx<inStartSearchIdx) unit->searchIdx = inStartSearchIdx;
 
     // check if we have to restart Searching
-    if(inDesiredLen != unit->desiredLen
-            || inDesiredAmp != unit->desiredRMS
-            || unit->bestIdx < startSearchIdx // out of lookback range?
-            || !unit->wsBuf->isInRange(unit->bestIdx) // out of xing buffer range?
+    if(desiredLen != unit->desiredLen
+            || desiredAmp != unit->desiredRMS
+            || unit->bestIdx < inStartSearchIdx // last result out of lookback range?
+            || inStartSearchIdx < unit->startSearchIdx
+            || !unit->wsBuf->isInRange(unit->bestIdx) // last result out of xing buffer range?
             || !unit->audioBuf->isInRange(unit->wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
             )
     {
-        unit->desiredLen = inDesiredLen;
-        unit->desiredRMS = inDesiredAmp;
-        unit->searchIdx = startSearchIdx;
+        // restart Searching by resetting variables
+        unit->desiredLen = desiredLen;
+        unit->desiredRMS = desiredAmp;
+        unit->startSearchIdx = inStartSearchIdx;
+        unit->searchIdx = inStartSearchIdx;
         unit->bestIdx = unit->searchIdx;
         unit->bestDiff = FLT_MAX;
-        //printf("unit->lookBackLimit: %i, startSearchIdx: %i\n",unit->lookBackLimit, startSearchIdx);
-        //printf_debug("RTWaveSetSelector_next() restart Searching (desiredLen %i, desiredAmp %f).\n",unit->desiredLen,unit->desiredRMS);
     }
 
+}
+
+/**
+ * @brief Calculate the diff of features.
+ */
+
+float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSet ws){
+    float diff=0.0;
+
+    if(unit->desiredLen!=-1) {
+        float diffLen = unit->lenWeight * abs(unit->desiredLen-ws.getLength());
+        diff += diffLen*diffLen;
+    }
+
+    if(unit->desiredRMS>=0) {
+        float diffRMS = unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
+        diff += diffRMS*diffRMS;
+    }
+
+    return diff;
+}
+
+
+/**
+ * @brief Find the index of the waveset with the smallest diff.
+ * @param unit
+ */
+
+void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
+
     // search for best WS idx
-    if(unit->desiredLen==-1 && unit->desiredRMS<0)
+    if(unit->desiredLen<0 && unit->desiredRMS<0)
     {
        unit->bestIdx = unit->wsBuf->getLastPos();
     }
@@ -89,23 +138,15 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
         for(idx = unit->searchIdx; idx<=unit->wsBuf->getLastPos(); idx++)
         {
             WaveSet ws = unit->wsBuf->get(idx);
-            float diff=0.0;
 
-            if(unit->desiredLen!=-1) {
-                float diffLen = unit->lenWeight * abs(unit->desiredLen-ws.getLength());
-                diff += diffLen*diffLen;
-            }
-
-            if(unit->desiredRMS>=0) {
-                float diffRMS = unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
-                diff += diffRMS*diffRMS;
-            }
+            float diff = RTWaveSetSelector_calcDiff(unit,ws);
 
             if (diff <= unit->bestDiff)
             {
                 unit->bestIdx = idx;
                 unit->bestDiff = diff;
             }
+
         }
         unit->searchIdx = idx;
 
@@ -115,13 +156,6 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
         }
 
     }
-
-    // Output
-    for (int i=0; i<inNumSamples; ++i)
-    {
-        out[i]=unit->bestIdx;
-    }
-
 }
 
 /**
