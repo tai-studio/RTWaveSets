@@ -23,7 +23,12 @@ Enable (>0) or pause (<=0) the analysis. (control rate)
 ARGUMENT:: minWSLen
 Minimal Waveset length in seconds. Shorter wavesets will be combined with the following wavesets unit the min. length is reached.
 
-returns:: Output is the index of the latest waveset.
+returns::
+Output is the first index oldest available and the the latest waveset.
+code::
+#idxOldest,idxNewest = RTWaveSetAnalysis.ar(wsData, SoundIn.ar(0));
+::
+
 
 INSTANCEMETHODS::
 

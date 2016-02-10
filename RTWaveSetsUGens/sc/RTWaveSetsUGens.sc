@@ -13,11 +13,21 @@ RTWaveSetData {
     }
 }
 
-RTWaveSetAnalysis : UGen {
+RTWaveSetAnalysis : MultiOutUGen {
 	*ar { arg wsData, in, active=1, minWSLen=0.0005;
 		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, in, active, minWSLen)
 	}
+
+	init { arg ... theInputs;
+		inputs = theInputs;
+		channels = [
+			OutputProxy(rate, this, 0),
+			OutputProxy(rate, this, 1)
+		];
+		^channels
+	}
 }
+
 
 RTWaveSetSelector : UGen {
 	*ar { arg wsData, dur=(-1), rms=(-1), lookBackLimit=(-1);

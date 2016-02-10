@@ -7,7 +7,8 @@ s.waitForBoot{
 	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
 	*/
 	b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,r);
-	q = RTWaveSetData();
+	//b = Buffer.read(s, "/Volumes/Fabi HD/Music/Christian Löffler/Young Alaska/03 Notes (Original Mix).wav",0,-1,r);
+	q = RTWaveSetData(441000,10000);
 	NdefMixer(s);
 
 };
@@ -17,38 +18,45 @@ r={
 
 Ndef(\sound, {	PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2); });
 
-Ndef(\wsAnalysis).addSpec(\analysisOn, [-1, 1]);
-Ndef(\wsRepeat).addSpec(\repetition, [1, 100]);
-Ndef(\wsRepeat).addSpec(\groupSize, [1, 100]);
-Ndef(\wsRepeat).addSpec(\trigRate, [1, 100, \lin, 1]);
+Ndef(\wsAnalysis).addSpec(\analysisOn, [-1, 1, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\repetition, [1, 100, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\groupSize, [1, 100, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\trigRate, [0, 100, \lin, 1]);
 Ndef(\wsRepeat).addSpec(\rate, [-2, 2]);
 Ndef(\wsRepeat).addSpec(\desiredLen, [-1, 10]);
 Ndef(\wsRepeat).addSpec(\desiredRMS, [-1, 1]);
-Ndef(\wsRepeat).addSpec(\selLookBack, [-1, 100]);
+Ndef(\wsRepeat).addSpec(\selLookBack, [-1, 1000, \lin, 1]);
+Ndef(\wsRepeat).addSpec(\idxOffset, [-100, 100, \lin, 1]);
 
 Ndef(\wsAnalysis, {
 	arg analysisOn=1;
-
-	RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
-
-}).poll;
+	var idxStart,idxEnd;
+	#idxStart,idxEnd = RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
+	idxStart.poll;
+	idxEnd.poll;
+});
 
 
 Ndef(\wsRepeat, {
-		arg repetition=10, groupSize=10, rate=1, desiredLen=(-1), desiredRMS=(-1), selLookBack=(-1);
-	var idx, idx2, out, trig, trig2;
+		arg repetition=10, groupSize=10, rate=1, desiredLen=(-1), desiredRMS=(-1), selLookBack=(-1), idxOffset=0;
+	var idx, idx2, out, trig, trig2, dur;
 	trig = Impulse.ar(\trigRate.kr(1));
 	//trig = Impulse.ar(EnvGen.ar(Env.perc, trig, 100,0,0.5)); // try to create "clouds"
 
 	idx = RTWaveSetSelector.ar(q, desiredLen/1000, desiredRMS, selLookBack);
-	idx.poll;
-	//RTWaveSetFeatureExtractor.kr(q, \dur, idx).poll;
+	//idx.poll;
+	dur = RTWaveSetFeatureExtractor.kr(q, \dur, idx);
+	//dur.poll;
 
-	RTWaveSetPlayerTriggered.ar(
-		q, trig, idx-groupSize+1,  rate, groupSize, repetition);
+	out = RTWaveSetPlayerTriggered.ar(q, trig, idx+idxOffset,  rate, groupSize, repetition);
 
-	/*RTWaveSetPlayerContinuous.ar(
-		q, idx-groupSize+1,  rate, groupSize, repetition);*/
+	//*EnvGen.ar(Env.sine, trig, 1,0,K2A.ar(dur)); // try envelope
+	//Ndef(\sound).ar(1)*EnvGen.ar(Env.sine, trig, 1,0,1); // envelope tryouts
+
+	//out = RTWaveSetPlayerContinuous.ar(q, idx,  rate, groupSize, repetition);
+
+	Out.ar(0,Pan2.ar(out));
+
 }).play;
 
 }
