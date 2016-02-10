@@ -4,7 +4,7 @@ RTWaveSetData {
 	var <audioBuf, <wsBuf;
 
 	*new{ arg audioBufSize=1000000, wsBufSize=10000, server(Server.default);
-		^super.newCopyArgs(audioBufSize, audioBufSize, server).init
+		^super.newCopyArgs(audioBufSize, wsBufSize, server).init
 	}
 
 	init {
