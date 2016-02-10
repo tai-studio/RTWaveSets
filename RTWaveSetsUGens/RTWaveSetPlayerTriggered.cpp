@@ -42,7 +42,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         int idxIn = (int) idxInFloat[i];
 
         // check for Trigger and valid idx input
-        if(trig[i]>0.0 && unit->prevTrig<=0.0 && idxIn >= 0 && idxIn <= unit->wsBuf->getLastPos())
+        if(trig[i]>0.0 && unit->prevTrig<=0.0 && idxIn >= 0)
         {
             // We have a Trigger, get WaveSet and set Iterator:
             // look for a free WaveSetIterator

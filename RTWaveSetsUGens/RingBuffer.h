@@ -23,7 +23,7 @@ public:
     T getFirst(int forward=0){ return get(firstPos+forward); }
     int getLastPos(){ return lastPos; }
     void setFirstPos(int firstPos);
-    void validateFirstPos();
+    void updateFirstPos();
     int getFirstPos(){ return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getSize() { return size; }

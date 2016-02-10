@@ -20,6 +20,7 @@ Trigger to start the playback of the defined wavesets. There are up to 30 parall
 
 ARGUMENT:: idx
 Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)
+If the idx is out of the waveset buffer range and not negative it will be folded to a valdid idx using modulo. If the idx is negative nothing will be played.
 
 ARGUMENT:: rate
 Playback rate i.e. 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.

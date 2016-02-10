@@ -17,13 +17,13 @@ template <typename T>
 void RingBuffer<T>::put(T val) {
     lastPos++;
 
-    validateFirstPos();
+    updateFirstPos();
 
     this->data[lastPos % size] = val;
 }
 
 template <typename T>
-void RingBuffer<T>::validateFirstPos(){
+void RingBuffer<T>::updateFirstPos(){
 
     // limit zero
     if(firstPos < 0 && lastPos >= 0) firstPos = 0;
@@ -39,7 +39,7 @@ void RingBuffer<T>::validateFirstPos(){
 template <typename T>
 void RingBuffer<T>::setFirstPos(int firstPos){
     this->firstPos = firstPos;
-    validateFirstPos();
+    updateFirstPos();
 }
 
 template <typename T>

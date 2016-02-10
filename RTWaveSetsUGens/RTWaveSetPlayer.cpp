@@ -134,6 +134,11 @@ void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int r
     // check input Parameters
     if(groupSize < 0) groupSize = 1;
 
+    // fold idx if its out of range
+     if(!unit->wsBuf->isInRange(xingIdx)){
+         xingIdx = xingIdx % unit->wsBuf->getLen() + unit->wsBuf->getFirstPos();
+     }
+
     if(unit->wsBuf->isInRange(xingIdx)){
         WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
 

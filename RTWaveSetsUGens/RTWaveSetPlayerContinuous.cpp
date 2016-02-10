@@ -36,7 +36,7 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
         int idxIn = (int) idxInFloat[i];
 
         // check index input
-        if(unit->wsBuf->isInRange(idxIn)){
+        if(idxIn>=0){
             // Start next Playback on End
             if(unit->wsIterator.endOfPlay()){
                 RTWaveSetPlayer_playNextWS(&unit->wsIterator, unit,(int) repeat,(int) groupSize,idxIn ,rate);
