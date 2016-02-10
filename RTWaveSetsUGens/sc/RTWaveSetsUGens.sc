@@ -1,14 +1,15 @@
 RTWaveSetData {
 	var <audioBufSize, <wsBufSize;
+	var <server;
 	var <audioBuf, <wsBuf;
 
-	*new{ arg audioBufSize=1000000, wsBufSize=10000;
-		^super.newCopyArgs(audioBufSize,audioBufSize).init
+	*new{ arg audioBufSize=1000000, wsBufSize=10000, server(Server.default);
+		^super.newCopyArgs(audioBufSize, audioBufSize, server).init
 	}
 
 	init {
-		audioBuf = Buffer.alloc(Server.default, audioBufSize);
-		wsBuf = Buffer.alloc(Server.default, wsBufSize);
+		audioBuf = Buffer.alloc(server, audioBufSize);
+		wsBuf = Buffer.alloc(server, wsBufSize);
     }
 }
 
