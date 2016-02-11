@@ -68,7 +68,7 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
     }
 
-    // Remove obsolete wavesets
+    // Remove obsolete wavesets // TODO move to extra class WSData
     if(unit->wsBuf->getLen()>0 && unit->audioBuf->getFirstPos()>0){
         while(! unit->audioBuf->isInRange(unit->wsBuf->getFirst().start - 1.0 * unit->mCalcRate)) // remove wavesets out of range with 1 second padding
         {

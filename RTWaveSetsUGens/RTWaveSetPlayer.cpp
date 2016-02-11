@@ -116,7 +116,6 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
             return ws;
         }
 
-        // cast to int
         ws.end = end;
         ws.start = start;
     }
@@ -131,12 +130,23 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
 
 void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate){
 
+    //printf("RTWaveSetPlayer_playNextWS %i\n",xingIdx);
+
     // check input Parameters
     if(groupSize < 0) groupSize = 1;
 
     // fold idx if its out of range
      if(!unit->wsBuf->isInRange(xingIdx)){
-         xingIdx = xingIdx % unit->wsBuf->getLen() + unit->wsBuf->getFirstPos();
+
+         // fold within available wavesets
+         xingIdx = xingIdx % unit->wsBuf->getLen();
+
+         // shift in absolute buffer range
+         while(xingIdx < unit->wsBuf->getFirstPos()) {
+             xingIdx += unit->wsBuf->getSize();
+         }
+
+         //printf("folded idx to %i.\n",xingIdx);
      }
 
     if(unit->wsBuf->isInRange(xingIdx)){
@@ -151,7 +161,7 @@ void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int r
 
         wsi->playWS(ws,repeat,rate);
     }
-    else{
+    else {
         printf("RTWaveSetPlayer_playNextWS() Error: Waveset idx out of range!");
     }
 

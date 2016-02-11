@@ -27,7 +27,7 @@ public:
     int getFirstPos(){ return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getSize() { return size; }
-    int getLen(){ return lastPos - firstPos; }
+    int getLen(){ if(lastPos < 0 || firstPos < 0) return 0; return lastPos - firstPos + 1; } // TODO add 1?
     bool isInRange(int pos) { return (pos >= getFirstPos() && pos <= lastPos); }
 
     static SndBuf* getSndBuf(float fbufnum, Unit* unit);
