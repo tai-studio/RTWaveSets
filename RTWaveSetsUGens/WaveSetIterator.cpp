@@ -20,9 +20,9 @@ WaveSetIterator::WaveSetIterator(){
  * @return Sample position in the buffer or -1 if end is reached.
  */
 
-float WaveSetIterator::next() {
+double WaveSetIterator::next() {
 
-    float val;
+    double val;
     // end of playback?
     if(repeat>=0) {
         val = playPos;

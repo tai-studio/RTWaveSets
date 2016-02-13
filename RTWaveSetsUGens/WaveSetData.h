@@ -17,6 +17,7 @@ public:
     /** Ringbuffer for Wavesets */
     WaveSetRingBuffer *wsBuf;
 
+    WaveSetData(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf);
     WaveSetData(float fbufnumAudio, float fbufnumWS, Unit* unit);
     void cleanUp();
 

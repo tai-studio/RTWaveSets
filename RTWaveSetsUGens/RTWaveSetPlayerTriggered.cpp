@@ -80,7 +80,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
                 // play parallel WaveSets from Iterators
                 if(!wsi->endOfPlay())
                 {
-                        float idx = wsi->next();
+                        double idx = wsi->next();
                         if(unit->wsData.audioBuf->isInRange((int)idx)) {
                             outSum += RTWaveSetPlayer_getSample(unit,idx);
                             lastPlayedIterator = playIdx;

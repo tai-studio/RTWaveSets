@@ -13,63 +13,6 @@ void RTWaveSetPlayer_Ctor( RTWaveSetPlayer *unit ) {
 }
 
 
-
-/**
- * @brief Get the latest Waveset that is in the given size range.
- * @param unit
- * @param minWavesetLength
- * @param maxWavesetLength
- * @return The WaveSet.
- */
-
-WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWavesetLength, int maxWavesetLength)
-{
-    WaveSetPlay ws;
-    ws.start = -1;
-    ws.end = -1;
-
-
-    if(unit->wsData.wsBuf->getLastPos()>=1&& unit->wsData.audioBuf->getLastPos()>=maxWavesetLength)
-    // wait for at least one zerocrossing and enouph input samples for a waveset mit max length
-    {
-        // zerocrossings "backward-index" of the waveset
-        int endBack = 0;
-        int startBack = endBack+1;
-
-        // search for for a WaveSet with the right length, beginning at the end.
-        int wsLen;
-        do {
-            ws.end=unit->wsData.wsBuf->getLast(endBack).start;
-            ws.start=unit->wsData.wsBuf->getLast(startBack).start;
-            wsLen = ws.end - ws.start;
-
-            // if the Waveset it too long take the next one
-            if(wsLen>maxWavesetLength)
-            {
-                endBack++;
-                startBack = endBack+1;
-                #ifdef RTWaveSetPlayer_DEBUG
-                printf("RTWaveSetAnalysis_latesWSinRange() Warning: skipping too long WaveSet!");
-                #endif
-            }
-
-            // if the WS is too short extend to the next zerocrossing.
-            if(wsLen<minWavesetLength)
-            {
-                startBack++;
-            }
-
-            if(startBack > unit->wsData.wsBuf->getLastPos()) break; // give up when reached beginning
-
-        } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
-    }
-
-    #ifdef RTWaveSetPlayer_DEBUG
-    printf("RTWaveSetPlayer_getWS() len:%i\n",ws.end-ws.start);
-    #endif
-    return ws;
-}
-
 /**
  * @brief Get a WaveSet.
  * @param unit
@@ -180,7 +123,7 @@ void RTWaveSetPlayer_Dtor( RTWaveSetPlayer *unit ) {
  * TODO: use really played samples at repeats and waveset gaps not the continuous recording for interpolation.
  */
 
-float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
+float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, double idx)
 {
     float sampleVal;
 
@@ -190,7 +133,7 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
     if(doInterpolation)
     {
         int idxInt = (int) idx;
-        float idxFrac = idx - (float) idxInt;
+        float idxFrac = (double) idx - (double) idxInt;
 
         // check the available data range for interpolation
         if(unit->wsData.audioBuf->isInRange(idxInt-1) && unit->wsData.audioBuf->isInRange(idxInt+2))

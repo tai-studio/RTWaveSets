@@ -14,6 +14,18 @@ WaveSetData::WaveSetData(float fbufnumAudio, float fbufnumWS, Unit *unit)
 }
 
 /**
+ * @brief Simple constructor for existing buffers.
+ * @param audioBuf
+ * @param wsBuf
+ */
+
+WaveSetData::WaveSetData(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf)
+{
+    this->audioBuf = audioBuf;
+    this->wsBuf = wsBuf;
+}
+
+/**
  * @brief Create a RingBuffer in the memory of a given sc-buffer. If not yet done it will be initialized.
  * Int the beginning of the memory a magic float value is stored to determine if the buffer is already initialized.
  * The Layout in the Buffer is: float firstMagicFloat, RingBuffer<T>, ringBufferData<T>[]
@@ -26,6 +38,8 @@ template <typename T>
 RingBuffer<T> *WaveSetData::createRingBufferInBuffer(float fbufnum, Unit *unit)
 {
     SndBuf* buf = RTWaveSetBase_getSndBuf(fbufnum,unit);
+    if(buf==NULL) throw "no valid buffer!";
+
     float* data = (float*) buf->data;
     int dataSize = buf->samples*sizeof(float);
 
@@ -40,7 +54,7 @@ RingBuffer<T> *WaveSetData::createRingBufferInBuffer(float fbufnum, Unit *unit)
     // initialze the ringbuffer if not yet happend
     if(*firstMagicFloat!=magicValue){ // check magic number at the beginning of the buffer
         *firstMagicFloat=magicValue;
-        *srb =  RingBuffer<T>((T*) bufferContent,bufferLen);
+        *srb = RingBuffer<T>((T*) bufferContent,bufferLen);
     }
 
     return srb;
@@ -98,8 +112,8 @@ SndBuf *WaveSetData::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
 
 void WaveSetData::cleanUp()
 {
-    if(wsBuf->getLen()>0 && audioBuf->getFirstPos()>0){
-        while(! audioBuf->isInRange(wsBuf->getFirst().start)) // remove wavesets out of audio range
+    if(wsBuf->getLen()>0){
+        while(! audioBuf->isInRange(wsBuf->getFirst().start) || ! audioBuf->isInRange(wsBuf->getFirst().end)) // remove wavesets out of audio range
         {
             wsBuf->pop();
         }

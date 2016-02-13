@@ -13,6 +13,10 @@ private:
     int size;
     int firstPos;
     int lastPos;
+
+    void setFirstPos(int firstPos);
+    void updateFirstPos();
+
 public:
     RingBuffer(T* data, int size);
     void put(T val);
@@ -22,8 +26,7 @@ public:
     T getLast(int back=0){ return get(lastPos-back); }
     T getFirst(int forward=0){ return get(firstPos+forward); }
     int getLastPos(){ return lastPos; }
-    void setFirstPos(int firstPos);
-    void updateFirstPos();
+
     int getFirstPos(){ return firstPos; }
     void setLastPos(int lastPos) {this->lastPos = lastPos; }
     int getSize() { return size; }
