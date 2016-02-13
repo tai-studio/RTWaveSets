@@ -81,7 +81,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
                 if(!wsi->endOfPlay())
                 {
                         float idx = wsi->next();
-                        if(unit->audioBuf->isInRange((int)idx)) {
+                        if(unit->wsData.audioBuf->isInRange((int)idx)) {
                             outSum += RTWaveSetPlayer_getSample(unit,idx);
                             lastPlayedIterator = playIdx;
                         } else {

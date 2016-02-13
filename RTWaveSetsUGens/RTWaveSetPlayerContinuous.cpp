@@ -50,7 +50,7 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
         {
             if(!unit->wsIterator.endOfPlay()) {
                 float nextIdx = unit->wsIterator.next();
-                if(unit->audioBuf->isInRange((int)nextIdx)){
+                if(unit->wsData.audioBuf->isInRange((int)nextIdx)){
                     outSample = RTWaveSetPlayer_getSample(unit,nextIdx);
                 }
                 else{

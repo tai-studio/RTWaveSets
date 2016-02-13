@@ -46,12 +46,12 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
         if(analysisOn > 0.0) // analysis is running...
         {
             // save to Buffer
-            unit->audioBuf->put(in[i]);
+            unit->wsData.audioBuf->put(in[i]);
 
             // do analysis only if we have at least two continuous samples
             if(unit->lastAnalysisOn > 0.0)
             {
-                float prev = unit->audioBuf->getLast(1);
+                float prev = unit->wsData.audioBuf->getLast(1);
 
                 // look for a -/+ zero crossing
                 if(prev <= 0.0 && in[i] > 0.0)
@@ -63,18 +63,12 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
         }
 
         unit->lastAnalysisOn = analysisOn;
-        out1[i] = (float) unit->wsBuf->getFirstPos();
-        out2[i] = (float) unit->wsBuf->getLastPos();
+        out1[i] = (float) unit->wsData.wsBuf->getFirstPos();
+        out2[i] = (float) unit->wsData.wsBuf->getLastPos();
 
     }
 
-    // Remove obsolete wavesets // TODO move to extra class WSData
-    if(unit->wsBuf->getLen()>0 && unit->audioBuf->getFirstPos()>0){
-        while(! unit->audioBuf->isInRange(unit->wsBuf->getFirst().start - 1.0 * unit->mCalcRate)) // remove wavesets out of range with 1 second padding
-        {
-            unit->wsBuf->pop();
-        }
-    }
+    unit->wsData.cleanUp();
 
 }
 
@@ -85,7 +79,7 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 
 void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
 {
-    int currentXing = unit->audioBuf->getLastPos();
+    int currentXing = unit->wsData.audioBuf->getLastPos();
 
     if(unit->lastXing!=-1) {
         int start = unit->lastXing;
@@ -97,7 +91,7 @@ void RTWaveSetAnalysis_gotXing(RTWaveSetAnalysis *unit)
             float amp = RTWaveSetAnalysis_calcRMS(unit,start,end);
 
             WaveSet ws(unit->lastXing, currentXing, amp);
-            unit->wsBuf->put(ws);
+            unit->wsData.wsBuf->put(ws);
             unit->lastXing = currentXing;
             // #ifdef RTWaveSetAnalysis_DEBUG
             // printf("RTWaveSetAnalysis_gotXing() xingIdx:%i wsLen: %i\n",unit->xingsBuf->getLastPos(),wsLen);
@@ -130,7 +124,7 @@ float RTWaveSetAnalysis_calcRMS(RTWaveSetAnalysis *unit, int start, int end){
 
     for(int idx=start;idx<end;idx++) // TODO inclusive or exclusive end? also relevant for length
     {
-        float val = unit->audioBuf->get(idx);
+        float val = unit->wsData.audioBuf->get(idx);
         amp += val*val;
     }
 

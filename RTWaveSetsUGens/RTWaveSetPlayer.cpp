@@ -29,7 +29,7 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
     ws.end = -1;
 
 
-    if(unit->wsBuf->getLastPos()>=1&& unit->audioBuf->getLastPos()>=maxWavesetLength)
+    if(unit->wsData.wsBuf->getLastPos()>=1&& unit->wsData.audioBuf->getLastPos()>=maxWavesetLength)
     // wait for at least one zerocrossing and enouph input samples for a waveset mit max length
     {
         // zerocrossings "backward-index" of the waveset
@@ -39,8 +39,8 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
         // search for for a WaveSet with the right length, beginning at the end.
         int wsLen;
         do {
-            ws.end=unit->wsBuf->getLast(endBack).start;
-            ws.start=unit->wsBuf->getLast(startBack).start;
+            ws.end=unit->wsData.wsBuf->getLast(endBack).start;
+            ws.start=unit->wsData.wsBuf->getLast(startBack).start;
             wsLen = ws.end - ws.start;
 
             // if the Waveset it too long take the next one
@@ -59,7 +59,7 @@ WaveSetPlay RTWaveSetPlayer_latesWSinRange(RTWaveSetPlayer *unit, int minWaveset
                 startBack++;
             }
 
-            if(startBack > unit->wsBuf->getLastPos()) break; // give up when reached beginning
+            if(startBack > unit->wsData.wsBuf->getLastPos()) break; // give up when reached beginning
 
         } while(wsLen < minWavesetLength || wsLen > maxWavesetLength);
     }
@@ -83,21 +83,21 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
     ws.start = -1;
     ws.end = -1;
 
-    if(unit->wsBuf->isInRange(wsIdx) && groupSize<unit->wsBuf->getLen())
+    if(unit->wsData.wsBuf->isInRange(wsIdx) && groupSize<unit->wsData.wsBuf->getLen())
     {
         int startIdx = wsIdx-groupSize/2;
         int endIdx = startIdx + groupSize - 1;
 
         // shift back if we are at the end
-        if(endIdx>unit->wsBuf->getLastPos())
+        if(endIdx>unit->wsData.wsBuf->getLastPos())
         {
-            endIdx = unit->wsBuf->getLastPos();
+            endIdx = unit->wsData.wsBuf->getLastPos();
             startIdx = endIdx - groupSize + 1;
         }
 
         // shift forward if we are on the beginning
-        if(startIdx<unit->wsBuf->getFirstPos()){
-            startIdx = unit->wsBuf->getFirstPos();
+        if(startIdx<unit->wsData.wsBuf->getFirstPos()){
+            startIdx = unit->wsData.wsBuf->getFirstPos();
             endIdx = startIdx + groupSize - 1;
         }
 
@@ -107,8 +107,8 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
             return ws;
         }
 
-        int start = unit->wsBuf->get(startIdx).start;
-        int end = unit->wsBuf->get(endIdx).end;
+        int start = unit->wsData.wsBuf->get(startIdx).start;
+        int end = unit->wsData.wsBuf->get(endIdx).end;
 
         if(isnan(end) || isnan(start) || end<1 || start<0)
         {
@@ -136,28 +136,28 @@ void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int r
     if(groupSize < 0) groupSize = 1;
 
     // fold idx if its out of range
-     if(!unit->wsBuf->isInRange(xingIdx)){
+     if(!unit->wsData.wsBuf->isInRange(xingIdx)){
 
          // fold within available wavesets
-         xingIdx = xingIdx % unit->wsBuf->getLen();
+         xingIdx = xingIdx % unit->wsData.wsBuf->getLen();
 
          // shift in absolute buffer range
-         while(xingIdx < unit->wsBuf->getFirstPos()) {
-             xingIdx += unit->wsBuf->getSize();
+         while(xingIdx < unit->wsData.wsBuf->getFirstPos()) {
+             xingIdx += unit->wsData.wsBuf->getSize();
          }
 
          //printf("folded idx to %i.\n",xingIdx);
      }
 
-    if(unit->wsBuf->isInRange(xingIdx)){
+    if(unit->wsData.wsBuf->isInRange(xingIdx)){
         WaveSetPlay ws = RTWaveSetPlayer_getWS(unit,xingIdx,groupSize);
 
         printf_debug("RTWaveSetPlayerContinuous_playNextWS(rep=%i,numWS=%i,xingIdx=%i,rate=%f) len=%i wsIdx(%i,%i) audioIdx(%i,%i) wsBufRange(%i,%i) audioBufRange(%i,%i)\n",
                      repeat,groupSize,xingIdx,rate,
                      ws.end-ws.start,
                      xingIdx,xingIdx+groupSize-1,ws.start,ws.end,
-                     unit->wsBuf->getFirstPos(),unit->wsBuf->getLastPos(),
-                     unit->audioBuf->getFirstPos(),unit->audioBuf->getLastPos());
+                     unit->wsData.wsBuf->getFirstPos(),unit->wsData.wsBuf->getLastPos(),
+                     unit->wsData.audioBuf->getFirstPos(),unit->wsData.audioBuf->getLastPos());
 
         wsi->playWS(ws,repeat,rate);
     }
@@ -193,21 +193,21 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
         float idxFrac = idx - (float) idxInt;
 
         // check the available data range for interpolation
-        if(unit->audioBuf->isInRange(idxInt-1) && unit->audioBuf->isInRange(idxInt+2))
+        if(unit->wsData.audioBuf->isInRange(idxInt-1) && unit->wsData.audioBuf->isInRange(idxInt+2))
         {
             // cubic interpolation:
-            float y0 = unit->audioBuf->get(idxInt-1);
-            float y1 = unit->audioBuf->get(idxInt);
-            float y2 = unit->audioBuf->get(idxInt+1);
-            float y3 = unit->audioBuf->get(idxInt+2);
+            float y0 = unit->wsData.audioBuf->get(idxInt-1);
+            float y1 = unit->wsData.audioBuf->get(idxInt);
+            float y2 = unit->wsData.audioBuf->get(idxInt+1);
+            float y3 = unit->wsData.audioBuf->get(idxInt+2);
 
             sampleVal = cubicinterp(idxFrac,y0,y1,y2,y3);
         }
-        else if(unit->audioBuf->isInRange(idxInt+1))
+        else if(unit->wsData.audioBuf->isInRange(idxInt+1))
         {
             // linear iterpolation:
-            float y1 = unit->audioBuf->get(idxInt);
-            float y2 = unit->audioBuf->get(idxInt+1);
+            float y1 = unit->wsData.audioBuf->get(idxInt);
+            float y2 = unit->wsData.audioBuf->get(idxInt+1);
             sampleVal = lininterp(idxFrac,y1,y2);
         }
         else{
@@ -221,7 +221,7 @@ float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, float idx)
     {
         // no interpolation:
         int idxRound = (int) (idx+0.5f);
-        sampleVal= unit->audioBuf->get(idxRound);
+        sampleVal= unit->wsData.audioBuf->get(idxRound);
     }
 
     return sampleVal;

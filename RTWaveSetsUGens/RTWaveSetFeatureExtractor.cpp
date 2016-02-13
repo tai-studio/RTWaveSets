@@ -34,10 +34,10 @@ void RTWaveSetFeatureExtractor_next(RTWaveSetFeatureExtractor *unit, int inNumSa
 
         if(featureID==0) {
             // WS length in seconds
-            result = (float) unit->wsBuf->get(idx).getLength() / unit->mWorld->mFullRate.mSampleRate;
+            result = (float) unit->wsData.wsBuf->get(idx).getLength() / unit->mWorld->mFullRate.mSampleRate;
         } else if(featureID==1) {
             // WS amplitude 0..1
-            result = unit->wsBuf->get(idx).amp;
+            result = unit->wsData.wsBuf->get(idx).amp;
         } else {
             // unknown featureID
             result = -1;

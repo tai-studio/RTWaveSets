@@ -12,7 +12,7 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 
     SETCALC(RTWaveSetSelector_next);
     unit->searchIdx = -1;
-    unit->bestIdx = unit->wsBuf->getFirstPos()+1;
+    unit->bestIdx = unit->wsData.wsBuf->getFirstPos()+1;
     unit->bestDiff = FLT_MAX;
     unit->desiredLen = -1;
     unit->desiredRMS = -1;
@@ -69,10 +69,10 @@ void RTWaveSetSelector_setSearchParams(RTWaveSetSelector *unit, float desiredLen
 
     // find WS idx to start searching depending on lookBackLimit
     int inStartSearchIdx;
-    if(lookBackLimit>=0 && lookBackLimit < unit->wsBuf->getLen()) {
-        inStartSearchIdx = unit->wsBuf->getLastPos() - lookBackLimit;
+    if(lookBackLimit>=0 && lookBackLimit < unit->wsData.wsBuf->getLen()) {
+        inStartSearchIdx = unit->wsData.wsBuf->getLastPos() - lookBackLimit;
     } else {
-        inStartSearchIdx = unit->wsBuf->getFirstPos();
+        inStartSearchIdx = unit->wsData.wsBuf->getFirstPos();
     }
 
     if(unit->searchIdx<inStartSearchIdx) unit->searchIdx = inStartSearchIdx;
@@ -82,8 +82,8 @@ void RTWaveSetSelector_setSearchParams(RTWaveSetSelector *unit, float desiredLen
             || desiredAmp != unit->desiredRMS
             || unit->bestIdx < inStartSearchIdx // last result out of lookback range?
             || inStartSearchIdx < unit->startSearchIdx
-            || !unit->wsBuf->isInRange(unit->bestIdx) // last result out of xing buffer range?
-            || !unit->audioBuf->isInRange(unit->wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
+            || !unit->wsData.wsBuf->isInRange(unit->bestIdx) // last result out of xing buffer range?
+            || !unit->wsData.audioBuf->isInRange(unit->wsData.wsBuf->get(unit->bestIdx).start) // out of audio buffer range?
             )
     {
         // restart Searching by resetting variables
@@ -128,16 +128,16 @@ void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
     // search for best WS idx
     if(unit->desiredLen<0 && unit->desiredRMS<0)
     {
-       unit->bestIdx = unit->wsBuf->getLastPos();
+       unit->bestIdx = unit->wsData.wsBuf->getLastPos();
     }
     else
     {
         int oldBestIdx = unit->bestIdx;
 
         int idx;
-        for(idx = unit->searchIdx; idx<=unit->wsBuf->getLastPos(); idx++)
+        for(idx = unit->searchIdx; idx<=unit->wsData.wsBuf->getLastPos(); idx++)
         {
-            WaveSet ws = unit->wsBuf->get(idx);
+            WaveSet ws = unit->wsData.wsBuf->get(idx);
 
             float diff = RTWaveSetSelector_calcDiff(unit,ws);
 
@@ -151,7 +151,7 @@ void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
         unit->searchIdx = idx;
 
         if(oldBestIdx != unit->bestIdx) {
-            WaveSet ws = unit->wsBuf->get(unit->bestIdx);
+            WaveSet ws = unit->wsData.wsBuf->get(unit->bestIdx);
             printf_debug("RTWaveSetSelector: bestIdx=%i len=%i, amp=%f\n",unit->bestIdx,ws.getLength(),ws.amp);
         }
 
