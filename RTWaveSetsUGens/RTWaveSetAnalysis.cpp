@@ -55,8 +55,6 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
         out2[i] = (float) unit->wsAnalysis.getLastWsIdx();
     }
 
-    unit->wsData.cleanUp(); // TODO move to wsanaysis.
-
 }
 
 

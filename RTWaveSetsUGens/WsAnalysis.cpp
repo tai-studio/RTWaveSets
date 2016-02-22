@@ -25,6 +25,7 @@ void WsAnalysis::reset()
  * @param audioIn
  * @param minWSLen
  */
+
 void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
 {
     // save to Buffer
@@ -38,8 +39,8 @@ void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
     }
 
     this->lastIn = audioIn;
+    wsData.cleanUp();
 }
-
 
 
 int WsAnalysis::getFirstWsIdx()
