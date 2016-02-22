@@ -28,7 +28,6 @@ public:
     void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
     double next();
     bool endOfPlay();
-    int getPlayRate(){ return playRate; }
 };
 
 #endif // WAVESETITERATOR_H

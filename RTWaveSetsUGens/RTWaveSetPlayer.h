@@ -14,10 +14,10 @@ struct RTWaveSetPlayer : public RTWaveSetBase  {
 void RTWaveSetPlayer_Ctor(RTWaveSetPlayer *unit);
 //void RTWaveSetPlayer_next(RTWaveSetPlayer *unit, int inNumSamples); // now using calc functions in inherited players
 void RTWaveSetPlayer_Dtor(RTWaveSetPlayer *unit);
-void RTWaveSetPlayer_playNextWS(RTWaveSetPlayer *unit);
+void RTWaveSetPlayer_playGroup(RTWaveSetPlayer *unit);
 
 WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSize);
-void RTWaveSetPlayer_playNextWS(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate);
+void RTWaveSetPlayer_playGroup(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate);
 float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, double idx);
 
 #endif // RTWAVESETPLAYER_H

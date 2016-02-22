@@ -52,7 +52,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
                 if(wsi->endOfPlay()){
                     // got a free Iterator: start Playback and exit loop
 
-                    RTWaveSetPlayer_playNextWS(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
+                    RTWaveSetPlayer_playGroup(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
                     if(unit->lastActiveIteratorIdx < playIdx){
                         unit->lastActiveIteratorIdx = playIdx;
                     }

@@ -20,6 +20,7 @@ public:
     WaveSetData(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf);
     WaveSetData(float fbufnumAudio, float fbufnumWS, Unit* unit);
     void cleanUp();
+    //WaveSetPlay getWaveSetGroup();
 
     template <typename T>
     static RingBuffer<T>* createRingBufferInBuffer(float fbufnum, Unit *unit);

@@ -39,7 +39,7 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
         if(idxIn>=0){
             // Start next Playback on End
             if(unit->wsIterator.endOfPlay()){
-                RTWaveSetPlayer_playNextWS(&unit->wsIterator, unit,(int) repeat,(int) groupSize,idxIn ,rate);
+                RTWaveSetPlayer_playGroup(&unit->wsIterator, unit,(int) repeat,(int) groupSize,idxIn ,rate);
             }
         }
 
