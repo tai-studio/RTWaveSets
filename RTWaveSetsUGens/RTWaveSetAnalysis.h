@@ -2,11 +2,11 @@
 #define RTWAVESETANALYSIS_H
 
 #include "RTWaveSetBase.h"
+#include "WsAnalysis.h"
 
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
-    float lastAnalysisOn;
-    int minWavesetLength;
-    int lastXing;
+    WsAnalysis wsAnalysis;
+
 };
 
 void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);
