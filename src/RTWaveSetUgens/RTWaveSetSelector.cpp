@@ -101,7 +101,7 @@ void RTWaveSetSelector_setSearchParams(RTWaveSetSelector *unit, float desiredLen
  * @brief Calculate the diff of features.
  */
 
-float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSet ws){
+float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSetDualBuf ws){
     float diff=0.0;
 
     if(unit->desiredLen!=-1) {
@@ -137,7 +137,7 @@ void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
         int idx;
         for(idx = unit->searchIdx; idx<=unit->wsData.wsBuf->getLastPos(); idx++)
         {
-            WaveSet ws = unit->wsData.wsBuf->get(idx);
+            WaveSetDualBuf ws = unit->wsData.wsBuf->get(idx);
 
             float diff = RTWaveSetSelector_calcDiff(unit,ws);
 
@@ -151,7 +151,7 @@ void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
         unit->searchIdx = idx;
 
         if(oldBestIdx != unit->bestIdx) {
-            WaveSet ws = unit->wsData.wsBuf->get(unit->bestIdx);
+            WaveSetDualBuf ws = unit->wsData.wsBuf->get(unit->bestIdx);
             printf_debug("RTWaveSetSelector: bestIdx=%i len=%i, amp=%f\n",unit->bestIdx,ws.getLength(),ws.amp);
         }
 

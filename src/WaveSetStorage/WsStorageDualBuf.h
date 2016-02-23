@@ -3,13 +3,13 @@
 
 #include "WaveSetProcessing/WsStorage.h"
 #include "RingBuffer.h"
-#include "WaveSet.h"
+#include "WaveSetDualBuf.h"
 #include "WaveSetProcessing/WaveSetBuilder.h"
 
-typedef RingBuffer<WaveSet> WaveSetRingBuffer;
+typedef RingBuffer<WaveSetDualBuf> WaveSetRingBuffer;
 typedef RingBuffer<float> FloatRingBuffer;
 
-class WsStorageDualBuf : WsStorage
+class WsStorageDualBuf : public WsStorage
 {
 public:
 
@@ -30,7 +30,7 @@ public:
 
     /** WsStorage Interface Functions */
 
-    virtual WaveSet getWaveSet(int idx){ return wsBuf->get(idx); }
+    virtual WaveSetDualBuf getWaveSet(int idx){ return wsBuf->get(idx); }
     virtual int getFirsWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsidx(int idx){ return wsBuf->isInRange(idx); }

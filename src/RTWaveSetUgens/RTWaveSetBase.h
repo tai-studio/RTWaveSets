@@ -2,7 +2,7 @@
 #define RTWAVESETBASE_H
 
 #include "WaveSetStorage/RingBuffer.h"
-#include "WaveSetStorage/WaveSet.h"
+#include "WaveSetStorage/WaveSetDualBuf.h"
 #include "WaveSetStorage/WsStorageDualBuf.h"
 
 //#define RTWaveSet_DEBUG

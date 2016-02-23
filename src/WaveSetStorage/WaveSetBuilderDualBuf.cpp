@@ -30,6 +30,7 @@ void WaveSetBuilderDualBuf::startNewWaveSet()
 void WaveSetBuilderDualBuf::addAudio(float val)
 {
     wsData->audioBuf->put(val);
+    wsData->cleanUp();
 }
 
 
@@ -59,7 +60,7 @@ void WaveSetBuilderDualBuf::saveAndStartNew()
     if(wsData->audioBuf->isInRange(startPos)){
         int endPos = wsData->audioBuf->getLastPos();
         float rms = calcRMS(startPos,endPos);
-        WaveSet ws(startPos,endPos,rms);
+        WaveSetDualBuf ws(startPos,endPos,rms);
         wsData->wsBuf->put(ws);
     }
 

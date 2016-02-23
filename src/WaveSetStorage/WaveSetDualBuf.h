@@ -3,9 +3,9 @@
 
 #include "RingBuffer.h"
 
-class WaveSet {
+class WaveSetDualBuf {
 public:
-    WaveSet(int start, int end, float amp){
+    WaveSetDualBuf(int start, int end, float amp){
         this->start = start;
         this->end = end;
         this->amp = amp;

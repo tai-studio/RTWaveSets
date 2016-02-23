@@ -19,7 +19,7 @@ struct RTWaveSetSelector : public RTWaveSetBase  {
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit);
 void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples);
 void RTWaveSetSelector_setSearchParams(RTWaveSetSelector *unit, float desiredLen, float desiredAmp, int lookBackLimit);
-float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSet ws);
+float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSetDualBuf ws);
 void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit);
 void RTWaveSetSelector_Dtor(RTWaveSetSelector *unit);
 

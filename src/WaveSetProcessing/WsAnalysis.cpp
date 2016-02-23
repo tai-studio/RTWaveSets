@@ -5,7 +5,7 @@
  * @param wsData
  */
 
-WsAnalysis::WsAnalysis(WsStorageDualBuf *wsData)
+WsAnalysis::WsAnalysis(WsStorage *wsData)
 {
     this->wsData = wsData;
     this->wsBuilder = this->wsData->createWaveSetBuilder();
@@ -52,7 +52,6 @@ void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
     }
 
     this->lastIn = audioIn;
-    wsData->cleanUp();
 }
 
 /**

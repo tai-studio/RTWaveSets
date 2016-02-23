@@ -1,19 +1,19 @@
 #ifndef WSANALYSIS_H
 #define WSANALYSIS_H
 
-#include "WaveSetStorage/WsStorageDualBuf.h"
-#include "WaveSetStorage/WaveSetBuilderDualBuf.h"
+#include "WsStorage.h"
+#include "WaveSetBuilder.h"
 
 
 class WsAnalysis
 {
 private:
-    WsStorageDualBuf* wsData;
+    WsStorage* wsData; // TODO change to abstract base WsStorage
     WaveSetBuilder* wsBuilder;
     float lastIn;
 
 public:
-    WsAnalysis(WsStorageDualBuf* wsData);
+    WsAnalysis(WsStorage* wsData);
     void nextInputSample(float val, int minWSLen);
     void reset();
     int getFirstWsIdx();
