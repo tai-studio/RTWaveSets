@@ -62,7 +62,6 @@ void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
 
 int WsAnalysis::getFirstWsIdx()
 {
-    return wsData->wsBuf->getFirstPos();
     return wsData->getFirsWsIdx();
 }
 
@@ -73,6 +72,5 @@ int WsAnalysis::getFirstWsIdx()
 
 int WsAnalysis::getLastWsIdx()
 {
-   return wsData->wsBuf->getLastPos();
-    return wsData->getLastWsIdx();
+   return wsData->getLastWsIdx();
 }

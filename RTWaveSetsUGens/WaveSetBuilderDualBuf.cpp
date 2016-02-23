@@ -63,8 +63,7 @@ void WaveSetBuilderDualBuf::saveAndStartNew()
         wsData->wsBuf->put(ws);
     }
 
-    //this->startNewWaveSet();
-    startPos = wsData->audioBuf->getLastPos();
+    this->startNewWaveSet();
 }
 
 /**

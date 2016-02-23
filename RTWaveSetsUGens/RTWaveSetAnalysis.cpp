@@ -10,7 +10,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     printf_debug("RTWaveSetAnalysis_Ctor()\n");
 
     RTWaveSetBase_Ctor(unit);
-    unit->wsAnalysis = WsAnalysis(&unit->wsData);
+    new (&unit->wsAnalysis) WsAnalysis(&unit->wsData);
 
     // set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
