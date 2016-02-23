@@ -3,8 +3,7 @@
 void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit){
 
     RTWaveSetPlayer_Ctor(unit);
-
-    unit->wsIterator = WaveSetIterator();
+    new (&unit->wsSynth) SynthContinuous(&unit->wsData);
 
     SETCALC(RTWaveSetPlayerContinuous_next);
     RTWaveSetPlayerContinuous_next(unit, 1);
@@ -35,35 +34,8 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
         // get Index Input
         int idxIn = (int) idxInFloat[i];
 
-        // check index input
-        if(idxIn>=0){
-            // Start next Playback on End
-            if(unit->wsIterator.endOfPlay()){
-                RTWaveSetPlayer_playGroup(&unit->wsIterator, unit,(int) repeat,(int) groupSize,idxIn ,rate);
-            }
-        }
-
-        float outSample = 0.0;
-
-        // Play WaveSets from Iterator
-        try
-        {
-            if(!unit->wsIterator.endOfPlay()) {
-                double nextIdx = unit->wsIterator.next();
-                if(unit->wsData.audioBuf->isInRange((int)nextIdx)){
-                    outSample = RTWaveSetPlayer_getSample(unit,nextIdx);
-                }
-                else{
-                    printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                    unit->wsIterator = WaveSetIterator(); // stop playback by resetting
-                }
-            }
-        }
-        catch(...)
-        {
-            printf("WaveSet playback failed! (unknown exception)\n");
-            unit->wsIterator = WaveSetIterator(); // stop playback by resetting
-        }
+        unit->wsSynth.setNext(idxIn, groupSize, rate, repeat);
+        float outSample = unit->wsSynth.getNextOutput();
 
         out[i] = outSample;
     }

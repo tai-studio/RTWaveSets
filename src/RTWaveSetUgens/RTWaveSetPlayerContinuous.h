@@ -2,11 +2,11 @@
 #define RTWaveSetPlayerContinuous_H
 
 #include "RTWaveSetPlayer.h"
+#include "WaveSetProcessing/SynthContinuous.h"
 
 struct RTWaveSetPlayerContinuous : public RTWaveSetPlayer  {
 
-    /** Iterator for WS Playbacks */
-    WaveSetIterator wsIterator;
+    SynthContinuous wsSynth;
 };
 
 void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit);
