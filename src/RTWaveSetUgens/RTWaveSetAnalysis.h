@@ -2,7 +2,7 @@
 #define RTWAVESETANALYSIS_H
 
 #include "RTWaveSetBase.h"
-#include "WsAnalysis.h"
+#include "WaveSetProcessing/WsAnalysis.h"
 
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
     WsAnalysis wsAnalysis;

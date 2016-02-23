@@ -1,10 +1,10 @@
 #ifndef WAVESETDATA_H
 #define WAVESETDATA_H
 
-#include "WsStorage.h"
+#include "WaveSetProcessing/WsStorage.h"
 #include "RingBuffer.h"
 #include "WaveSet.h"
-#include "WaveSetBuilder.h"
+#include "WaveSetProcessing/WaveSetBuilder.h"
 
 typedef RingBuffer<WaveSet> WaveSetRingBuffer;
 typedef RingBuffer<float> FloatRingBuffer;

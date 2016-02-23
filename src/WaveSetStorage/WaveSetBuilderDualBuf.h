@@ -1,7 +1,7 @@
 #ifndef WAVESETBUILDERDUALBUF_H
 #define WAVESETBUILDERDUALBUF_H
 
-#include "WaveSetBuilder.h"
+#include "WaveSetProcessing/WaveSetBuilder.h"
 #include "WsStorageDualBuf.h"
 
 class WaveSetBuilderDualBuf : public WaveSetBuilder

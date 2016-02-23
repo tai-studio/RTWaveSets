@@ -2,7 +2,7 @@
 #define RTWAVESETPLAYER_H
 
 #include "RTWaveSetBase.h"
-#include "WaveSetIterator.h"
+#include "WaveSetProcessing/WaveSetIterator.h"
 
 static const int minWavesetLength = (int) (3.0 * 44.100); // 3 ms
 static const int maxWavesetLength = (int) (500.0 * 44.100); // 500 ms

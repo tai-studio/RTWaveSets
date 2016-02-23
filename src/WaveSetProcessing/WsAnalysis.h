@@ -1,8 +1,8 @@
 #ifndef WSANALYSIS_H
 #define WSANALYSIS_H
 
-#include "WsStorageDualBuf.h"
-#include "WaveSetBuilderDualBuf.h"
+#include "WaveSetStorage/WsStorageDualBuf.h"
+#include "WaveSetStorage/WaveSetBuilderDualBuf.h"
 
 
 class WsAnalysis

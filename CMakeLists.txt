@@ -197,7 +197,7 @@ set(PLUGIN_DIRS
 
 # plugins with extra lib
 set(PLUGIN_DIRS_EXTRA
-    RTWaveSetsUGens
+
 )
 
 #if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND ${CMAKE_CXX_COMPILER_VERSION} MATCHES "^6.0.")
@@ -260,9 +260,13 @@ install(DIRECTORY local DESTINATION "${INSTALL_DESTINATION_DISTRO}"
 #---------------------
 # plugins with extras:
 #---------------------
+
 ## RTWaveSetsUGens
-file(GLOB RTWaveSetSources RTWaveSetsUGens/*cpp)
+file(GLOB_RECURSE RTWaveSetSources src/*.cpp)
 BUILD_PLUGIN(RTWaveSetsUGens "${RTWaveSetSources}" "" "RTWaveSetsUGens")
+include_directories(src)
+install(DIRECTORY "src/sc/" DESTINATION "${INSTALL_DESTINATION_DISTRO}/RTWaveSetsUGens"
+            PATTERN "*")
 
 ## AuditoryModeling
 #file(GLOB AuditoryModelingSources AuditoryModeling/*cpp)

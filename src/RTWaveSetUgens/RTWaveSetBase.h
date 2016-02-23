@@ -1,10 +1,9 @@
 #ifndef RTWAVESETBASE_H
 #define RTWAVESETBASE_H
 
-#include "SC_PlugIn.h"
-#include "RingBuffer.h"
-#include "WaveSet.h"
-#include "WsStorageDualBuf.h"
+#include "WaveSetStorage/RingBuffer.h"
+#include "WaveSetStorage/WaveSet.h"
+#include "WaveSetStorage/WsStorageDualBuf.h"
 
 //#define RTWaveSet_DEBUG
 

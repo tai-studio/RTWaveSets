@@ -1,7 +1,7 @@
 #ifndef WSSTORAGE_H
 #define WSSTORAGE_H
 
-#include "WaveSet.h"
+#include "WaveSetStorage/WaveSet.h"
 #include "WaveSetBuilder.h"
 
 class WsStorage
