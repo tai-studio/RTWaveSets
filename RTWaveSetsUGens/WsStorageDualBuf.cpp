@@ -108,12 +108,15 @@ SndBuf *WsStorageDualBuf::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
     return buf;
 }
 
+/**
+ * @brief Get a new instance of the waveset builder.
+ * @return
+ */
+
 WaveSetBuilder* WsStorageDualBuf::createWaveSetBuilder()
 {
-    //static WaveSetBuilderDualBuf wsb(this);
-    //WaveSetBuilderDualBuf* wsb = (WaveSetBuilderDualBuf*) RTAlloc(sizeof(WaveSetBuilderDualBuf));
-    //wsb = WaveSetBuilderDualBuf(this);b
-    return new WaveSetBuilderDualBuf(this); // TODO replace by RTALLOC
+    static WaveSetBuilderDualBuf wsb(this);
+    return new (&wsb) WaveSetBuilderDualBuf(this); // TODO replace by RTALLOC
 }
 
 /**

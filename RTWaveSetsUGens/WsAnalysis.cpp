@@ -5,10 +5,10 @@
  * @param wsData
  */
 
-WsAnalysis::WsAnalysis(WsStorageDualBuf *wsData) : wsBuilder(wsData)
+WsAnalysis::WsAnalysis(WsStorageDualBuf *wsData)
 {
     this->wsData = wsData;
-    //this->wsBuilder = this->wsData->createWaveSetBuilder();
+    this->wsBuilder = this->wsData->createWaveSetBuilder();
     reset();
 }
 
@@ -18,7 +18,7 @@ WsAnalysis::WsAnalysis(WsStorageDualBuf *wsData) : wsBuilder(wsData)
 
 void WsAnalysis::reset()
 {
-    this->wsBuilder.startNewWaveSet();
+    this->wsBuilder->startNewWaveSet();
     this->lastIn = NAN;
 }
 
@@ -30,24 +30,24 @@ void WsAnalysis::reset()
 
 void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
 {
-    this->wsBuilder.addAudio(audioIn);
+    this->wsBuilder->addAudio(audioIn);
 
     // look for a -/+ zero crossing
     if(this->lastIn <= 0.0 && audioIn > 0.0)
     {
         // get WS Length
-        int len = wsBuilder.getRunningLegnth();
+        int len = wsBuilder->getRunningLegnth();
 
         // Perform actions depending on WS Length
         if(len>=minWSLen)
         {
             // long enouph, save it!
-            wsBuilder.saveAndStartNew();
+            wsBuilder->saveAndStartNew();
         }
         else if(len<0)
         {
             // no WS started so far, start a new one!
-            wsBuilder.startNewWaveSet();
+            wsBuilder->startNewWaveSet();
         }
     }
 

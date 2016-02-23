@@ -9,14 +9,8 @@ class WsAnalysis
 {
 private:
     WsStorageDualBuf* wsData;
-
-    WaveSetBuilderDualBuf wsBuilder;
-
+    WaveSetBuilder* wsBuilder;
     float lastIn;
-
-    //int lastXing;
-    //void gotXing(int minWSLen);
-    //float calcRMS(int start, int end);
 
 public:
     WsAnalysis(WsStorageDualBuf* wsData);
