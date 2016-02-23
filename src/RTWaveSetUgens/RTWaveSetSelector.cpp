@@ -110,7 +110,7 @@ float RTWaveSetSelector_calcDiff(RTWaveSetSelector *unit, WaveSetDualBuf ws){
     }
 
     if(unit->desiredRMS>=0) {
-        float diffRMS = unit->ampWeight * fabs(unit->desiredRMS-ws.amp);
+        float diffRMS = unit->ampWeight * fabs(unit->desiredRMS-ws.rms);
         diff += diffRMS*diffRMS;
     }
 
@@ -152,7 +152,7 @@ void RTWaveSetSelector_findBestIdx(RTWaveSetSelector *unit){
 
         if(oldBestIdx != unit->bestIdx) {
             WaveSetDualBuf ws = unit->wsData.wsBuf->get(unit->bestIdx);
-            printf_debug("RTWaveSetSelector: bestIdx=%i len=%i, amp=%f\n",unit->bestIdx,ws.getLength(),ws.amp);
+            printf_debug("RTWaveSetSelector: bestIdx=%i len=%i, amp=%f\n",unit->bestIdx,ws.getLength(),ws.rms);
         }
 
     }

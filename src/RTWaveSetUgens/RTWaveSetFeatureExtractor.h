@@ -2,10 +2,10 @@
 #define RTWaveSetFeatureExtractor_H
 
 #include "RTWaveSetBase.h"
+#include "WaveSetProcessing/WsFeatureExtractor.h"
 
 struct RTWaveSetFeatureExtractor : public RTWaveSetBase  {
-
-
+    WsFeatureExtractor wsExtractor;
 };
 
 void RTWaveSetFeatureExtractor_Ctor(RTWaveSetFeatureExtractor *unit);

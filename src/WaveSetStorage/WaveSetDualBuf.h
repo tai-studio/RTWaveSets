@@ -8,7 +8,7 @@ public:
     WaveSetDualBuf(int start, int end, float amp){
         this->start = start;
         this->end = end;
-        this->amp = amp;
+        this->rms = amp;
     }
 
     /**
@@ -28,9 +28,9 @@ public:
     int end;
 
     /**
-     * @brief Amplitude of the WaveSet.
+     * @brief RMS of the WaveSet.
      */
-    float amp;
+    float rms;
 
 };
 

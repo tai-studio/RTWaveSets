@@ -8,6 +8,7 @@
 void RTWaveSetFeatureExtractor_Ctor(RTWaveSetFeatureExtractor *unit)
 {
     RTWaveSetBase_Ctor(unit);
+    new(&unit->wsExtractor) WsFeatureExtractor(&unit->wsData);
 
     SETCALC(RTWaveSetFeatureExtractor_next);
 
@@ -30,18 +31,7 @@ void RTWaveSetFeatureExtractor_next(RTWaveSetFeatureExtractor *unit, int inNumSa
     for (int i=0; i<inNumSamples; ++i)
     {
         int idx = (int) inIdx[i];
-        float result;
-
-        if(featureID==0) {
-            // WS length in seconds
-            result = (float) unit->wsData.wsBuf->get(idx).getLength() / unit->mWorld->mFullRate.mSampleRate;
-        } else if(featureID==1) {
-            // WS amplitude 0..1
-            result = unit->wsData.wsBuf->get(idx).amp;
-        } else {
-            // unknown featureID
-            result = -1;
-        }
+        float result = unit->wsExtractor.getFeature(idx,featureID);
 
         out[i] = result;
     }
