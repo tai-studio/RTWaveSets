@@ -1,4 +1,6 @@
-#include "WaveSetData.h"
+#include "WsStorageDualBuf.h"
+#include "WaveSetBuilderDualBuf.h"
+
 
 /**
  * @brief Create waveset data structure in given sc-buffers.
@@ -7,7 +9,7 @@
  * @param unit
  */
 
-WaveSetData::WaveSetData(float fbufnumAudio, float fbufnumWS, Unit *unit)
+WsStorageDualBuf::WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit *unit)
 {
     this->audioBuf = createRingBufferInBuffer<float>(fbufnumAudio,unit);
     this->wsBuf = createRingBufferInBuffer<WaveSet>(fbufnumWS,unit);
@@ -19,7 +21,7 @@ WaveSetData::WaveSetData(float fbufnumAudio, float fbufnumWS, Unit *unit)
  * @param wsBuf
  */
 
-WaveSetData::WaveSetData(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf)
+WsStorageDualBuf::WsStorageDualBuf(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf)
 {
     this->audioBuf = audioBuf;
     this->wsBuf = wsBuf;
@@ -35,7 +37,7 @@ WaveSetData::WaveSetData(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf)
  */
 
 template <typename T>
-RingBuffer<T> *WaveSetData::createRingBufferInBuffer(float fbufnum, Unit *unit)
+RingBuffer<T> *WsStorageDualBuf::createRingBufferInBuffer(float fbufnum, Unit *unit)
 {
     SndBuf* buf = RTWaveSetBase_getSndBuf(fbufnum,unit);
     if(buf==NULL) throw "no valid buffer!";
@@ -67,7 +69,7 @@ RingBuffer<T> *WaveSetData::createRingBufferInBuffer(float fbufnum, Unit *unit)
  * @return pointer to the SndBuf.
  */
 
-SndBuf *WaveSetData::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
+SndBuf *WsStorageDualBuf::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
 {
     SndBuf* buf;
 
@@ -106,11 +108,19 @@ SndBuf *WaveSetData::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
     return buf;
 }
 
+WaveSetBuilder* WsStorageDualBuf::createWaveSetBuilder()
+{
+    //static WaveSetBuilderDualBuf wsb(this);
+    //WaveSetBuilderDualBuf* wsb = (WaveSetBuilderDualBuf*) RTAlloc(sizeof(WaveSetBuilderDualBuf));
+    //wsb = WaveSetBuilderDualBuf(this);b
+    return new WaveSetBuilderDualBuf(this); // TODO replace by RTALLOC
+}
+
 /**
  * @brief Remove obsolete wavesets
  */
 
-void WaveSetData::cleanUp()
+void WsStorageDualBuf::cleanUp()
 {
     if(wsBuf->getLen()>0){
         while(! audioBuf->isInRange(wsBuf->getFirst().start) || ! audioBuf->isInRange(wsBuf->getFirst().end)) // remove wavesets out of audio range

@@ -5,8 +5,10 @@
  * @param wsData
  */
 
-WsAnalysis::WsAnalysis(WaveSetData wsData) : wsData(wsData)
+WsAnalysis::WsAnalysis(WsStorageDualBuf *wsData) : wsBuilder(wsData)
 {
+    this->wsData = wsData;
+    //this->wsBuilder = this->wsData->createWaveSetBuilder();
     reset();
 }
 
@@ -16,8 +18,8 @@ WsAnalysis::WsAnalysis(WaveSetData wsData) : wsData(wsData)
 
 void WsAnalysis::reset()
 {
+    this->wsBuilder.startNewWaveSet();
     this->lastIn = NAN;
-    this->lastXing = -1;
 }
 
 /**
@@ -28,76 +30,49 @@ void WsAnalysis::reset()
 
 void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
 {
-    // save to Buffer
-    wsData.audioBuf->put(audioIn);
+    this->wsBuilder.addAudio(audioIn);
 
     // look for a -/+ zero crossing
     if(this->lastIn <= 0.0 && audioIn > 0.0)
     {
-        // add zero crossing position to zeroBuffer
-        gotXing(minWSLen);
+        // get WS Length
+        int len = wsBuilder.getRunningLegnth();
+
+        // Perform actions depending on WS Length
+        if(len>=minWSLen)
+        {
+            // long enouph, save it!
+            wsBuilder.saveAndStartNew();
+        }
+        else if(len<0)
+        {
+            // no WS started so far, start a new one!
+            wsBuilder.startNewWaveSet();
+        }
     }
 
     this->lastIn = audioIn;
-    wsData.cleanUp();
+    wsData->cleanUp();
 }
-
-
-int WsAnalysis::getFirstWsIdx()
-{
-    return wsData.wsBuf->getFirstPos();
-}
-
-int WsAnalysis::getLastWsIdx()
-{
-    return wsData.wsBuf->getLastPos();
-}
-
-void WsAnalysis::gotXing(int minWSLen)
-{
-    int currentXing = wsData.audioBuf->getLastPos();
-
-    if(lastXing!=-1)
-    {
-        int start = lastXing;
-        int end = currentXing;
-        int wsLen = end - start;
-
-        // check WaveSet length
-        if(wsLen > minWSLen)
-        {
-            // save waveset
-            float amp = calcRMS(start,end);
-            WaveSet ws(start, end, amp);
-            wsData.wsBuf->put(ws);
-            lastXing = currentXing;
-        }
-
-    }
-    else
-    {
-        lastXing = currentXing;
-    }
-
-}
-
 
 /**
- * @brief Calculate the RMS of a waveset signal.
- * @param start
- * @param end
+ * @brief Get the idx of the newes waveset in the storage.
  * @return
  */
 
-float WsAnalysis::calcRMS(int start,int end){
-    float amp = 0.0;
+int WsAnalysis::getFirstWsIdx()
+{
+    return wsData->wsBuf->getFirstPos();
+    return wsData->getFirsWsIdx();
+}
 
-    for(int idx=start;idx<end;idx++) // TODO inclusive or exclusive end? also relevant for length, playback
-    {
-        float val = wsData.audioBuf->get(idx);
-        amp += val*val;
-    }
+/**
+ * @brief Get the idx of the oldest waveset in the storage.
+ * @return
+ */
 
-    amp = sqrtf(amp / (end-start));
-    return amp;
+int WsAnalysis::getLastWsIdx()
+{
+   return wsData->wsBuf->getLastPos();
+    return wsData->getLastWsIdx();
 }

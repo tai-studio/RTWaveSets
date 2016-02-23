@@ -1,8 +1,5 @@
 #include "RTWaveSetAnalysis.h"
 
-
-// define RTWaveSetAnalysis_DEBUG
-
 /**
  * @brief RTWaveSetAnalysis_Ctor Constructor for the RTWaveSetAnalysis UGen.
  * @param unit
@@ -13,7 +10,7 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
     printf_debug("RTWaveSetAnalysis_Ctor()\n");
 
     RTWaveSetBase_Ctor(unit);
-    unit->wsAnalysis = WsAnalysis(unit->wsData);
+    unit->wsAnalysis = WsAnalysis(&unit->wsData);
 
     // set the calculation function.
     SETCALC(RTWaveSetAnalysis_next);
@@ -26,7 +23,6 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
  * @brief RTWaveSetAnalysis_next Process the next block of audio samples.
  * @param unit
  * @param inNumSamples
- * TODO: Handle broken WaveSets when analysis was switched Off and ON.
  */
 
 void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {

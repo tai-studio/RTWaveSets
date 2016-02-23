@@ -4,7 +4,7 @@
 #include "SC_PlugIn.h"
 #include "RingBuffer.h"
 #include "WaveSet.h"
-#include "WaveSetData.h"
+#include "WsStorageDualBuf.h"
 
 //#define RTWaveSet_DEBUG
 
@@ -17,7 +17,7 @@
 #define printf_warn printf
 
 struct RTWaveSetBase : public Unit {
-    WaveSetData wsData;
+    WsStorageDualBuf wsData;
 };
 
 void RTWaveSetBase_Ctor(RTWaveSetBase* unit);
