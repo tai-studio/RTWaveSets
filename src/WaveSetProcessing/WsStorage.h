@@ -10,6 +10,7 @@ public:
     virtual WaveSetDualBuf getWaveSet(int idx) = 0;
     virtual int getFirsWsIdx() = 0;
     virtual int getLastWsIdx() = 0;
+    virtual int getNumWsInStorage() = 0;
     virtual int isValidWsidx(int idx) = 0;
     virtual WaveSetBuilder* createWaveSetBuilder() = 0;
 };

@@ -34,6 +34,7 @@ public:
     virtual int getFirsWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsidx(int idx){ return wsBuf->isInRange(idx); }
+    virtual int getNumWsInStorage(){return wsBuf->getLen(); }
     virtual WaveSetBuilder* createWaveSetBuilder();
 
 };
