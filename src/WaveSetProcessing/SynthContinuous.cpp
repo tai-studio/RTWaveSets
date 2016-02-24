@@ -37,21 +37,21 @@ float SynthContinuous::getNextOutput()
             }
             else{
                 printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                wsIterator = WaveSetIterator(); // stop playback by resetting
+                wsIterator = WsPlayer(); // stop playback by resetting
             }
         }
     }
     catch(...)
     {
         printf("WaveSet playback failed! (unknown exception)\n");
-        wsIterator = WaveSetIterator(); // stop playback by resetting
+        wsIterator = WsPlayer(); // stop playback by resetting
     }
 
 
     return outSample;
 }
 
-void SynthContinuous::playGroup(WaveSetIterator *wsi, float repeat, int groupSize, int xingIdx, float rate)
+void SynthContinuous::playGroup(WsPlayer *wsi, float repeat, int groupSize, int xingIdx, float rate)
 {
     // check input Parameters
     if(groupSize < 0) groupSize = 1;

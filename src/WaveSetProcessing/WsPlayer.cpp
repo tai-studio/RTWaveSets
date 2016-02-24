@@ -1,12 +1,12 @@
-#include "WaveSetIterator.h"
-//#define WaveSetIterator_DEBUG
+#include "WsPlayer.h"
+//#define WsPlayer_DEBUG
 
 
 /**
  * @brief WaveSetPlayer::WaveSetPlayer Constructor, just init values.
  */
 
-WaveSetIterator::WaveSetIterator(){
+WsPlayer::WsPlayer(){
     playPos = -1;
     ws.start = -1;
     ws.end = -1;
@@ -20,7 +20,7 @@ WaveSetIterator::WaveSetIterator(){
  * @return Sample position in the buffer or -1 if end is reached.
  */
 
-double WaveSetIterator::next() {
+double WsPlayer::next() {
 
     double val;
     // end of playback?
@@ -36,7 +36,7 @@ double WaveSetIterator::next() {
         playPos+=playRate;
     }
     else {
-        #ifdef WaveSetIterator_DEBUG
+        #ifdef WsPlayer_DEBUG
         printf("WaveSetPlayer::next() reached End of Waveset!\n");
         #endif
 
@@ -66,7 +66,7 @@ double WaveSetIterator::next() {
  * @param step Step size for the playback (i.e. -1 for reverse oder 2 for double speed).
  */
 
-void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
+void WsPlayer::playWS(WaveSetPlay ws, int repeat, float playRate){
     this->ws = ws;
     this->repeat = repeat-1;
     this->playRate = playRate;
@@ -76,8 +76,8 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
     } else {
         playPos = (double) ws.end;
     }
-    #ifdef WaveSetIterator_DEBUG
-    printf("WaveSetIterator::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
+    #ifdef WsPlayer_DEBUG
+    printf("WsPlayer::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
     #endif
 
 }
@@ -86,7 +86,7 @@ void WaveSetIterator::playWS(WaveSetPlay ws, int repeat, float playRate){
  * @brief Returns true if reached the end of playback.
  */
 
-bool WaveSetIterator::endOfPlay() {
+bool WsPlayer::endOfPlay() {
 
     if(repeat<0) return true;
     if(playRate==0) return true;

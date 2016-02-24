@@ -3,7 +3,7 @@
 
 #include "WsStorage.h"
 #include "WaveSetStorage/WsStorageDualBuf.h"
-#include "WaveSetIterator.h"
+#include "WsPlayer.h"
 
 class SynthContinuous
 {
@@ -11,7 +11,7 @@ private:
     WsStorageDualBuf* wsData;
 
     /** Iterator for WS Playbacks */
-    WaveSetIterator wsIterator;
+    WsPlayer wsIterator;
 
     /** Variables for next Playback */
     int nextWsIdx;
@@ -19,7 +19,7 @@ private:
     float nextRate;
     int nextRepeat;
 
-    void playGroup(WaveSetIterator* wsIterator,float repeat,int groupSize,int wsIdx ,float rate);
+    void playGroup(WsPlayer* wsIterator,float repeat,int groupSize,int wsIdx ,float rate);
     WaveSetPlay alignGroup(int wsIdx, int groupSize);
     float getSample(double idx);
 public:

@@ -2,7 +2,7 @@
 #define RTWAVESETPLAYER_H
 
 #include "RTWaveSetBase.h"
-#include "WaveSetProcessing/WaveSetIterator.h"
+#include "WaveSetProcessing/WsPlayer.h"
 
 static const int minWavesetLength = (int) (3.0 * 44.100); // 3 ms
 static const int maxWavesetLength = (int) (500.0 * 44.100); // 500 ms
@@ -17,7 +17,7 @@ void RTWaveSetPlayer_Dtor(RTWaveSetPlayer *unit);
 void RTWaveSetPlayer_playGroup(RTWaveSetPlayer *unit);
 
 WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSize);
-void RTWaveSetPlayer_playGroup(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate);
+void RTWaveSetPlayer_playGroup(WsPlayer* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate);
 float RTWaveSetPlayer_getSample(RTWaveSetPlayer *unit, double idx);
 
 #endif // RTWAVESETPLAYER_H

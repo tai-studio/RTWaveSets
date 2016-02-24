@@ -11,7 +11,7 @@ struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
     float prevTrig;
 
     /** Iterators for parallel WS Playbacks */
-    WaveSetIterator wsIterators[RTWaveSetPlayerTriggered_NumIterators];
+    WsPlayer wsIterators[RTWaveSetPlayerTriggered_NumIterators];
 
     /** index of last playing iterator in array */
     int lastActiveIteratorIdx;

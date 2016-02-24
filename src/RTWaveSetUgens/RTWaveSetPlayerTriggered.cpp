@@ -7,7 +7,7 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
     // init WaveSetIterators
     for(int i=0;i<RTWaveSetPlayerTriggered_NumIterators;i++)
     {
-        unit->wsIterators[i] = WaveSetIterator();
+        unit->wsIterators[i] = WsPlayer();
     }
     unit->lastActiveIteratorIdx = -1;
 
@@ -48,7 +48,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
             // look for a free WaveSetIterator
             for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
             {
-                WaveSetIterator* wsi = &unit->wsIterators[playIdx];
+                WsPlayer* wsi = &unit->wsIterators[playIdx];
                 if(wsi->endOfPlay()){
                     // got a free Iterator: start Playback and exit loop
 
@@ -74,7 +74,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         int lastPlayedIterator=-1;
         for(int playIdx=0;playIdx<=unit->lastActiveIteratorIdx;playIdx++)
         {
-            WaveSetIterator* wsi = &unit->wsIterators[playIdx];
+            WsPlayer* wsi = &unit->wsIterators[playIdx];
             try
             {
                 // play parallel WaveSets from Iterators
@@ -86,14 +86,14 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
                             lastPlayedIterator = playIdx;
                         } else {
                             printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                            *wsi = WaveSetIterator(); // stop playback by resetting
+                            *wsi = WsPlayer(); // stop playback by resetting
                         }
                 }
             }
             catch(...)
             {
                 printf("WaveSet playback failed! (unknown exception)\n");
-                *wsi = WaveSetIterator(); // stop playback by resetting
+                *wsi = WsPlayer(); // stop playback by resetting
             }
         }
         out[i] = outSum;

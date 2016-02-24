@@ -71,7 +71,7 @@ WaveSetPlay RTWaveSetPlayer_getWS(RTWaveSetPlayer *unit, int wsIdx, int groupSiz
  * @param unit
  */
 
-void RTWaveSetPlayer_playGroup(WaveSetIterator* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate){
+void RTWaveSetPlayer_playGroup(WsPlayer* wsi,RTWaveSetPlayer *unit,int repeat, int groupSize, int xingIdx, float rate){
 
     //printf("RTWaveSetPlayer_playNextWS %i\n",xingIdx);
 

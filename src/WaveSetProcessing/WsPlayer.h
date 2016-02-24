@@ -16,7 +16,7 @@ struct WaveSetPlay {
  *                (so far implemented without interpolation, just repeat/skip samples)
  */
 
-class WaveSetIterator {
+class WsPlayer {
 private:
     double playPos;
     WaveSetPlay ws; // TODO replace struct by simple startPos, endPos variables
@@ -24,7 +24,7 @@ private:
     float playRate;
 
 public:
-    WaveSetIterator();
+    WsPlayer();
     void playWS(WaveSetPlay ws, int repeat=1, float rate=1.0);
     double next();
     bool endOfPlay();
