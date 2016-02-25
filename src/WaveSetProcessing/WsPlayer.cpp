@@ -6,10 +6,8 @@
  * @brief WaveSetPlayer::WaveSetPlayer Constructor, just init values.
  */
 
-WsPlayer::WsPlayer(){
+WsPlayer::WsPlayer() {
     playPos = -1;
-    ws.start = -1;
-    ws.end = -1;
     repeat = -1;
     playRate = 1;
 }
@@ -20,7 +18,7 @@ WsPlayer::WsPlayer(){
  * @return Sample position in the buffer or -1 if end is reached.
  */
 
-double WsPlayer::next() {
+double WsPlayer::nextPos() {
 
     double val;
     // end of playback?
@@ -28,7 +26,7 @@ double WsPlayer::next() {
         val = playPos;
 
         if(val < 0 || val >= INT32_MAX){
-            printf("WaveSetPlayer::next(): Error! invalid playPos:%lf val:%f start:%i end:%i repeat:%i playRate:%f\n", playPos, val, ws.start, ws.end, repeat, playRate);
+            printf("WaveSetPlayer::next(): Error! invalid playPos");
             val = -1;
             repeat = -1; // stop playback
         }
@@ -36,26 +34,28 @@ double WsPlayer::next() {
         playPos+=playRate;
     }
     else {
-        #ifdef WsPlayer_DEBUG
-        printf("WaveSetPlayer::next() reached End of Waveset!\n");
-        #endif
-
+        // reached end
         val=-1;
     }
 
     // next repeat? -> reset to start
-    if(playRate > 0 && ((int)playPos) >= ws.end) // forward Playback
+    if(playRate > 0 && ((int)playPos) >= ws.getLen()) // forward Playback
     {
-        playPos = ws.start; // TODO add partial steps between? (playPos-ws.start)
+        playPos = 0; // TODO add partial steps between? (playPos-ws.getStart())
         repeat--;
     }
-    else if(playRate < 0 && ((int)playPos) <= ws.start) // backward Playback
+    else if(playRate < 0 && ((int)playPos) <= 0.0) // backward Playback
     {
-        playPos = ws.end;
+        playPos = ws.getLen();
         repeat--;
     }
 
     return val;
+}
+
+float WsPlayer::nextSample()
+{
+    return this->ws.getSampleInterpolated(nextPos());
 }
 
 
@@ -66,20 +66,18 @@ double WsPlayer::next() {
  * @param step Step size for the playback (i.e. -1 for reverse oder 2 for double speed).
  */
 
-void WsPlayer::playWS(WaveSetPlay ws, int repeat, float playRate){
+void WsPlayer::playWS(AudioPiece ws, int repeat, float playRate){
     this->ws = ws;
     this->repeat = repeat-1;
     this->playRate = playRate;
 
     if(playRate>0) {
-        playPos = (double) ws.start;
+        playPos = 0;
     } else {
-        playPos = (double) ws.end;
+        playPos = ws.getLen();
     }
-    #ifdef WsPlayer_DEBUG
-    printf("WsPlayer::playWS(): start:%i end:%i repeat:%i playRate:%f\n", ws.start, ws.end, repeat, playRate);
-    #endif
 
+    // TODO playback including or excluding "end" sample?
 }
 
 /**
@@ -90,8 +88,7 @@ bool WsPlayer::endOfPlay() {
 
     if(repeat<0) return true;
     if(playRate==0) return true;
-    if(ws.start>=ws.end) return true;
-
+    if(ws.getStart()>=ws.getEnd()) return true;
 
     return false;
 }

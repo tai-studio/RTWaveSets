@@ -2,20 +2,16 @@
 #define SYNTH_H
 
 #include "WsPlayer.h"
-#include "WaveSetStorage/WsStorageDualBuf.h"
+#include "WsStorage.h"
 
 class Synth
 {
 protected:
-    WsStorageDualBuf* wsData;
+    WsStorage* wsData;
+
+    Synth(WsStorage* wsData);
     int foldIdx(int xingIdx);
-    Synth();
-
-public:
-    void playGroup(WsPlayer* wsIterator,float repeat,int groupSize,int wsIdx ,float rate);
-    WaveSetPlay getGroup(int wsIdx, int groupSize);
-    float getSampleInterpolated(double idx);
-
+    void initPlayback(WsPlayer* wsIterator,float repeat,int groupSize,int wsIdx ,float rate);
 };
 
 #endif // SYNTH_H

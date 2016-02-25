@@ -4,15 +4,19 @@
 #include "WaveSetStorage/WaveSetDualBuf.h"
 #include "WaveSetBuilder.h"
 
+class AudioPiece;
+
 class WsStorage
 {
 public:
     virtual WaveSetDualBuf getWaveSet(int idx) = 0;
-    virtual int getFirsWsIdx() = 0;
+    virtual int getFirstWsIdx() = 0;
     virtual int getLastWsIdx() = 0;
     virtual int getNumWsInStorage() = 0;
-    virtual int isValidWsidx(int idx) = 0;
+    virtual int getMaxWsCapacity() = 0;
+    virtual int isValidWsIdx(int idx) = 0;
     virtual WaveSetBuilder* createWaveSetBuilder() = 0;
+    virtual AudioPiece getGroup(int wsIdx, int groupSize) = 0;
 };
 
 #endif // WSSTORAGE_H

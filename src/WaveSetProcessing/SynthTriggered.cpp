@@ -1,8 +1,7 @@
 #include "SynthTriggered.h"
 
-SynthTriggered::SynthTriggered(WsStorage* wsData)
+SynthTriggered::SynthTriggered(WsStorage* wsData) : Synth(wsData)
 {
-    this->wsData = (WsStorageDualBuf*) wsData;
     this->lastActiveIteratorIdx = -1;
 }
 
@@ -13,11 +12,11 @@ void SynthTriggered::startNewPlayback(int idxIn, int groupSize, float rate, int 
     // look for a free WaveSetIterator
     for(int playIdx=0;playIdx<SynthTriggered_NumIterators;playIdx++)
     {
-        WsPlayer* wsi = &this->wsIterators[playIdx];
-        if(wsi->endOfPlay()){
+        WsPlayer* player = &this->wsIterators[playIdx];
+        if(player->endOfPlay()){
             // got a free Iterator: start Playback and exit loop
 
-            this->playGroup(wsi, (int) repeat,(int) groupSize,idxIn ,rate);
+            this->initPlayback(player, (int) repeat,(int) groupSize,idxIn ,rate);
 
             if(this->lastActiveIteratorIdx < playIdx){
                 this->lastActiveIteratorIdx = playIdx;
@@ -28,7 +27,7 @@ void SynthTriggered::startNewPlayback(int idxIn, int groupSize, float rate, int 
 
         if(playIdx==SynthTriggered_NumIterators-1)
         {
-            printf("RTWaveSetPlayerTriggered Warning: Number of parallel WaveSet playback exceeded!\n");
+            printf("SynthTriggered Warning: Max number of parallel WaveSet playback exceeded!\n");
         }
 
     }
@@ -41,31 +40,27 @@ float SynthTriggered::getNextOutput()
         // Play WaveSets from Iterators
         float outSum = 0.0;
         int lastPlayedIterator=-1;
-        for(int playIdx=0;playIdx<=this->lastActiveIteratorIdx;playIdx++)
+        for(int playIdx=0;playIdx<=lastActiveIteratorIdx;playIdx++)
         {
-            WsPlayer* wsi = &this->wsIterators[playIdx];
+            WsPlayer* player = &this->wsIterators[playIdx];
             try
             {
                 // play parallel WaveSets from Iterators
-                if(!wsi->endOfPlay())
+                if(!player->endOfPlay())
                 {
-                        double idx = wsi->next();
-                        if(this->wsData->audioBuf->isInRange((int)idx)) {
-                            outSum += this->getSampleInterpolated(idx);
-                            lastPlayedIterator = playIdx;
-                        } else {
-                            printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                            *wsi = WsPlayer(); // stop playback by resetting
-                        }
+                    outSum += player->nextSample();
+                    lastPlayedIterator = playIdx;
                 }
             }
             catch(...)
             {
                 printf("WaveSet playback failed! (unknown exception)\n");
-                *wsi = WsPlayer(); // stop playback by resetting
+                *player = WsPlayer(); // stop playback by resetting
             }
         }
+
         this->lastActiveIteratorIdx = lastPlayedIterator;
+
 
         return outSum;
 }

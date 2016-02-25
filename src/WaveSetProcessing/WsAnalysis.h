@@ -8,7 +8,7 @@
 class WsAnalysis
 {
 private:
-    WsStorage* wsData; // TODO change to abstract base WsStorage
+    WsStorage* wsData;
     WaveSetBuilder* wsBuilder;
     float lastIn;
 

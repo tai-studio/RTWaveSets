@@ -61,7 +61,7 @@ void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
 
 int WsAnalysis::getFirstWsIdx()
 {
-    return wsData->getFirsWsIdx();
+    return wsData->getFirstWsIdx();
 }
 
 /**

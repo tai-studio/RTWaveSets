@@ -1,8 +1,7 @@
 #include "SynthContinuous.h"
 
-SynthContinuous::SynthContinuous(WsStorage* wsData)
+SynthContinuous::SynthContinuous(WsStorage* wsData) : Synth(wsData)
 {
-    this->wsData = (WsStorageDualBuf*) wsData;
     nextWsIdx = -1;
     nextGroupSize = -1;
     nextRate = 1.0;
@@ -22,7 +21,7 @@ float SynthContinuous::getNextOutput()
 
     // Start next Playback on End if valid index is available
     if(this->wsIterator.endOfPlay() && nextWsIdx>=0){
-        playGroup(&wsIterator,nextRepeat,nextGroupSize,nextWsIdx ,nextRate);
+        initPlayback(&wsIterator,nextRepeat,nextGroupSize,nextWsIdx ,nextRate);
     }
 
     float outSample = 0.0;
@@ -31,14 +30,7 @@ float SynthContinuous::getNextOutput()
     try
     {
         if(!wsIterator.endOfPlay()) {
-            double nextIdx = wsIterator.next();
-            if(wsData->audioBuf->isInRange((int)nextIdx)){
-                outSample = getSampleInterpolated(nextIdx);
-            }
-            else{
-                printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                wsIterator = WsPlayer(); // stop playback by resetting
-            }
+            outSample = wsIterator.nextSample();
         }
     }
     catch(...)

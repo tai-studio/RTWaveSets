@@ -31,12 +31,13 @@ public:
     /** WsStorage Interface Functions */
 
     virtual WaveSetDualBuf getWaveSet(int idx){ return wsBuf->get(idx); }
-    virtual int getFirsWsIdx(){ return wsBuf->getFirstPos(); }
+    virtual int getFirstWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
-    virtual int isValidWsidx(int idx){ return wsBuf->isInRange(idx); }
+    virtual int isValidWsIdx(int idx){ return wsBuf->isInRange(idx); }
     virtual int getNumWsInStorage(){return wsBuf->getLen(); }
+    virtual int getMaxWsCapacity(){ return wsBuf->getSize(); }
     virtual WaveSetBuilder* createWaveSetBuilder();
-
+    virtual AudioPiece getGroup(int wsIdx, int groupSize);
 };
 
 #endif // WAVESETDATA_H

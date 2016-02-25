@@ -4,7 +4,7 @@
 WsSelector::WsSelector(WsStorage *wsData) : wsData(wsData)
 {
     this->searchIdx = -1;
-    this->bestIdx = this->wsData->getFirsWsIdx()+1;
+    this->bestIdx = this->wsData->getFirstWsIdx()+1;
     this->bestDiff = FLT_MAX;
     this->desiredLen = -1;
     this->desiredRMS = -1;
@@ -34,7 +34,7 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLi
     if(lookBackLimit>=0 && lookBackLimit < this->wsData->getNumWsInStorage()) {
         inStartSearchIdx = this->wsData->getLastWsIdx() - lookBackLimit;
     } else {
-        inStartSearchIdx = this->wsData->getFirsWsIdx();
+        inStartSearchIdx = this->wsData->getFirstWsIdx();
     }
 
     if(this->searchIdx<inStartSearchIdx) this->searchIdx = inStartSearchIdx;
@@ -44,7 +44,7 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLi
             || desiredAmp != this->desiredRMS
             || this->bestIdx < inStartSearchIdx // last result out of lookback range?
             || inStartSearchIdx < this->startSearchIdx
-            || !this->wsData->isValidWsidx(this->bestIdx) // last result out of xing buffer range?
+            || !this->wsData->isValidWsIdx(this->bestIdx) // last result out of xing buffer range?
             //|| !this->wsData->audioBuf->isInRange(this->wsData->getWaveSet(this->bestIdx).start) // out of audio buffer range?
             )
     {

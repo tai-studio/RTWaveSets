@@ -1,6 +1,6 @@
 #include "WsStorageDualBuf.h"
 #include "WaveSetBuilderDualBuf.h"
-
+#include "WaveSetProcessing/AudioPiece.h"
 
 /**
  * @brief Create waveset data structure in given sc-buffers.
@@ -131,4 +131,56 @@ void WsStorageDualBuf::cleanUp()
             wsBuf->pop();
         }
     }
+}
+
+
+/**
+ * @brief Get a group.
+ * @param wsIdx
+ * @param groupSize
+ * @return
+ */
+AudioPiece WsStorageDualBuf::getGroup(int wsIdx, int groupSize){
+
+    if(groupSize < 1) groupSize = 1;
+
+    AudioPiece ws;
+
+    if(this->wsBuf->isInRange(wsIdx) && groupSize<this->wsBuf->getLen())
+    {
+        int startIdx = wsIdx-groupSize/2;
+        int endIdx = startIdx + groupSize - 1;
+
+        // shift back if we are at the end
+        if(endIdx>this->wsBuf->getLastPos())
+        {
+            endIdx = this->wsBuf->getLastPos();
+            startIdx = endIdx - groupSize + 1;
+        }
+
+        // shift forward if we are on the beginning
+        if(startIdx<this->wsBuf->getFirstPos()){
+            startIdx = this->wsBuf->getFirstPos();
+            endIdx = startIdx + groupSize - 1;
+        }
+
+        // check validity of parameters
+        if(groupSize<1) {
+            printf("RTWaveSetPlayer Warning: numWS < 1\n");
+            return ws;
+        }
+
+        int start = this->wsBuf->get(startIdx).start;
+        int end = this->wsBuf->get(endIdx).end;
+
+        if(isnan(end) || isnan(start) || end<1 || start<0)
+        {
+            printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
+            return ws;
+        }
+
+        ws = AudioPiece(this,start,end);
+    }
+
+    return ws;
 }

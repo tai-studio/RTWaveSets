@@ -2,7 +2,6 @@
 #define SYNTHCONTINUOUS_H
 
 #include "WsStorage.h"
-#include "WaveSetStorage/WsStorageDualBuf.h"
 #include "WsPlayer.h"
 #include "Synth.h"
 
