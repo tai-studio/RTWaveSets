@@ -1,6 +1,5 @@
 #include "SC_PlugIn.h"
 #include "RTWaveSetAnalysis.h"
-#include "RTWaveSetPlayer.h"
 #include "RTWaveSetPlayerTriggered.h"
 #include "RTWaveSetSelector.h"
 #include "RTWaveSetFeatureExtractor.h"

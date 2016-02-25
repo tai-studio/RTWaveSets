@@ -1,20 +1,18 @@
 #ifndef RTWaveSetPlayerTriggered_H
 #define RTWaveSetPlayerTriggered_H
 
-#include "RTWaveSetPlayer.h"
+#include "RTWaveSetBase.h"
+#include "WaveSetProcessing/SynthTriggered.h"
 
 #define RTWaveSetPlayerTriggered_NumIterators (512)
 
-struct RTWaveSetPlayerTriggered : public RTWaveSetPlayer  {
+struct RTWaveSetPlayerTriggered : public RTWaveSetBase  {
+
+    SynthTriggered wsSynth;
 
     /** Previous Trigger Input */
     float prevTrig;
 
-    /** Iterators for parallel WS Playbacks */
-    WsPlayer wsIterators[RTWaveSetPlayerTriggered_NumIterators];
-
-    /** index of last playing iterator in array */
-    int lastActiveIteratorIdx;
 };
 
 void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit);

@@ -1,15 +1,12 @@
 #include "RTWaveSetPlayerTriggered.h"
 
 void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
-    RTWaveSetPlayer_Ctor(unit);
+
+    // init UGen
+    RTWaveSetBase_Ctor(unit);
+    new (&unit->wsSynth) SynthTriggered(&unit->wsData);
     unit->prevTrig = 1.0;
 
-    // init WaveSetIterators
-    for(int i=0;i<RTWaveSetPlayerTriggered_NumIterators;i++)
-    {
-        unit->wsIterators[i] = WsPlayer();
-    }
-    unit->lastActiveIteratorIdx = -1;
 
     SETCALC(RTWaveSetPlayerTriggered_next);
     RTWaveSetPlayerTriggered_next(unit, 1);
@@ -44,62 +41,19 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
         // check for Trigger and valid idx input
         if(trig[i]>0.0 && unit->prevTrig<=0.0 && idxIn >= 0)
         {
-            // We have a Trigger, get WaveSet and set Iterator:
-            // look for a free WaveSetIterator
-            for(int playIdx=0;playIdx<RTWaveSetPlayerTriggered_NumIterators;playIdx++)
-            {
-                WsPlayer* wsi = &unit->wsIterators[playIdx];
-                if(wsi->endOfPlay()){
-                    // got a free Iterator: start Playback and exit loop
-
-                    RTWaveSetPlayer_playGroup(wsi, unit,(int) repeat,(int) groupSize,idxIn ,rate);
-                    if(unit->lastActiveIteratorIdx < playIdx){
-                        unit->lastActiveIteratorIdx = playIdx;
-                    }
-
-                    break;
-                }
-
-                if(playIdx==RTWaveSetPlayerTriggered_NumIterators-1)
-                {
-                    printf("RTWaveSetPlayerTriggered Warning: Number of parallel WaveSet playback exceeded!\n");
-                }
-
-            }
+            // we have a trigger, star new playback
+            unit->wsSynth.startNewPlayback(idxIn,groupSize,rate,repeat);
 
         }
 
-        // Play WaveSets from Iterators
-        float outSum = 0.0;
-        int lastPlayedIterator=-1;
-        for(int playIdx=0;playIdx<=unit->lastActiveIteratorIdx;playIdx++)
-        {
-            WsPlayer* wsi = &unit->wsIterators[playIdx];
-            try
-            {
-                // play parallel WaveSets from Iterators
-                if(!wsi->endOfPlay())
-                {
-                        double idx = wsi->next();
-                        if(unit->wsData.audioBuf->isInRange((int)idx)) {
-                            outSum += RTWaveSetPlayer_getSample(unit,idx);
-                            lastPlayedIterator = playIdx;
-                        } else {
-                            printf("WaveSet playback failed! (out of audio buffer Range)\n");
-                            *wsi = WsPlayer(); // stop playback by resetting
-                        }
-                }
-            }
-            catch(...)
-            {
-                printf("WaveSet playback failed! (unknown exception)\n");
-                *wsi = WsPlayer(); // stop playback by resetting
-            }
-        }
+
+        // get Output
+        float outSum = unit->wsSynth.getNextOutput();
+
         out[i] = outSum;
 
         unit->prevTrig=trig[i];
-        unit->lastActiveIteratorIdx = lastPlayedIterator;
+
     }
 
 
@@ -107,5 +61,5 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 
 
 void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit){
-    RTWaveSetPlayer_Dtor(unit);
+
 }

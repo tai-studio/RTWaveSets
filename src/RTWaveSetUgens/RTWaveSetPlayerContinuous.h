@@ -1,10 +1,10 @@
 #ifndef RTWaveSetPlayerContinuous_H
 #define RTWaveSetPlayerContinuous_H
 
-#include "RTWaveSetPlayer.h"
+#include "RTWaveSetBase.h"
 #include "WaveSetProcessing/SynthContinuous.h"
 
-struct RTWaveSetPlayerContinuous : public RTWaveSetPlayer  {
+struct RTWaveSetPlayerContinuous : public RTWaveSetBase {
 
     SynthContinuous wsSynth;
 };
