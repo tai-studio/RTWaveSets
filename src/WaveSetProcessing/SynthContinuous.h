@@ -5,15 +5,18 @@
 #include "WsPlayer.h"
 #include "Synth.h"
 
+/**
+ * @brief Implements a continuous waveset synthesis.
+ */
 
 class SynthContinuous : public Synth
 {
 private:
 
     /** Iterator for WS Playbacks */
-    WsPlayer wsIterator;
+    WsPlayer wsPlayer;
 
-    /** Variables for next Playback */
+    /** Parameters for the next Playback */
     int nextWsIdx;
     int nextGroupSize;
     float nextRate;

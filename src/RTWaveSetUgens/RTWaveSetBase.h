@@ -2,21 +2,17 @@
 #define RTWAVESETBASE_H
 
 #include "WaveSetStorage/RingBuffer.h"
-#include "WaveSetStorage/WaveSetDualBuf.h"
 #include "WaveSetStorage/WsStorageDualBuf.h"
 
-//#define RTWaveSet_DEBUG
-
-#ifdef RTWaveSet_DEBUG
-    #define printf_debug printf
-#else
-    #define printf_debug(...)
-#endif
-
-#define printf_warn printf
 
 struct RTWaveSetBase : public Unit {
-    WsStorageDualBuf wsData;
+
+    /** preserver memory for the wsData instance */
+    WsStorageDualBuf wsData_;
+
+    /** Pointer with abstract base type to WsStorage instance */
+    WsStorage *wsData;
+
 };
 
 void RTWaveSetBase_Ctor(RTWaveSetBase* unit);

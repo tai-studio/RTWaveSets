@@ -20,8 +20,8 @@ float SynthContinuous::getNextOutput()
 {
 
     // Start next Playback on End if valid index is available
-    if(this->wsIterator.endOfPlay() && nextWsIdx>=0){
-        initPlayback(&wsIterator,nextRepeat,nextGroupSize,nextWsIdx ,nextRate);
+    if(this->wsPlayer.endOfPlay() && nextWsIdx>=0){
+        initPlayback(&wsPlayer,nextRepeat,nextGroupSize,nextWsIdx ,nextRate);
     }
 
     float outSample = 0.0;
@@ -29,14 +29,14 @@ float SynthContinuous::getNextOutput()
     // Play WaveSets from Iterator
     try
     {
-        if(!wsIterator.endOfPlay()) {
-            outSample = wsIterator.nextSample();
+        if(!wsPlayer.endOfPlay()) {
+            outSample = wsPlayer.nextSample();
         }
     }
     catch(...)
     {
         printf("WaveSet playback failed! (unknown exception)\n");
-        wsIterator = WsPlayer(); // stop playback by resetting
+        wsPlayer = WsPlayer(); // stop playback by resetting
     }
 
 

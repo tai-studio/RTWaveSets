@@ -9,7 +9,7 @@
 void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
 {
     RTWaveSetBase_Ctor(unit);
-    new(&unit->wsSelector) WsSelector(&unit->wsData);
+    new(&unit->wsSelector) WsSelector(unit->wsData);
 
     SETCALC(RTWaveSetSelector_next);
 

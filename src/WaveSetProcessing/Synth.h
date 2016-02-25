@@ -4,6 +4,11 @@
 #include "WsPlayer.h"
 #include "WsStorage.h"
 
+/**
+ * @brief Abstrat baseclass for waveset synthesis.
+ * Proviedes common things like folding the waveset index and initialize the playback a waveset group.
+ */
+
 class Synth
 {
 protected:

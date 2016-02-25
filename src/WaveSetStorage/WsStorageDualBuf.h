@@ -22,7 +22,6 @@ public:
     WsStorageDualBuf(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf);
     WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit* unit);
     void cleanUp();
-    //WaveSetPlay getWaveSetGroup();
 
     template <typename T>
     static RingBuffer<T>* createRingBufferInBuffer(float fbufnum, Unit *unit);

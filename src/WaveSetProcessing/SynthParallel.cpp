@@ -1,22 +1,31 @@
-#include "SynthTriggered.h"
+#include "SynthParallel.h"
 
-SynthTriggered::SynthTriggered(WsStorage* wsData) : Synth(wsData)
+SynthParallel::SynthParallel(WsStorage* wsData) : Synth(wsData)
 {
     this->lastActiveIteratorIdx = -1;
 }
 
-void SynthTriggered::startNewPlayback(int idxIn, int groupSize, float rate, int repeat)
+/**
+ * @brief Initiliazize a new parallel waveset playback.
+ * The collected playbacks will be executed calling SynthParallel::getNextOutput().
+ * @param wsIdx
+ * @param groupSize
+ * @param rate
+ * @param repeat
+ */
+
+void SynthParallel::startNewPlayback(int wsIdx, int groupSize, float rate, int repeat)
 {
 
     // We have a Trigger, get WaveSet and set Iterator:
     // look for a free WaveSetIterator
-    for(int playIdx=0;playIdx<SynthTriggered_NumIterators;playIdx++)
+    for(int playIdx=0;playIdx<numPlayers;playIdx++)
     {
-        WsPlayer* player = &this->wsIterators[playIdx];
+        WsPlayer* player = &this->wsPlayers[playIdx];
         if(player->endOfPlay()){
             // got a free Iterator: start Playback and exit loop
 
-            this->initPlayback(player, (int) repeat,(int) groupSize,idxIn ,rate);
+            this->initPlayback(player, (int) repeat,(int) groupSize,wsIdx ,rate);
 
             if(this->lastActiveIteratorIdx < playIdx){
                 this->lastActiveIteratorIdx = playIdx;
@@ -25,7 +34,7 @@ void SynthTriggered::startNewPlayback(int idxIn, int groupSize, float rate, int 
             break;
         }
 
-        if(playIdx==SynthTriggered_NumIterators-1)
+        if(playIdx==numPlayers-1)
         {
             printf("SynthTriggered Warning: Max number of parallel WaveSet playback exceeded!\n");
         }
@@ -34,7 +43,13 @@ void SynthTriggered::startNewPlayback(int idxIn, int groupSize, float rate, int 
 
 }
 
-float SynthTriggered::getNextOutput()
+/**
+ * @brief Get the next audio sample of the synthesis.
+ * All parallel playbacks will be continued for one step and the outputs are summed up.
+ * @return
+ */
+
+float SynthParallel::getNextOutput()
 {
 
         // Play WaveSets from Iterators
@@ -42,7 +57,7 @@ float SynthTriggered::getNextOutput()
         int lastPlayedIterator=-1;
         for(int playIdx=0;playIdx<=lastActiveIteratorIdx;playIdx++)
         {
-            WsPlayer* player = &this->wsIterators[playIdx];
+            WsPlayer* player = &this->wsPlayers[playIdx];
             try
             {
                 // play parallel WaveSets from Iterators

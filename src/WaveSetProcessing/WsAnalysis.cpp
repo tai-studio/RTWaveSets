@@ -25,7 +25,7 @@ void WsAnalysis::reset()
 /**
  * @brief receive Audio Input.
  * @param audioIn
- * @param minWSLen
+ * @param minWSLen minimal waveset length in samples
  */
 
 void WsAnalysis::nextInputSample(float audioIn, int minWSLen)

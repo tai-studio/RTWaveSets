@@ -4,7 +4,7 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
 
     // init UGen
     RTWaveSetBase_Ctor(unit);
-    new (&unit->wsSynth) SynthTriggered(&unit->wsData);
+    new (&unit->wsSynth) SynthParallel(unit->wsData);
     unit->prevTrig = 1.0;
 
 

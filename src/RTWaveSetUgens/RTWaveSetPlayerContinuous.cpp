@@ -3,7 +3,7 @@
 void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit){
 
     RTWaveSetBase_Ctor(unit);
-    new (&unit->wsSynth) SynthContinuous(&unit->wsData);
+    new (&unit->wsSynth) SynthContinuous(unit->wsData);
 
     SETCALC(RTWaveSetPlayerContinuous_next);
     RTWaveSetPlayerContinuous_next(unit, 1);

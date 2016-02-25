@@ -8,7 +8,7 @@
 void RTWaveSetFeatureExtractor_Ctor(RTWaveSetFeatureExtractor *unit)
 {
     RTWaveSetBase_Ctor(unit);
-    new(&unit->wsExtractor) WsFeatureExtractor(&unit->wsData);
+    new(&unit->wsExtractor) WsFeatureExtractor(unit->wsData);
 
     SETCALC(RTWaveSetFeatureExtractor_next);
 

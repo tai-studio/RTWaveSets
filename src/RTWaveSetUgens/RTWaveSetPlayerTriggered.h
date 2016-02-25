@@ -2,13 +2,13 @@
 #define RTWaveSetPlayerTriggered_H
 
 #include "RTWaveSetBase.h"
-#include "WaveSetProcessing/SynthTriggered.h"
+#include "WaveSetProcessing/SynthParallel.h"
 
 #define RTWaveSetPlayerTriggered_NumIterators (512)
 
 struct RTWaveSetPlayerTriggered : public RTWaveSetBase  {
 
-    SynthTriggered wsSynth;
+    SynthParallel wsSynth;
 
     /** Previous Trigger Input */
     float prevTrig;
