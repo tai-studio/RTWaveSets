@@ -14,9 +14,10 @@ AudioPiece::AudioPiece(WsStorageDualBuf* wsData,int start,int end)
     this->end = end;
 }
 
+
 /**
- * @brief AudioPiece::getSampleInterpolated
- * @param pos postion within aduio pice 0...len-1
+ * @brief Get the audio sample value at given position. If the floating point position is fractional the value will be interpolated.
+ * @param pos Position within the AudioPiece in the range from 0...Length-1.
  * @return
  */
 
@@ -30,12 +31,13 @@ float AudioPiece::getSampleInterpolated(double pos)
     // split int and fractional Part
     int idxInt = (int) floatIdx;
     float idxFrac = (double) floatIdx - (double) idxInt;
+    int idxRound = (int) (floatIdx+0.5f);
 
     // check idx range
-    if(!wsData->audioBuf->isInRange(idxInt)) throw "WaveSet playback failed! (out of audio buffer Range)\n";
+    if(!wsData->audioBuf->isInRange(idxRound)) throw "WaveSet playback failed! (out of audio buffer Range)\n";
 
     // check if interpolation is needed
-    bool doInterpolation = fabs(ceilf(floatIdx)-floatIdx)>0.01; // interpolate only > 1% offset
+    bool doInterpolation = fabs(ceilf(floatIdx)-floatIdx) > interpThreshold; // interpolate only > 1% offset
 
     if(doInterpolation)
     {
@@ -67,7 +69,6 @@ float AudioPiece::getSampleInterpolated(double pos)
     if(!doInterpolation)
     {
         // no interpolation:
-        int idxRound = (int) (floatIdx+0.5f);
         sampleVal= wsData->audioBuf->get(idxRound);
     }
 

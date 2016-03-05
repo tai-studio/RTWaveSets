@@ -35,6 +35,7 @@ float SynthContinuous::getNextOutput()
     }
     catch(...)
     {
+        // TODO move exeption handling with stop to WsPlayer
         printf("WaveSet playback failed! (unknown exception)\n");
         wsPlayer = WsPlayer(); // stop playback by resetting
     }

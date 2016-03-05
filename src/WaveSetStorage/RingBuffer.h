@@ -33,9 +33,6 @@ public:
     int getLen(){ if(lastPos < 0 || firstPos < 0) return 0; return lastPos - firstPos + 1; } // TODO add 1?
     bool isInRange(int pos) { return (pos >= getFirstPos() && pos <= lastPos); }
 
-    static SndBuf* getSndBuf(float fbufnum, Unit* unit);
-    static RingBuffer<T>* createInBuffer(float bufnum, Unit* unit);
-    static RingBuffer<T>* getFromBuffer(float fbufnum, Unit *unit);
 };
 
 #include "RingBuffer.cpp" // Implementation of template classes have to be available in the header

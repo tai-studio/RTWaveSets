@@ -39,7 +39,7 @@ double WsPlayer::nextPos() {
     }
 
     // next repeat? -> reset to start
-    if(playRate > 0 && ((int)playPos) >= ws.getLen()) // forward Playback
+    if(playRate > 0 && ((int)playPos) >= ws.getLen()) // forward Playback // TODO müsste das nicht len-1 sein?
     {
         playPos = 0; // TODO add partial steps between? (playPos-ws.getStart())
         repeat--;
