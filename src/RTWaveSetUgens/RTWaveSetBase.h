@@ -7,9 +7,6 @@
 
 struct RTWaveSetBase : public Unit {
 
-    /** preserver memory for the wsData instance */
-    WsStorageDualBuf wsData_;
-
     /** Pointer with abstract base type to WsStorage instance */
     WsStorage *wsData;
 

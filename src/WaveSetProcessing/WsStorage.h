@@ -9,6 +9,7 @@ class AudioPiece;
 class WsStorage : public WsObject
 {
 public:
+    virtual ~WsStorage(){}
     virtual WaveSetDualBuf getWaveSet(int idx) = 0; // TODO use abstract base type
     virtual int getFirstWsIdx() = 0;
     virtual int getLastWsIdx() = 0;

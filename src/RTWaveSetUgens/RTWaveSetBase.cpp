@@ -6,11 +6,10 @@ void RTWaveSetBase_Ctor(RTWaveSetBase *unit)
 {
     WsObject::setScWorld(unit->mWorld);
 
-    unit->wsData = new (&unit->wsData_) WsStorageDualBuf(ZIN0(0),ZIN0(1),unit);
+    unit->wsData = new WsStorageDualBuf(ZIN0(0),ZIN0(1),unit);
 }
-
 
 void RTWaveSetBase_Dtor(RTWaveSetBase *unit)
 {
-    unit->wsData->~WsStorage();
+    delete unit->wsData;
 }
