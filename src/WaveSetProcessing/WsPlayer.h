@@ -11,13 +11,14 @@
 class WsPlayer : public WsObject {
 private:
     double playPos;
-    AudioPiece ws;
+    AudioPiece* ws;
     int repeat;
     float playRate;
 
 public:
     WsPlayer();
-    void playWS(AudioPiece ws, int repeat=1, float rate=1.0);
+    ~WsPlayer();
+    void playWS(AudioPiece* ws, int repeat=1, float rate=1.0);
     double nextPos();
     float nextSample();
     bool endOfPlay();

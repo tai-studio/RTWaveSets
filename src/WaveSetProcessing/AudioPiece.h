@@ -3,26 +3,13 @@
 
 #include "WaveSetStorage/WsStorageDualBuf.h"
 
-class AudioPiece : public WsObject
+class AudioPiece
 {
-private:
-    WsStorageDualBuf* wsData;
-    int start;
-    int end;
 
 public:
-
-
-    int getStart(){ return start; }
-    int getEnd(){ return end; }
-    int getLen(){ return end-start; }
-
-    AudioPiece();
-    AudioPiece(WsStorageDualBuf* wsData,int start,int end);
-
-    /** Threshold to do an Interpolation */
-    static constexpr float interpThreshold = 0.01;
-    float getSampleInterpolated(double pos);
+    virtual ~AudioPiece(){}
+    virtual int getLen()=0;
+    virtual float getSampleInterpolated(double pos)=0;
 
 };
 

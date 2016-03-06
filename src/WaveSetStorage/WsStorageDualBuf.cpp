@@ -1,6 +1,7 @@
 #include "WsStorageDualBuf.h"
 #include "WaveSetBuilderDualBuf.h"
 #include "WaveSetProcessing/AudioPiece.h"
+#include "AudioPieceDualBuf.h"
 
 /**
  * @brief Create waveset data structure in given sc-buffers.
@@ -140,11 +141,11 @@ void WsStorageDualBuf::cleanUp()
  * @param groupSize
  * @return
  */
-AudioPiece WsStorageDualBuf::getGroup(int wsIdx, int groupSize){
+AudioPiece* WsStorageDualBuf::createGroup(int wsIdx, int groupSize){
 
     if(groupSize < 1) groupSize = 1;
 
-    AudioPiece ws;
+    AudioPiece* ws = NULL;
 
     if(this->wsBuf->isInRange(wsIdx) && groupSize<this->wsBuf->getLen())
     {
@@ -170,10 +171,10 @@ AudioPiece WsStorageDualBuf::getGroup(int wsIdx, int groupSize){
         if(isnan(end) || isnan(start) || end<1 || start<0)
         {
             printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
-            return ws;
+            return NULL;
         }
 
-        ws = AudioPiece(this,start,end);
+        ws = new AudioPieceDualBuf(this,start,end);
     }
 
     return ws;

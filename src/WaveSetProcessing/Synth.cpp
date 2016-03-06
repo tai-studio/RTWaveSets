@@ -41,7 +41,7 @@ void Synth::initPlayback(WsPlayer *player, float repeat, int groupSize, int xing
 {
     xingIdx = foldIdx(xingIdx);
     if(!wsData->isValidWsIdx(xingIdx)) throw "RTWaveSetPlayer_playNextWS() Error: Waveset idx out of range!";
-    AudioPiece ws = this->wsData->getGroup(xingIdx,groupSize);
+    AudioPiece* ws = this->wsData->createGroup(xingIdx,groupSize);
     player->playWS(ws,repeat,rate);
 }
 

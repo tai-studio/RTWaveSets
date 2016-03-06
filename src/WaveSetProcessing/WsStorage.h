@@ -17,7 +17,7 @@ public:
     virtual int getMaxWsCapacity() = 0;
     virtual int isValidWsIdx(int idx) = 0;
     virtual WaveSetBuilder* createWaveSetBuilder() = 0;
-    virtual AudioPiece getGroup(int wsIdx, int groupSize) = 0;
+    virtual AudioPiece* createGroup(int wsIdx, int groupSize) = 0;
 };
 
 #endif // WSSTORAGE_H
