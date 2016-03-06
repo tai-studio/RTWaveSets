@@ -13,6 +13,15 @@ WsAnalysis::WsAnalysis(WsStorage *wsData)
 }
 
 /**
+ * @brief WsAnalysis::~WsAnalysis
+ */
+
+WsAnalysis::~WsAnalysis()
+{
+    delete this->wsBuilder;
+}
+
+/**
  * @brief Reset the running analysis.
  */
 

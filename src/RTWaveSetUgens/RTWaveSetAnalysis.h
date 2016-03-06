@@ -3,10 +3,10 @@
 
 #include "RTWaveSetBase.h"
 #include "WaveSetProcessing/WsAnalysis.h"
+#include "WsObject.h"
 
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
     WsAnalysis wsAnalysis;
-
 };
 
 void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);

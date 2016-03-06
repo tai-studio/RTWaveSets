@@ -18,6 +18,17 @@ void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
 }
 
 /**
+ * @brief RTWaveSetAnalysis_Dtor Destructor.
+ * @param unit
+ */
+
+void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
+    unit->wsAnalysis.~WsAnalysis();
+    RTWaveSetBase_Dtor(unit);
+}
+
+
+/**
  * @brief RTWaveSetAnalysis_next Process the next block of audio samples.
  * @param unit
  * @param inNumSamples
@@ -52,12 +63,4 @@ void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
 }
 
 
-/**
- * @brief RTWaveSetAnalysis_Dtor Destructor.
- * @param unit
- */
-
-void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
-
-}
 

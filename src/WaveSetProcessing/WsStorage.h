@@ -6,7 +6,7 @@
 
 class AudioPiece;
 
-class WsStorage
+class WsStorage : public WsObject
 {
 public:
     virtual WaveSetDualBuf getWaveSet(int idx) = 0; // TODO use abstract base type

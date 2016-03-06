@@ -5,7 +5,7 @@
 #include "WaveSetBuilder.h"
 
 
-class WsAnalysis
+class WsAnalysis : public WsObject
 {
 private:
     WsStorage* wsData;
@@ -14,6 +14,7 @@ private:
 
 public:
     WsAnalysis(WsStorage* wsData);
+    ~WsAnalysis();
     void nextInputSample(float val, int minWSLen);
     void reset();
     int getFirstWsIdx();

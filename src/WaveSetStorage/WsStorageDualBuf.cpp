@@ -110,13 +110,13 @@ SndBuf *WsStorageDualBuf::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
 
 /**
  * @brief Get a new instance of the waveset builder.
+ * The instance will be allocated dynamically and have to be deleted if its not used anymore.
  * @return
  */
 
 WaveSetBuilder* WsStorageDualBuf::createWaveSetBuilder()
 {
-    static WaveSetBuilderDualBuf wsb(this);
-    return new (&wsb) WaveSetBuilderDualBuf(this); // TODO replace by RTALLOC
+    return new WaveSetBuilderDualBuf(this);
 }
 
 /**
@@ -162,12 +162,6 @@ AudioPiece WsStorageDualBuf::getGroup(int wsIdx, int groupSize){
         if(startIdx<this->wsBuf->getFirstPos()){
             startIdx = this->wsBuf->getFirstPos();
             endIdx = startIdx + groupSize - 1;
-        }
-
-        // check validity of parameters
-        if(groupSize<1) {
-            printf("RTWaveSetPlayer Warning: numWS < 1\n");
-            return ws;
         }
 
         int start = this->wsBuf->get(startIdx).start;

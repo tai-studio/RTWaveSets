@@ -16,5 +16,6 @@ struct RTWaveSetBase : public Unit {
 };
 
 void RTWaveSetBase_Ctor(RTWaveSetBase* unit);
+void RTWaveSetBase_Dtor(RTWaveSetBase* unit);
 
 #endif // RTWAVESETBASE_H

@@ -3,7 +3,7 @@
 
 #include "WaveSetStorage/WsStorageDualBuf.h"
 
-class AudioPiece
+class AudioPiece : public WsObject
 {
 private:
     WsStorageDualBuf* wsData;

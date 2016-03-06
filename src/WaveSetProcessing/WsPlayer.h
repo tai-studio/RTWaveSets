@@ -8,7 +8,7 @@
  * @brief The WsPlayer class
  */
 
-class WsPlayer {
+class WsPlayer : public WsObject {
 private:
     double playPos;
     AudioPiece ws;
