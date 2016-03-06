@@ -19,7 +19,7 @@ void RingBuffer<T>::put(T val) {
 
     updateFirstPos();
 
-    this->data[lastPos % size] = val;
+    new (&this->data[lastPos % size]) T(val);
 }
 
 template <typename T>
@@ -51,6 +51,17 @@ T RingBuffer<T>::get(int getPos) {
 
     return data[getPos % size];
 }
+
+template <typename T>
+T* RingBuffer<T>::getPtr(int getPos) {
+    if(getPos <= (lastPos - size) || getPos > lastPos){
+        printf("RingBuffer::get(%i) Error: Value out of Range! (len=%i,writePos=%i)\n",getPos,this->size,this->lastPos);
+        throw "Index Out of Range!";
+    }
+
+    return &data[getPos % size];
+}
+
 
 template <typename T>
 void RingBuffer<T>::set(int setPos, T val) {

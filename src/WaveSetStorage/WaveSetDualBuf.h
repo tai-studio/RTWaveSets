@@ -1,9 +1,11 @@
-#ifndef WAVESET_H
-#define WAVESET_H
+#ifndef WaveSetDualBuf_H
+#define WaveSetDualBuf_H
 
 #include "RingBuffer.h"
+#include "WaveSetProcessing/Waveset.h"
+#include "WsObject.h"
 
-class WaveSetDualBuf {
+class WaveSetDualBuf : public Waveset, public WsObject {
 public:
     WaveSetDualBuf(int start, int end, float amp){
         this->start = start;
@@ -31,6 +33,12 @@ public:
      * @brief RMS of the WaveSet.
      */
     float rms;
+
+    /**
+     * @brief get the value of the rms feature.
+     * @return
+     */
+    float getRMS(){ return rms; }
 
 };
 

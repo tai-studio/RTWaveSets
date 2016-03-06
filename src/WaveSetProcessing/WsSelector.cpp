@@ -63,16 +63,16 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLi
  * @brief Calculate the diff of features.
  */
 
-float WsSelector::calcDiff(WaveSetDualBuf ws){
+float WsSelector::calcDiff(Waveset* ws){
     float diff=0.0;
 
     if(this->desiredLen!=-1) {
-        float diffLen = this->lenWeight * abs(this->desiredLen-ws.getLength());
+        float diffLen = this->lenWeight * abs(this->desiredLen-ws->getLength());
         diff += diffLen*diffLen;
     }
 
     if(this->desiredRMS>=0) {
-        float diffRMS = this->ampWeight * fabs(this->desiredRMS-ws.rms);
+        float diffRMS = this->ampWeight * fabs(this->desiredRMS-ws->getRMS());
         diff += diffRMS*diffRMS;
     }
 
@@ -97,7 +97,7 @@ void WsSelector::findBestIdx(){
         int idx;
         for(idx = this->searchIdx; idx<=this->wsData->getLastWsIdx(); idx++)
         {
-            WaveSetDualBuf ws = this->wsData->getWaveSet(idx);
+            Waveset* ws = this->wsData->getWaveSet(idx);
 
             float diff = calcDiff(ws);
 

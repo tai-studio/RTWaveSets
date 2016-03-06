@@ -22,6 +22,7 @@ public:
     void put(T val);
     void pop(){ setFirstPos(firstPos+1); }
     T get(int getPos); // TODO return pointer/reference instead of copy
+    T* getPtr(int getPos);
     void set(int setPos, T val);
     T getLast(int back=0){ return get(lastPos-back); }
     T getFirst(int forward=0){ return get(firstPos+forward); }

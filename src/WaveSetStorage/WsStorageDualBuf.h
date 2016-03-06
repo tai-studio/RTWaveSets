@@ -29,7 +29,7 @@ public:
 
     /** WsStorage Interface Functions */
 
-    virtual WaveSetDualBuf getWaveSet(int idx){ return wsBuf->get(idx); }
+    virtual Waveset* getWaveSet(int idx){ return wsBuf->getPtr(idx); }
     virtual int getFirstWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsIdx(int idx){ return wsBuf->isInRange(idx); }

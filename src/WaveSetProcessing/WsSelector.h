@@ -20,7 +20,7 @@ private:
 
 
     void findBestIdx();
-    float calcDiff(WaveSetDualBuf ws);
+    float calcDiff(Waveset *ws);
     void setSearchParams(int desiredLen, float desiredAmp,int lookBackLimit);
 public:
     WsSelector(WsStorage *wsData);
