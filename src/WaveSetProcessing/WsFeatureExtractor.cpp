@@ -23,6 +23,8 @@ float WsFeatureExtractor::getFeature(int wsIdx, int featureID)
         result = -1;
     }
 
+    delete ws;
+
     return result;
 }
 

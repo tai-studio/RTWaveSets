@@ -13,7 +13,7 @@
 WsStorageDualBuf::WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit *unit)
 {
     this->audioBuf = createRingBufferInBuffer<float>(fbufnumAudio,unit);
-    this->wsBuf = createRingBufferInBuffer<WaveSetDualBuf>(fbufnumWS,unit);
+    this->wsBuf = createRingBufferInBuffer<WaveSetDualBuf::Data>(fbufnumWS,unit);
 }
 
 /**

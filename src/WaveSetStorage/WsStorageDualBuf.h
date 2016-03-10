@@ -6,7 +6,7 @@
 #include "WaveSetDualBuf.h"
 #include "WaveSetProcessing/WaveSetBuilder.h"
 
-typedef RingBuffer<WaveSetDualBuf> WaveSetRingBuffer;
+typedef RingBuffer<WaveSetDualBuf::Data> WaveSetRingBuffer;
 typedef RingBuffer<float> FloatRingBuffer;
 
 class WsStorageDualBuf : public WsStorage
@@ -29,7 +29,13 @@ public:
 
     /** WsStorage Interface Functions */
 
-    virtual Waveset* getWaveSet(int idx){ return wsBuf->getPtr(idx); }
+    /**
+     * @brief get a waveset at given position. its allocated dynamic and sould be freed using delete
+     * @param idx
+     * @return
+     */
+
+    virtual Waveset* getWaveSet(int idx){ return new WaveSetDualBuf(wsBuf->get(idx)); }
     virtual int getFirstWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsIdx(int idx){ return wsBuf->isInRange(idx); }

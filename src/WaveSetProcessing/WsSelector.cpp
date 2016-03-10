@@ -101,6 +101,8 @@ void WsSelector::findBestIdx(){
 
             float diff = calcDiff(ws);
 
+            delete ws;
+
             if (diff <= this->bestDiff)
             {
                 this->bestIdx = idx;

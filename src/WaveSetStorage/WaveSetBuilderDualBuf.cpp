@@ -61,7 +61,7 @@ void WaveSetBuilderDualBuf::saveAndStartNew()
         int endPos = wsData->audioBuf->getLastPos();
         float rms = calcRMS(startPos,endPos);
         WaveSetDualBuf ws(startPos,endPos,rms);
-        wsData->wsBuf->put(ws);
+        wsData->wsBuf->put(ws.data);
     }
 
     this->startNewWaveSet();
