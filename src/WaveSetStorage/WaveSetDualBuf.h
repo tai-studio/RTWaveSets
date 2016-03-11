@@ -43,14 +43,14 @@ public:
      * @brief Length of the WaveSet in samples.
      * @return
      */
-    int getLength() { return this->data.end-this->data.start; }
+    virtual int getLength() { return this->data.end-this->data.start; }
 
 
     /**
      * @brief get the value of the rms feature.
      * @return
      */
-    float getRMS(){ return this->data.rms; }
+    virtual float getRMS(){ return this->data.rms; }
 
 
 

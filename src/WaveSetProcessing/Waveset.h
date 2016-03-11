@@ -6,6 +6,7 @@ class Waveset
 {
 public:
     Waveset();
+    virtual ~Waveset(){}
 
     /**
      * @brief Length of the WaveSet in samples.
