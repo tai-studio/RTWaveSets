@@ -14,7 +14,9 @@ private:
     /** Start idx of building waveset in the audio buffer */
     int startPos;
 
-    float calcRMS(int start, int end);
+    float calcRMS(int start, int end); // TODO move features and calculation to separate Metdata Class
+    void calcFFT(int start, int end);
+
 public:
 
     WaveSetBuilderDualBuf(WsStorageDualBuf* wsData);

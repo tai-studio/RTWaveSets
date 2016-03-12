@@ -10,7 +10,7 @@
 
 class WsObject
 {
-private:
+protected:
     static World *scWorld;
     static InterfaceTable *scInterface;
     static bool debug;

@@ -47,14 +47,14 @@ double WsPlayer::nextPos() {
     }
 
     // next repeat? -> reset to start
-    if(playRate > 0 && ((int)playPos) >= ws->getLen()) // forward Playback // TODO müsste das nicht len-1 sein?
+    if(playRate > 0 && ((int)playPos) >= ws->getLen()) // forward Playback
     {
         playPos = 0; // TODO add partial steps between? (playPos-ws.getStart())
         repeat--;
     }
-    else if(playRate < 0 && ((int)playPos) <= 0.0) // backward Playback
+    else if(playRate < 0 && ((int)playPos) < 0.0) // backward Playback
     {
-        playPos = ws->getLen();
+        playPos = ws->getLen()-playRate;
         repeat--;
     }
 
@@ -86,7 +86,7 @@ void WsPlayer::playWS(AudioPiece* ws, int repeat, float playRate){
     if(playRate>0) {
         playPos = 0;
     } else {
-        playPos = ws->getLen();
+        playPos = ws->getLen()-playRate;
     }
 
     // TODO playback including or excluding "end" sample?

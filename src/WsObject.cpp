@@ -21,7 +21,6 @@ void *WsObject::operator new(size_t size)
 
     if(space==NULL) throw "WsObject allocation error";
 
-    //printf("WsObject successfull allocated %i bytes\n",(int)size);
     return space;
 }
 
