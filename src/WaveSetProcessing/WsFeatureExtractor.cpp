@@ -17,7 +17,7 @@ float WsFeatureExtractor::getFeature(int wsIdx, int featureID)
         result = (float) ws->getLength() / 44100.0;
     } else if(featureID==1) {
         // WS rms 0..1
-        result = ws->getRMS();
+        result = ws->getMetaData().rms;
     } else {
         // unknown featureID
         result = -1;

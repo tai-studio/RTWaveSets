@@ -72,7 +72,7 @@ float WsSelector::calcDiff(Waveset* ws){
     }
 
     if(this->desiredRMS>=0) {
-        float diffRMS = this->ampWeight * fabs(this->desiredRMS-ws->getRMS());
+        float diffRMS = this->ampWeight * fabs(this->desiredRMS-ws->getMetaData().rms);
         diff += diffRMS*diffRMS;
     }
 

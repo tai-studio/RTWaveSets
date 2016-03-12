@@ -1,6 +1,7 @@
 #ifndef WAVESET_H
 #define WAVESET_H
 
+#include "WsMedatData.h"
 
 class Waveset
 {
@@ -12,13 +13,13 @@ public:
      * @brief Length of the WaveSet in samples.
      * @return
      */
-    virtual int getLength()=0;
+    virtual int getLength()=0; // TODO remove an replace by AudioPiece getLen
 
     /**
-     * @brief get the value of the rms feature.
+     * @brief Get the Metadata of the Waveset.
      * @return
      */
-    virtual float getRMS()=0;
+    virtual WsMedatData getMetaData()=0;
 
 };
 
