@@ -3,7 +3,7 @@
 
 #include "WsStorage.h"
 
-class WsSelector : public WsObject
+class WsSelector : public ScObject
 {
 private:
     WsStorage* wsData;

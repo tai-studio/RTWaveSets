@@ -3,9 +3,9 @@
 
 #include "RingBuffer.h"
 #include "WaveSetProcessing/Waveset.h"
-#include "WsObject.h"
+#include "ScObject.h"
 
-class WaveSetDualBuf : public Waveset, public WsObject {
+class WaveSetDualBuf : public Waveset, public ScObject {
 public:
 
     struct Data{

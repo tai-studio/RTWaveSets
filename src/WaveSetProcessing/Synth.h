@@ -9,7 +9,7 @@
  * Proviedes common things like folding the waveset index and initialize the playback a waveset group.
  */
 
-class Synth : public WsObject
+class Synth : public ScObject
 {
 protected:
     WsStorage* wsData;

@@ -4,7 +4,7 @@
 #include "RTWaveSetSelector.h"
 #include "RTWaveSetFeatureExtractor.h"
 #include "RTWaveSetPlayerContinuous.h"
-#include "WsObject.h"
+#include "ScObject.h"
 
 static InterfaceTable *ft;
 
@@ -13,7 +13,7 @@ PluginLoad(RTWaveSetAnalysis)
 {
     // InterfaceTable *inTable implicitly given as argument to the load function
     ft = inTable; // store pointer to InterfaceTable
-    WsObject::setScInterface(ft);
+    ScObject::setScInterface(ft);
 
     DefineDtorUnit(RTWaveSetAnalysis);
     DefineDtorUnit(RTWaveSetPlayerTriggered);

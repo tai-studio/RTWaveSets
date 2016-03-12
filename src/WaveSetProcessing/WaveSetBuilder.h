@@ -1,7 +1,7 @@
 #ifndef WAVESETBUILDER_H
 #define WAVESETBUILDER_H
 
-#include "WsObject.h"
+#include "ScObject.h"
 
 class WaveSetBuilder
 {

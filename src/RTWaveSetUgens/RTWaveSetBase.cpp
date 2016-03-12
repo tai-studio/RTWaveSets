@@ -1,10 +1,10 @@
 #include "RTWaveSetBase.h"
 #include "WaveSetStorage/WsStorageDualBuf.h"
-#include "WsObject.h"
+#include "ScObject.h"
 
 void RTWaveSetBase_Ctor(RTWaveSetBase *unit)
 {
-    WsObject::setScWorld(unit->mWorld);
+    ScObject::setScWorld(unit->mWorld);
 
     unit->wsData = new WsStorageDualBuf(ZIN0(0),ZIN0(1),unit);
 }

@@ -3,9 +3,9 @@
 
 #include "WaveSetProcessing/WaveSetBuilder.h"
 #include "WsStorageDualBuf.h"
-#include "WsObject.h"
+#include "ScObject.h"
 
-class WaveSetBuilderDualBuf : public WaveSetBuilder, public WsObject
+class WaveSetBuilderDualBuf : public WaveSetBuilder, public ScObject
 {
 private:
     /** Pointer to waveset storage */

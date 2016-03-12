@@ -1,10 +1,10 @@
-#include "WsObject.h"
+#include "ScObject.h"
 
 /** Pointer to the SC interface table*/
-World *WsObject::scWorld=NULL;
+World *ScObject::scWorld=NULL;
 
 /** Pointer to the SC world */
-InterfaceTable *WsObject::scInterface=NULL;
+InterfaceTable *ScObject::scInterface=NULL;
 
 /**
  * @brief Allocate memory for an object using SC RTalloc.
@@ -12,14 +12,14 @@ InterfaceTable *WsObject::scInterface=NULL;
  * @return
  */
 
-void *WsObject::operator new(size_t size)
+void *ScObject::operator new(size_t size)
 {
-    if(scInterface==NULL) throw "WsObject allocation error: interfacetable not set";
-    if(scWorld==NULL) throw "WsObject allocation error: scWorld not set";
+    if(scInterface==NULL) throw "ScObject allocation error: interfacetable not set";
+    if(scWorld==NULL) throw "ScObject allocation error: scWorld not set";
 
     void* space = scInterface->fRTAlloc(scWorld,size);
 
-    if(space==NULL) throw "WsObject allocation error";
+    if(space==NULL) throw "ScObject allocation error";
 
     return space;
 }
@@ -31,23 +31,23 @@ void *WsObject::operator new(size_t size)
  * @return
  */
 
-void *WsObject::operator new(std::size_t size, void *ptr)
+void *ScObject::operator new(std::size_t size, void *ptr)
 {
     return ptr;
 }
 
 /**
- * @brief WsObject::operator delete
+ * @brief ScObject::operator delete
  * @param ptr
  */
 
-void WsObject::operator delete(void * ptr)
+void ScObject::operator delete(void * ptr)
 {
     scInterface->fRTFree(scWorld,ptr);
-    //printf("successfull deleted WsObject\n");
+    //printf("successfull deleted ScObject\n");
 }
 
-/*void WsObject::debugPrint(const char *format, ...)
+/*void ScObject::debugPrint(const char *format, ...)
 {
     va_list argptr;
     va_start(argptr, format);

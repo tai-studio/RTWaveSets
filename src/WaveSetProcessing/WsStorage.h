@@ -6,7 +6,7 @@
 
 class AudioPiece;
 
-class WsStorage : public WsObject
+class WsStorage : public ScObject
 {
 public:
     virtual ~WsStorage(){}

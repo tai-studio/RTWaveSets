@@ -5,7 +5,7 @@
 #include "WaveSetBuilder.h"
 
 
-class WsAnalysis : public WsObject
+class WsAnalysis : public ScObject
 {
 private:
     WsStorage* wsData;

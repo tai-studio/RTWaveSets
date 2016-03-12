@@ -3,7 +3,7 @@
 
 #include "WsStorage.h"
 
-class WsFeatureExtractor : public WsObject
+class WsFeatureExtractor : public ScObject
 {
 private:
     WsStorage* wsData;

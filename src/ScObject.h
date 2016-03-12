@@ -1,5 +1,5 @@
-#ifndef WSOBJECT_H
-#define WSOBJECT_H
+#ifndef ScObject_H
+#define ScObject_H
 
 #include "SC_PlugIn.h"
 
@@ -8,15 +8,13 @@
  * To use the SC memory allocation the SC interface table and world have to be set.
  */
 
-class WsObject
+class ScObject
 {
 protected:
     static World *scWorld;
     static InterfaceTable *scInterface;
     static bool debug;
-
-protected:
-    WsObject(){}
+    ScObject(){}
 
 public:
     void* operator new(size_t size);

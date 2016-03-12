@@ -3,7 +3,7 @@
 
 #include "RTWaveSetBase.h"
 #include "WaveSetProcessing/WsAnalysis.h"
-#include "WsObject.h"
+#include "ScObject.h"
 
 struct RTWaveSetAnalysis : public RTWaveSetBase  {
     WsAnalysis wsAnalysis;
