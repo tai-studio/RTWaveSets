@@ -61,12 +61,12 @@ void WaveSetBuilderDualBuf::saveAndStartNew()
 
     if(wsData->audioBuf->isInRange(startPos)){
         int endPos = wsData->audioBuf->getLastPos();
-        WaveSetDualBuf ws(startPos,endPos,-1);
+        WaveSetDualBuf ws(wsData,startPos,endPos,-1);
 
-        float rms = calcRMS(ws);
+        float rms = calcRMS(&ws);
         ws.data.rms = rms;
 
-        calcFFT(startPos,endPos);
+        calcFFT(&ws);
 
         wsData->wsBuf->put(ws.data);
     }
@@ -81,30 +81,32 @@ void WaveSetBuilderDualBuf::saveAndStartNew()
  * @return
  */
 
-float WaveSetBuilderDualBuf::calcRMS(Waveset ws){
+float WaveSetBuilderDualBuf::calcRMS(AudioPiece* audio){
     float rms = 0.0;
 
-    for(int idx=start;idx<end;idx++)
+    int len = audio->getLen();
+    for(int pos=0;pos<len;pos++)
     {
-        float val = wsData->audioBuf->get(idx);
+        float val = audio->getSample(pos);
         rms += val*val;
     }
 
-    rms = sqrtf(rms / (end-start));
+    rms = sqrtf(rms / audio->getLen());
     return rms;
 }
 
-void WaveSetBuilderDualBuf::calcFFT(int start, int end)
+void WaveSetBuilderDualBuf::calcFFT(AudioPiece *audio)
 {
     static constexpr int fftSize = 1024;
     static float fftIn[fftSize];
     std::complex<float> fftOut[fftSize/2];
 
     // fill signal buffer by repeating waveset
-    int pos = start;
+    int pos = 0;
+    int audioLen = audio->getLen();
     for(int idx=0;idx<fftSize;idx++){
-        if(pos==end) pos = start;
-        fftIn[idx]=this->wsData->audioBuf->get(pos);
+        if(pos>=audioLen) pos = 0;
+        fftIn[idx]=audio->getSample(pos);
         pos++;
     }
 

@@ -3,6 +3,8 @@
 
 #include "WaveSetProcessing/AudioPiece.h"
 
+class WsStorageDualBuf;
+
 class AudioPieceDualBuf : public AudioPiece
 {  
 
@@ -17,11 +19,11 @@ public:
     int getEnd(){ return end; }
     int getLen(){ return end-start; }
 
-    AudioPieceDualBuf();
     AudioPieceDualBuf(WsStorageDualBuf* wsData,int start,int end);
 
     /** Threshold to do an Interpolation */
     static constexpr float interpThreshold = 0.01;
+    virtual float getSample(int pos);
     float getSampleInterpolated(double pos);
 
 };

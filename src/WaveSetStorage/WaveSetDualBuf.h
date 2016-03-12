@@ -4,8 +4,9 @@
 #include "RingBuffer.h"
 #include "WaveSetProcessing/Waveset.h"
 #include "ScObject.h"
+#include "AudioPieceDualBuf.h"
 
-class WaveSetDualBuf : public Waveset, public ScObject {
+class WaveSetDualBuf : public Waveset, public ScObject, public AudioPieceDualBuf {
 public:
 
     struct Data{
@@ -29,13 +30,13 @@ public:
     Data data;
 
 
-    WaveSetDualBuf(int start, int end, float amp){
+    WaveSetDualBuf(WsStorageDualBuf *wsData,int start, int end, float amp) : AudioPieceDualBuf(wsData,start,end){
         this->data.start = start;
         this->data.end = end;
         this->data.rms = amp;
     }
 
-    WaveSetDualBuf(WaveSetDualBuf::Data data) : data(data){
+    WaveSetDualBuf(WsStorageDualBuf *wsData, WaveSetDualBuf::Data data) : data(data) , AudioPieceDualBuf(wsData,data.start,data.end){
     }
 
 

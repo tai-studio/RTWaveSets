@@ -35,7 +35,7 @@ public:
      * @return
      */
 
-    virtual Waveset* getWaveSet(int idx){ return new WaveSetDualBuf(wsBuf->get(idx)); }
+    virtual Waveset* getWaveSet(int idx){ return new WaveSetDualBuf(this,wsBuf->get(idx)); }
     virtual int getFirstWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsIdx(int idx){ return wsBuf->isInRange(idx); }

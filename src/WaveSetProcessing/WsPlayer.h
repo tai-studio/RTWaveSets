@@ -3,6 +3,7 @@
 
 #include "SC_PlugIn.h"
 #include "AudioPiece.h"
+#include "ScObject.h"
 
 /**
  * @brief The WsPlayer class

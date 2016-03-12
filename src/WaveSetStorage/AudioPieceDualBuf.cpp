@@ -1,18 +1,19 @@
 #include "AudioPieceDualBuf.h"
+#include "WsStorageDualBuf.h"
 
-
-AudioPieceDualBuf::AudioPieceDualBuf()
-{
-    this->wsData = NULL;
-    this->start = -1;
-    this->end = -1;
-}
 
 AudioPieceDualBuf::AudioPieceDualBuf(WsStorageDualBuf* wsData,int start,int end)
 {
     this->wsData = wsData;
     this->start = start;
     this->end = end;
+}
+
+float AudioPieceDualBuf::getSample(int pos)
+{
+    int idx = pos + this->start;
+    if(!wsData->audioBuf->isInRange(idx)) throw "AudioPieceDualBuf::getSample failed! (out of audio buffer Range)\n";
+    return wsData->audioBuf->get(idx);
 }
 
 
