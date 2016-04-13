@@ -9,8 +9,9 @@
 void WsMedatData::calcMetadata(AudioPiece *audio)
 {
     rms=calcRMS(audio);
-    // TODO calc duration
-    //calcFFT(audio);
+    dur = calcDur(audio);
+    peaks = calcPeaks(audio);
+    //calcFFT(audio); // only for tests
 }
 
 /**
@@ -83,4 +84,44 @@ void WsMedatData::calcFFT(AudioPiece *audio)
         // bin 10 is equal to 430,66 Hz
 
     }
+}
+
+/**
+ * @brief Count the number of value peaks in the audio signal
+ * @param audio
+ * @return
+ */
+
+int WsMedatData::calcPeaks(AudioPiece *audio)
+{
+    int numPeaks = 0;
+
+    float val1 = NAN; // last value (-1)
+    float val2 = NAN; // next to last value (-2)
+
+    int len = audio->getLen();
+    for(int pos=0;pos<len;pos++)
+    {
+        float val = audio->getSample(pos);
+        if(val1 > val2 && val < val1) {
+            numPeaks++;
+        }
+
+        val2 = val1;
+        val1 = val;
+    }
+
+    return numPeaks;
+}
+
+/**
+ * @brief calculate the lenght in seconds.
+ * @param audio
+ * @return
+ */
+
+float WsMedatData::calcDur(AudioPiece *audio)
+{
+    float dur = audio->getLen() * 1.0f / 44100.0f;
+    return dur;
 }

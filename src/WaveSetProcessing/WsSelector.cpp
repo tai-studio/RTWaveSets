@@ -8,17 +8,19 @@ WsSelector::WsSelector(WsStorage *wsData) : wsData(wsData)
     this->bestDiff = FLT_MAX;
     this->desiredLen = -1;
     this->desiredRMS = -1;
+    this->desiredPeaks = -1;
     this->startSearchIdx = -1;
 
     // TODO replace fixed weight by a dynamic one, e.g. based on average values
     this->lenWeight = 1;
     this->ampWeight = 200;
+    this->peaksWeight = 1;
 }
 
-int WsSelector::findBestIdx(float inDesiredDur,float desiredRMS,float lookBackLimit)
+int WsSelector::findBestIdx(float inDesiredDur, float desiredRMS, int desiredPeaks, float lookBackLimit)
 {
     int inDesiredLen = (int) (inDesiredDur * 44100.0)+0.5f; // convert dur to samples
-    this->setSearchParams(inDesiredLen,desiredRMS,lookBackLimit);
+    this->setSearchParams(inDesiredLen,desiredRMS,desiredPeaks,lookBackLimit);
     this->findBestIdx();
     return this->bestIdx;
 }
@@ -27,7 +29,7 @@ int WsSelector::findBestIdx(float inDesiredDur,float desiredRMS,float lookBackLi
  * @brief Set the search parameters, restart search if necessary.
  */
 
-void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLimit){
+void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int desiredPeaks,int lookBackLimit){
 
     // find WS idx to start searching depending on lookBackLimit
     int inStartSearchIdx;
@@ -42,6 +44,7 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLi
     // check if we have to restart Searching
     if(desiredLen != this->desiredLen
             || desiredAmp != this->desiredRMS
+            || desiredPeaks != this->desiredPeaks
             || this->bestIdx < inStartSearchIdx // last result out of lookback range?
             || inStartSearchIdx < this->startSearchIdx
             || !this->wsData->isValidWsIdx(this->bestIdx) // last result out of xing buffer range?
@@ -51,6 +54,7 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int lookBackLi
         // restart Searching by resetting variables
         this->desiredLen = desiredLen;
         this->desiredRMS = desiredAmp;
+        this->desiredPeaks = desiredPeaks;
         this->startSearchIdx = inStartSearchIdx;
         this->searchIdx = inStartSearchIdx;
         this->bestIdx = this->searchIdx;
@@ -76,6 +80,11 @@ float WsSelector::calcDiff(Waveset* ws){
         diff += diffRMS*diffRMS;
     }
 
+    if(this->desiredPeaks>=0) {
+        float diffPeaks = this->peaksWeight * abs(this->desiredPeaks-ws->getMetaData().peaks);
+        diff += diffPeaks*diffPeaks;
+    }
+
     return diff;
 }
 
@@ -88,7 +97,7 @@ float WsSelector::calcDiff(Waveset* ws){
 void WsSelector::findBestIdx(){
 
     // search for best WS idx
-    if(this->desiredLen<0 && this->desiredRMS<0)
+    if(this->desiredLen<0 && this->desiredRMS<0 && this->desiredPeaks<0)
     {
        this->bestIdx = this->wsData->getLastWsIdx();
     }

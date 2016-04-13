@@ -14,17 +14,18 @@ private:
     int bestIdx;
     int desiredLen;
     float desiredRMS;
+    int desiredPeaks;
 
     float lenWeight;
     float ampWeight;
-
+    float peaksWeight;
 
     void findBestIdx();
     float calcDiff(Waveset *ws);
-    void setSearchParams(int desiredLen, float desiredAmp,int lookBackLimit);
+    void setSearchParams(int desiredLen, float desiredAmp, int desiredPeaks, int lookBackLimit);
 public:
     WsSelector(WsStorage *wsData);
-    int findBestIdx(float inDesiredDur, float desiredRMS, float inLookBackLimit);
+    int findBestIdx(float inDesiredDur, float desiredRMS, int desiredPeaks, float lookBackLimit);
 };
 
 #endif // WSSELECTOR_H

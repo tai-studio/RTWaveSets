@@ -26,17 +26,18 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
 {
     float *out = OUT(0);
 
-    // receive input for desired length
-    float inDesiredLenSec = IN0(2);
+    WsMedatData desiredFtrs;
 
-    // receive input for desired amplitude
-    float inDesiredRMS = IN0(3);
+    // receive inputs for desired features
+    desiredFtrs.dur = IN0(2);
+    desiredFtrs.rms = IN0(3);
+    desiredFtrs.peaks = (int) IN0(4);
 
     // receive lookBackLimit input
-    int inLookBackLimit = (int) IN0(4);
+    int inLookBackLimit = (int) IN0(5);
 
     // perform selection
-    int result = unit->wsSelector.findBestIdx(inDesiredLenSec,inDesiredRMS,inLookBackLimit);
+    int result = unit->wsSelector.findBestIdx(desiredFtrs.dur,desiredFtrs.rms,desiredFtrs.peaks,inLookBackLimit);
 
     // Output
     for (int i=0; i<inNumSamples; ++i)
