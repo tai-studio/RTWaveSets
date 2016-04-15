@@ -37,7 +37,7 @@ Ndef(\wsRepeat).addSpec(\randBack, [0, 2000, \lin, 1]);
 Ndef(\wsAnalysis, {
 	arg analysisOn=1;
 	var idxStart,idxEnd;
-	RTWavesetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
+	WavesetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
 });
 
 
@@ -45,26 +45,26 @@ Ndef(\wsRepeat, {
 		arg repetition=1, groupSize=100, rate=1, desiredLen=(-1), desiredRMS=(-1), desiredPeaks=(-1), selLookBack=(-1), idxOffset=0, randBack=0;
 		var idx, idx2, out, trig, trig2, rms, idxRange;
 
-		//idxRange = RTWavesetAnalysis.ar(q, Ndef(\sound).ar(1));
+		//idxRange = WavesetAnalysis.ar(q, Ndef(\sound).ar(1));
 
 		trig = Impulse.ar(\trigRate.kr(1));
 		//idxRange.poll(trig);
 		//trig = Impulse.ar(EnvGen.ar(Env.perc, trig, 100,0,0.5)); // try to create "clouds"
 
-		idx = RTWavesetSelector.ar(q, desiredLen/1000, desiredRMS, desiredPeaks ,selLookBack);
+		idx = WavesetSelector.ar(q, desiredLen/1000, desiredRMS, desiredPeaks ,selLookBack);
 		//idx.poll(trig);
-		//rms = RTWavesetGetFeature.kr(q, \dur, idx);
+		//rms = WavesetGetFeature.kr(q, \dur, idx);
 		//rms.poll;
 
-		RTWavesetGetFeature.kr(q, \peaks, idx).poll;
-		out = RTWavesetSynthTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
+		WavesetGetFeature.kr(q, \peaks, idx).poll;
+		out = WavesetSynthTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
 
 		//out = DC.ar(0);
 		//trig = out;
 		//*EnvGen.ar(Env.sine, trig, 1,0,K2A.ar(dur)); // try envelope
 		//Ndef(\sound).ar(1)*EnvGen.ar(Env.sine, trig, 1,0,1); // envelope tryouts
 
-		//out = RTWavesetSynthContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
+		//out = WavesetSynthContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
 
 		Out.ar(0,Pan2.ar(out));
 

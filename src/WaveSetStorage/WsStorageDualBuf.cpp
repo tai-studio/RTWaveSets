@@ -40,7 +40,7 @@ WsStorageDualBuf::WsStorageDualBuf(FloatRingBuffer *audioBuf, WavesetRingBuffer 
 template <typename T>
 RingBuffer<T> *WsStorageDualBuf::createRingBufferInBuffer(float fbufnum, Unit *unit)
 {
-    SndBuf* buf = RTWavesetBase_getSndBuf(fbufnum,unit);
+    SndBuf* buf = WavesetBase_getSndBuf(fbufnum,unit);
     if(buf==NULL) throw "no valid buffer!";
 
     float* data = (float*) buf->data;
@@ -70,7 +70,7 @@ RingBuffer<T> *WsStorageDualBuf::createRingBufferInBuffer(float fbufnum, Unit *u
  * @return pointer to the SndBuf.
  */
 
-SndBuf *WsStorageDualBuf::RTWavesetBase_getSndBuf(float fbufnum, Unit *unit)
+SndBuf *WsStorageDualBuf::WavesetBase_getSndBuf(float fbufnum, Unit *unit)
 {
     SndBuf* buf;
 

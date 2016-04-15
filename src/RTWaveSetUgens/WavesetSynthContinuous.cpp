@@ -1,12 +1,12 @@
-#include "RTWavesetSynthContinuous.h"
+#include "WavesetSynthContinuous.h"
 
-void RTWavesetSynthContinuous_Ctor(RTWavesetSynthContinuous *unit){
+void WavesetSynthContinuous_Ctor(WavesetSynthContinuous *unit){
 
-    RTWavesetBase_Ctor(unit);
+    WavesetBase_Ctor(unit);
     new (&unit->wsSynth) SynthContinuous(unit->wsData);
 
-    SETCALC(RTWavesetSynthContinuous_next);
-    RTWavesetSynthContinuous_next(unit, 1);
+    SETCALC(WavesetSynthContinuous_next);
+    WavesetSynthContinuous_next(unit, 1);
 }
 
 
@@ -16,7 +16,7 @@ void RTWavesetSynthContinuous_Ctor(RTWavesetSynthContinuous *unit){
  * @param inNumSamples
  */
 
-void RTWavesetSynthContinuous_next(RTWavesetSynthContinuous *unit, int inNumSamples){
+void WavesetSynthContinuous_next(WavesetSynthContinuous *unit, int inNumSamples){
 
     // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
@@ -44,6 +44,6 @@ void RTWavesetSynthContinuous_next(RTWavesetSynthContinuous *unit, int inNumSamp
 }
 
 
-void RTWavesetSynthContinuous_Dtor(RTWavesetSynthContinuous *unit){
+void WavesetSynthContinuous_Dtor(WavesetSynthContinuous *unit){
 
 }

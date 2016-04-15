@@ -25,7 +25,7 @@ public:
 
     template <typename T>
     static RingBuffer<T>* createRingBufferInBuffer(float fbufnum, Unit *unit);
-    static SndBuf* RTWavesetBase_getSndBuf(float fbufnum, Unit* unit);
+    static SndBuf* WavesetBase_getSndBuf(float fbufnum, Unit* unit);
 
     /** WsStorage Interface Functions */
 

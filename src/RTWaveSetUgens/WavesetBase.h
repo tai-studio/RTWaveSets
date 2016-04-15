@@ -5,14 +5,14 @@
 #include "WavesetStorage/WsStorageDualBuf.h"
 
 
-struct RTWavesetBase : public Unit {
+struct WavesetBase : public Unit {
 
     /** Pointer with abstract base type to WsStorage instance */
     WsStorage *wsData;
 
 };
 
-void RTWavesetBase_Ctor(RTWavesetBase* unit);
-void RTWavesetBase_Dtor(RTWavesetBase* unit);
+void WavesetBase_Ctor(WavesetBase* unit);
+void WavesetBase_Dtor(WavesetBase* unit);
 
 #endif // RTWAVESETBASE_H

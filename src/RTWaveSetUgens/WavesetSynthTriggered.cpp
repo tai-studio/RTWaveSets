@@ -1,15 +1,15 @@
-#include "RTWavesetSynthTriggered.h"
+#include "WavesetSynthTriggered.h"
 
-void RTWavesetSynthTriggered_Ctor(RTWavesetSynthTriggered *unit){
+void WavesetSynthTriggered_Ctor(WavesetSynthTriggered *unit){
 
     // init UGen
-    RTWavesetBase_Ctor(unit);
+    WavesetBase_Ctor(unit);
     new (&unit->wsSynth) SynthParallel(unit->wsData);
     unit->prevTrig = 1.0;
 
 
-    SETCALC(RTWavesetSynthTriggered_next);
-    RTWavesetSynthTriggered_next(unit, 1);
+    SETCALC(WavesetSynthTriggered_next);
+    WavesetSynthTriggered_next(unit, 1);
 }
 
 
@@ -19,7 +19,7 @@ void RTWavesetSynthTriggered_Ctor(RTWavesetSynthTriggered *unit){
  * @param inNumSamples
  */
 
-void RTWavesetSynthTriggered_next(RTWavesetSynthTriggered *unit, int inNumSamples){
+void WavesetSynthTriggered_next(WavesetSynthTriggered *unit, int inNumSamples){
 
     // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
@@ -60,6 +60,6 @@ void RTWavesetSynthTriggered_next(RTWavesetSynthTriggered *unit, int inNumSample
 }
 
 
-void RTWavesetSynthTriggered_Dtor(RTWavesetSynthTriggered *unit){
+void WavesetSynthTriggered_Dtor(WavesetSynthTriggered *unit){
 
 }

@@ -20,15 +20,15 @@ x = SynthDef(\wstest, {
 	arg repetition=10, groupSize=10, rate=1, desiredDur=(1), desiredRMS=(-1), analysisOn=1;
 	var idx, out, trig;
 
-	RTWavesetAnalysis.ar(wsData, PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2), analysisOn).poll;
+	WavesetAnalysis.ar(wsData, PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2), analysisOn).poll;
 desiredDur.poll;
 		desiredRMS.poll;
 	trig = Dust.ar(10);
-	idx = RTWavesetSelector.ar(wsData, 0.1, -1);
-	RTWavesetGetFeature.kr(wsData, \rms , idx).poll(label:"rms");
-	RTWavesetGetFeature.kr(wsData, \dur, idx).poll(label:"dur");
+	idx = WavesetSelector.ar(wsData, 0.1, -1);
+	WavesetGetFeature.kr(wsData, \rms , idx).poll(label:"rms");
+	WavesetGetFeature.kr(wsData, \dur, idx).poll(label:"dur");
 
-	out = RTWavesetSynthTriggered.ar(
+	out = WavesetSynthTriggered.ar(
 			wsData, trig, idx-groupSize+1,  rate, groupSize, repetition);
 	Out.ar(0,out);
 

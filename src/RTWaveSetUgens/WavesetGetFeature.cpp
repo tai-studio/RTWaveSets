@@ -1,18 +1,18 @@
-#include "RTWavesetGetFeature.h"
+#include "WavesetGetFeature.h"
 
 /**
  * @brief UGen Constructor.
  * @param unit
  */
 
-void RTWavesetGetFeature_Ctor(RTWavesetGetFeature *unit)
+void WavesetGetFeature_Ctor(WavesetGetFeature *unit)
 {
-    RTWavesetBase_Ctor(unit);
+    WavesetBase_Ctor(unit);
     new(&unit->wsExtractor) WsGetFeature(unit->wsData);
 
-    SETCALC(RTWavesetGetFeature_next);
+    SETCALC(WavesetGetFeature_next);
 
-    RTWavesetGetFeature_next(unit, 1);
+    WavesetGetFeature_next(unit, 1);
 }
 
 /**
@@ -21,7 +21,7 @@ void RTWavesetGetFeature_Ctor(RTWavesetGetFeature *unit)
  * @param inNumSamples
  */
 
-void RTWavesetGetFeature_next(RTWavesetGetFeature *unit, int inNumSamples)
+void WavesetGetFeature_next(WavesetGetFeature *unit, int inNumSamples)
 {
     float *out = OUT(0);
     float inFeatureID = IN0(2);
@@ -42,7 +42,7 @@ void RTWavesetGetFeature_next(RTWavesetGetFeature *unit, int inNumSamples)
  * @param unit
  */
 
-void RTWavesetGetFeature_Dtor(RTWavesetGetFeature *unit)
+void WavesetGetFeature_Dtor(WavesetGetFeature *unit)
 {
 
 }

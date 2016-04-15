@@ -23,7 +23,7 @@ Ndef(\analysis).addSpec(\analyse, [0, 1, \lin, 1]);
 Ndef(\analysis, {
 	var analyse     = \analyse.kr(1);
 
-	RTWavesetAnalysis.ar(q,
+	WavesetAnalysis.ar(q,
 		LeakDC.ar(Ndef(\sound).ar(1), 0.99),
 		analyse
 	);
@@ -70,7 +70,7 @@ Ndef(\wsRepeat, {
 
 	// SinOsc.ar()!2;
 	// select WS index based on desired amplitude / duration
-	selectorIdx = RTWavesetSelector.ar(q, wsDur + [0, 0.0001], wsAmp);
+	selectorIdx = WavesetSelector.ar(q, wsDur + [0, 0.0001], wsAmp);
 
 
 	// idx = Select.kr(rt, [selectorIdx, rtIdx]);
@@ -81,7 +81,7 @@ Ndef(\wsRepeat, {
 	//
 	//
 
-	(RTWavesetSynthTriggered.ar(q,
+	(WavesetSynthTriggered.ar(q,
 		trig, idx-(numWS-1), rate + [0, 0.124], numWS, repetitions)).tanh;
 });
 )
@@ -113,7 +113,7 @@ Ndef(\wsRepeat).set(\desiredAmp, 1)
 /*
 Notes:
 
-## RTWavesetAnalysis
+## WavesetAnalysis
 
 + would be great to have a trigger to turn analysis/recording of material on/off
 -> DONE: Argument analysisOn: Enable (>0) or pause (<=0) the analysis.
@@ -121,7 +121,7 @@ Notes:
 + for longer periods of silence: just pause analysis and recording (?)
 -> TODO
 
-## RTWavesetSynthRepeat -> now RTWavesetSynthTriggered
+## RTWavesetSynthRepeat -> now WavesetSynthTriggered
 
 + Trigger: each time a trigger is received (A trigger occurs when at argument trig that signal changes from negative value to positive value), spawn a sound from the player, following the following parameters:
 -> DONE: Argument trig: Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible.
@@ -150,7 +150,7 @@ RTWavesetDurAmp2Idx.ar(q, dur, amp)
 -> dur == -1 : ignore dur
 returns index of the wave that is closest to given [dur, amp] combination
 
--> DONE: UGen RTWavesetSelector to select Wavesets by duration and amplitude.
+-> DONE: UGen WavesetSelector to select Wavesets by duration and amplitude.
 Is amp for Amplitude? I decided to use Root Mean Square.
 Selection by duration works great but selection by amp worked not as expected for me.
 Weight for a comibnation of amp and dur criteria are hard coded so far.

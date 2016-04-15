@@ -1,10 +1,10 @@
-TITLE:: RTWavesetSelector
+TITLE:: WavesetSelector
 summary:: Select wavesets by criteria.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetGetFeature, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetGetFeature, Classes/RTWavesetData
 
 DESCRIPTION::
-Use the results of a RTWavesetAnalysis UGen and select wavesets by criteria.
+Use the results of a WavesetAnalysis UGen and select wavesets by criteria.
 
 CLASSMETHODS::
 

@@ -1,7 +1,7 @@
-TITLE:: RTWavesetGetFeature
+TITLE:: WavesetGetFeature
 summary:: Get the feature values of a waveset.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/RTWavesetData
 
 DESCRIPTION::
 Get the values of waveset features that was calculated during analysis. Available Features:
@@ -38,8 +38,8 @@ q = ();
 q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
 {
-var idx = RTWavesetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
-RTWavesetGetFeature.kr(q.aBuf, q.xBuf, \rms, idx).poll;
+var idx = WavesetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
+WavesetGetFeature.kr(q.aBuf, q.xBuf, \rms, idx).poll;
 }.play;
 )
 ::

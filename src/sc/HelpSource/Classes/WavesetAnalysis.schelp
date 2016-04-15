@@ -1,10 +1,10 @@
-TITLE:: RTWavesetAnalysis
+TITLE:: WavesetAnalysis
 summary:: Provides waveset analysis of a realtime signal.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetGetFeature
+related:: Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/WavesetGetFeature
 
 DESCRIPTION::
-A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWavesetSynthTriggered for playback and RTWavesetSelector for waveset selection by criteria.
+A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by WavesetSynthTriggered for playback and WavesetSelector for waveset selection by criteria.
 
 CLASSMETHODS::
 
@@ -26,7 +26,7 @@ Minimal Waveset length in seconds. Shorter wavesets will be combined with the fo
 returns::
 Output is the first index oldest available and the the latest waveset.
 code::
-#idxOldest,idxNewest = RTWavesetAnalysis.ar(wsData, SoundIn.ar(0));
+#idxOldest,idxNewest = WavesetAnalysis.ar(wsData, SoundIn.ar(0));
 ::
 
 
