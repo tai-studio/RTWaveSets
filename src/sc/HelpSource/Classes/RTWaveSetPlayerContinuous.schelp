@@ -1,17 +1,17 @@
-TITLE:: RTWaveSetPlayerContinuous
+TITLE:: RTWavesetPlayerContinuous
 summary:: Play wavesets continuously.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetSelector, Classes/RTWaveSetFeatureExtractor, Classes/RTWaveSetData
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
 
 DESCRIPTION::
-Use the results of a RTWaveSetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 
+Use the results of a RTWavesetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 
 
 CLASSMETHODS::
 
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWaveSetData object containing buffers with waveset data.
+RTWavesetData object containing buffers with waveset data.
 
 ARGUMENT:: idx
 Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)

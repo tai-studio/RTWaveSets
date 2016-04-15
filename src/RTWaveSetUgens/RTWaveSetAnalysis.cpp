@@ -1,47 +1,47 @@
-#include "RTWaveSetAnalysis.h"
+#include "RTWavesetAnalysis.h"
 
 /**
- * @brief RTWaveSetAnalysis_Ctor Constructor for the RTWaveSetAnalysis UGen.
+ * @brief RTWavesetAnalysis_Ctor Constructor for the RTWavesetAnalysis UGen.
  * @param unit
  */
 
-void RTWaveSetAnalysis_Ctor( RTWaveSetAnalysis *unit ) {
+void RTWavesetAnalysis_Ctor( RTWavesetAnalysis *unit ) {
 
-    RTWaveSetBase_Ctor(unit);
+    RTWavesetBase_Ctor(unit);
     new (&unit->wsAnalysis) WsAnalysis(unit->wsData);
 
     // set the calculation function.
-    SETCALC(RTWaveSetAnalysis_next);
+    SETCALC(RTWavesetAnalysis_next);
 
     // calculate one sample of output.
-    RTWaveSetAnalysis_next(unit, 1);
+    RTWavesetAnalysis_next(unit, 1);
 }
 
 /**
- * @brief RTWaveSetAnalysis_Dtor Destructor.
+ * @brief RTWavesetAnalysis_Dtor Destructor.
  * @param unit
  */
 
-void RTWaveSetAnalysis_Dtor( RTWaveSetAnalysis *unit ) {
+void RTWavesetAnalysis_Dtor( RTWavesetAnalysis *unit ) {
     unit->wsAnalysis.~WsAnalysis();
-    RTWaveSetBase_Dtor(unit);
+    RTWavesetBase_Dtor(unit);
 }
 
 
 /**
- * @brief RTWaveSetAnalysis_next Process the next block of audio samples.
+ * @brief RTWavesetAnalysis_next Process the next block of audio samples.
  * @param unit
  * @param inNumSamples
  */
 
-void RTWaveSetAnalysis_next( RTWaveSetAnalysis *unit, int inNumSamples ) {
+void RTWavesetAnalysis_next( RTWavesetAnalysis *unit, int inNumSamples ) {
 
     float *in = IN(2);
     float *out1 = OUT(0);
     float *out2 = OUT(1);
     float analysisOn = IN0(3);
-    float inMinWaveSetLengthSec = IN0(4);
-    int minWsLen = int (inMinWaveSetLengthSec * unit->mWorld->mFullRate.mSampleRate + 0.5f); // convert in samples and round
+    float inMinWavesetLengthSec = IN0(4);
+    int minWsLen = int (inMinWavesetLengthSec * unit->mWorld->mFullRate.mSampleRate + 0.5f); // convert in samples and round
 
     // Input Processing
     for ( int i=0; i<inNumSamples; ++i)

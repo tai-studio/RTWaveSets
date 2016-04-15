@@ -1,16 +1,16 @@
 #ifndef RTWAVESETANALYSIS_H
 #define RTWAVESETANALYSIS_H
 
-#include "RTWaveSetBase.h"
-#include "WaveSetProcessing/WsAnalysis.h"
+#include "RTWavesetBase.h"
+#include "WavesetProcessing/WsAnalysis.h"
 #include "ScObject.h"
 
-struct RTWaveSetAnalysis : public RTWaveSetBase  {
+struct RTWavesetAnalysis : public RTWavesetBase  {
     WsAnalysis wsAnalysis;
 };
 
-void RTWaveSetAnalysis_Ctor(RTWaveSetAnalysis *unit);
-void RTWaveSetAnalysis_next(RTWaveSetAnalysis *unit, int inNumSamples);
-void RTWaveSetAnalysis_Dtor(RTWaveSetAnalysis *unit);
+void RTWavesetAnalysis_Ctor(RTWavesetAnalysis *unit);
+void RTWavesetAnalysis_next(RTWavesetAnalysis *unit, int inNumSamples);
+void RTWavesetAnalysis_Dtor(RTWavesetAnalysis *unit);
 
 #endif // RTWAVESETANALYSIS_H

@@ -1,7 +1,7 @@
 #ifndef AUDIOPIECEDUALBUF_H
 #define AUDIOPIECEDUALBUF_H
 
-#include "WaveSetProcessing/AudioPiece.h"
+#include "WavesetProcessing/AudioPiece.h"
 
 class WsStorageDualBuf;
 

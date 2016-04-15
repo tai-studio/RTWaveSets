@@ -8,7 +8,7 @@
 WsAnalysis::WsAnalysis(WsStorage *wsData)
 {
     this->wsData = wsData;
-    this->wsBuilder = this->wsData->createWaveSetBuilder();
+    this->wsBuilder = this->wsData->createWavesetBuilder();
     reset();
 }
 
@@ -27,7 +27,7 @@ WsAnalysis::~WsAnalysis()
 
 void WsAnalysis::reset()
 {
-    this->wsBuilder->startNewWaveSet();
+    this->wsBuilder->startNewWaveset();
     this->lastIn = NAN;
 }
 
@@ -56,7 +56,7 @@ void WsAnalysis::nextInputSample(float audioIn, int minWSLen)
         else if(len<0)
         {
             // no WS started so far, start a new one!
-            wsBuilder->startNewWaveSet();
+            wsBuilder->startNewWaveset();
         }
     }
 

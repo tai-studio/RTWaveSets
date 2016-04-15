@@ -1,18 +1,18 @@
 #ifndef RTWAVESETBASE_H
 #define RTWAVESETBASE_H
 
-#include "WaveSetStorage/RingBuffer.h"
-#include "WaveSetStorage/WsStorageDualBuf.h"
+#include "WavesetStorage/RingBuffer.h"
+#include "WavesetStorage/WsStorageDualBuf.h"
 
 
-struct RTWaveSetBase : public Unit {
+struct RTWavesetBase : public Unit {
 
     /** Pointer with abstract base type to WsStorage instance */
     WsStorage *wsData;
 
 };
 
-void RTWaveSetBase_Ctor(RTWaveSetBase* unit);
-void RTWaveSetBase_Dtor(RTWaveSetBase* unit);
+void RTWavesetBase_Ctor(RTWavesetBase* unit);
+void RTWavesetBase_Dtor(RTWavesetBase* unit);
 
 #endif // RTWAVESETBASE_H

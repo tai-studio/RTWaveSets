@@ -1,11 +1,11 @@
 #ifndef WAVESETBUILDERDUALBUF_H
 #define WAVESETBUILDERDUALBUF_H
 
-#include "WaveSetProcessing/WaveSetBuilder.h"
+#include "WavesetProcessing/WavesetBuilder.h"
 #include "WsStorageDualBuf.h"
 #include "ScObject.h"
 
-class WaveSetBuilderDualBuf : public WaveSetBuilder, public ScObject
+class WavesetBuilderDualBuf : public WavesetBuilder, public ScObject
 {
 private:
     /** Pointer to waveset storage */
@@ -16,8 +16,8 @@ private:
 
 public:
 
-    WaveSetBuilderDualBuf(WsStorageDualBuf* wsData);
-    virtual void startNewWaveSet();
+    WavesetBuilderDualBuf(WsStorageDualBuf* wsData);
+    virtual void startNewWaveset();
     virtual void addAudio(float val);
     virtual int getRunningLegnth();
     virtual void saveAndStartNew();

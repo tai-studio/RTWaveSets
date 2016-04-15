@@ -1,12 +1,12 @@
-#ifndef RTWaveSetPlayerTriggered_H
-#define RTWaveSetPlayerTriggered_H
+#ifndef RTWavesetPlayerTriggered_H
+#define RTWavesetPlayerTriggered_H
 
-#include "RTWaveSetBase.h"
-#include "WaveSetProcessing/SynthParallel.h"
+#include "RTWavesetBase.h"
+#include "WavesetProcessing/SynthParallel.h"
 
-#define RTWaveSetPlayerTriggered_NumIterators (512)
+#define RTWavesetPlayerTriggered_NumIterators (512)
 
-struct RTWaveSetPlayerTriggered : public RTWaveSetBase  {
+struct RTWavesetPlayerTriggered : public RTWavesetBase  {
 
     SynthParallel wsSynth;
 
@@ -15,8 +15,8 @@ struct RTWaveSetPlayerTriggered : public RTWaveSetBase  {
 
 };
 
-void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit);
-void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples);
-void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit);
+void RTWavesetPlayerTriggered_Ctor(RTWavesetPlayerTriggered *unit);
+void RTWavesetPlayerTriggered_next(RTWavesetPlayerTriggered *unit, int inNumSamples);
+void RTWavesetPlayerTriggered_Dtor(RTWavesetPlayerTriggered *unit);
 
-#endif // RTWaveSetPlayerTriggered_H
+#endif // RTWavesetPlayerTriggered_H

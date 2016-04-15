@@ -1,4 +1,4 @@
-#include "WaveSetBuilderDualBuf.h"
+#include "WavesetBuilderDualBuf.h"
 #include "ScFFT.h"
 #include <complex.h>
 
@@ -7,7 +7,7 @@
  * @param wsData
  */
 
-WaveSetBuilderDualBuf::WaveSetBuilderDualBuf(WsStorageDualBuf* wsData)
+WavesetBuilderDualBuf::WavesetBuilderDualBuf(WsStorageDualBuf* wsData)
 {
     this->wsData = wsData;
     this->startPos = INT32_MAX;
@@ -18,18 +18,18 @@ WaveSetBuilderDualBuf::WaveSetBuilderDualBuf(WsStorageDualBuf* wsData)
  * @brief Start a new waveset, save current audio position.
  */
 
-void WaveSetBuilderDualBuf::startNewWaveSet()
+void WavesetBuilderDualBuf::startNewWaveset()
 {
     startPos = wsData->audioBuf->getLastPos();
 }
 
 
 /**
- * @brief WaveSetBuilderDualBuf::addAudio
+ * @brief WavesetBuilderDualBuf::addAudio
  * @param val
  */
 
-void WaveSetBuilderDualBuf::addAudio(float val)
+void WavesetBuilderDualBuf::addAudio(float val)
 {
     wsData->audioBuf->put(val);
     wsData->cleanUp();
@@ -41,7 +41,7 @@ void WaveSetBuilderDualBuf::addAudio(float val)
  * @return length of the WS or -1 if there is no valid WS started.
  */
 
-int WaveSetBuilderDualBuf::getRunningLegnth()
+int WavesetBuilderDualBuf::getRunningLegnth()
 {
     if(wsData->audioBuf->isInRange(startPos)){
         return wsData->audioBuf->getLastPos() - startPos;
@@ -56,18 +56,18 @@ int WaveSetBuilderDualBuf::getRunningLegnth()
  * @brief close the waveset and save it to the storage.
  */
 
-void WaveSetBuilderDualBuf::saveAndStartNew()
+void WavesetBuilderDualBuf::saveAndStartNew()
 {
 
     if(wsData->audioBuf->isInRange(startPos)){
         int endPos = wsData->audioBuf->getLastPos();
 
-        WaveSetDualBuf ws(wsData,startPos,endPos);
+        WavesetDualBuf ws(wsData,startPos,endPos);
         ws.calcMetaData();
 
         wsData->wsBuf->put(ws.data);
     }
 
-    this->startNewWaveSet();
+    this->startNewWaveset();
 }
 

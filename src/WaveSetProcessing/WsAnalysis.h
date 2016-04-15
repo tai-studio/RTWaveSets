@@ -2,14 +2,14 @@
 #define WSANALYSIS_H
 
 #include "WsStorage.h"
-#include "WaveSetBuilder.h"
+#include "WavesetBuilder.h"
 
 
 class WsAnalysis : public ScObject
 {
 private:
     WsStorage* wsData;
-    WaveSetBuilder* wsBuilder;
+    WavesetBuilder* wsBuilder;
     float lastIn;
 
 public:

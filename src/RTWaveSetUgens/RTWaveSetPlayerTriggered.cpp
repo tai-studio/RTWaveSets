@@ -1,15 +1,15 @@
-#include "RTWaveSetPlayerTriggered.h"
+#include "RTWavesetPlayerTriggered.h"
 
-void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
+void RTWavesetPlayerTriggered_Ctor(RTWavesetPlayerTriggered *unit){
 
     // init UGen
-    RTWaveSetBase_Ctor(unit);
+    RTWavesetBase_Ctor(unit);
     new (&unit->wsSynth) SynthParallel(unit->wsData);
     unit->prevTrig = 1.0;
 
 
-    SETCALC(RTWaveSetPlayerTriggered_next);
-    RTWaveSetPlayerTriggered_next(unit, 1);
+    SETCALC(RTWavesetPlayerTriggered_next);
+    RTWavesetPlayerTriggered_next(unit, 1);
 }
 
 
@@ -19,7 +19,7 @@ void RTWaveSetPlayerTriggered_Ctor(RTWaveSetPlayerTriggered *unit){
  * @param inNumSamples
  */
 
-void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamples){
+void RTWavesetPlayerTriggered_next(RTWavesetPlayerTriggered *unit, int inNumSamples){
 
     // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
@@ -32,7 +32,7 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
     // Outputs:
     float *out = OUT(0);
 
-    // WaveSet Playback
+    // Waveset Playback
     for ( int i=0; i<inNumSamples; ++i) {
 
         // get Index Input
@@ -60,6 +60,6 @@ void RTWaveSetPlayerTriggered_next(RTWaveSetPlayerTriggered *unit, int inNumSamp
 }
 
 
-void RTWaveSetPlayerTriggered_Dtor(RTWaveSetPlayerTriggered *unit){
+void RTWavesetPlayerTriggered_Dtor(RTWavesetPlayerTriggered *unit){
 
 }

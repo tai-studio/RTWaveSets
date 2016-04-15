@@ -17,8 +17,8 @@ SynthParallel::SynthParallel(WsStorage* wsData) : Synth(wsData)
 void SynthParallel::startNewPlayback(int wsIdx, int groupSize, float rate, int repeat)
 {
 
-    // We have a Trigger, get WaveSet and set Iterator:
-    // look for a free WaveSetIterator
+    // We have a Trigger, get Waveset and set Iterator:
+    // look for a free WavesetIterator
     for(int playIdx=0;playIdx<numPlayers;playIdx++)
     {
         WsPlayer* player = &this->wsPlayers[playIdx];
@@ -36,7 +36,7 @@ void SynthParallel::startNewPlayback(int wsIdx, int groupSize, float rate, int r
 
         if(playIdx==numPlayers-1)
         {
-            printf("SynthTriggered Warning: Max number of parallel WaveSet playback exceeded!\n");
+            printf("SynthTriggered Warning: Max number of parallel Waveset playback exceeded!\n");
         }
 
     }
@@ -52,7 +52,7 @@ void SynthParallel::startNewPlayback(int wsIdx, int groupSize, float rate, int r
 float SynthParallel::getNextOutput()
 {
 
-        // Play WaveSets from Iterators
+        // Play Wavesets from Iterators
         float outSum = 0.0;
         int lastPlayedIterator=-1;
         for(int playIdx=0;playIdx<=lastActiveIteratorIdx;playIdx++)
@@ -60,7 +60,7 @@ float SynthParallel::getNextOutput()
             WsPlayer* player = &this->wsPlayers[playIdx];
             try
             {
-                // play parallel WaveSets from Iterators
+                // play parallel Wavesets from Iterators
                 if(!player->endOfPlay())
                 {
                     outSum += player->nextSample();
@@ -69,7 +69,7 @@ float SynthParallel::getNextOutput()
             }
             catch(...)
             {
-                printf("WaveSet playback failed! (unknown exception)\n");
+                printf("Waveset playback failed! (unknown exception)\n");
                 *player = WsPlayer(); // stop playback by resetting
             }
         }

@@ -3,7 +3,7 @@
 
 (
 
-var wsData =  RTWaveSetData.new;
+var wsData =  RTWavesetData.new;
 
 {
 	var idx,idx2;
@@ -12,14 +12,14 @@ var wsData =  RTWaveSetData.new;
 	var repeat = 10;
 	var trig = Dust.ar(50);
 
-	#idx,idx2 = RTWaveSetAnalysis.ar(wsData, SinOsc.ar(430.66*1), 1);
-	//idx2 = RTWaveSetSelector(wsData, idx,RTWaveSetFeatureRMS,desiredRMS,RTWaveSetFeatureLength,desiredLen);
+	#idx,idx2 = RTWavesetAnalysis.ar(wsData, SinOsc.ar(430.66*1), 1);
+	//idx2 = RTWavesetSelector(wsData, idx,RTWavesetFeatureRMS,desiredRMS,RTWavesetFeatureLength,desiredLen);
 
-	//idx = RTWaveSetSelector.ar(q.aBuf, q.xBuf, -1, 1);
-	//RTWaveSetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms , idx).poll(label:"rms");
-	//RTWaveSetFeatureExtractor.kr(q.aBuf, q.xBuf, \dur, idx).poll(label:"dur");
-	RTWaveSetPlayerContinuous.ar(wsData,idx2,  rate, groupSize, 1);
-	//RTWaveSetPlayerTriggered.ar(wsData, trig, idx,  rate, groupSize, 1);
+	//idx = RTWavesetSelector.ar(q.aBuf, q.xBuf, -1, 1);
+	//RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms , idx).poll(label:"rms");
+	//RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \dur, idx).poll(label:"dur");
+	RTWavesetPlayerContinuous.ar(wsData,idx2,  rate, groupSize, 1);
+	//RTWavesetPlayerTriggered.ar(wsData, trig, idx,  rate, groupSize, 1);
 
 }.play;
 )

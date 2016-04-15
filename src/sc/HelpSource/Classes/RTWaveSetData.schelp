@@ -1,10 +1,10 @@
-TITLE:: RTWaveSetData
+TITLE:: RTWavesetData
 summary:: Allocate and encapsulate buffers for waveset data.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetFeatureExtractor
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
 
 DESCRIPTION::
-Allocate a buffer for audio data and waveset data in which a running RTWaveSetAnalysis can write the results.
+Allocate a buffer for audio data and waveset data in which a running RTWavesetAnalysis can write the results.
 
 CLASSMETHODS::
 
@@ -48,9 +48,9 @@ EXAMPLES::
 
 code::
 (
-var wsData = RTWaveSetData();
+var wsData = RTWavesetData();
 {
-	RTWaveSetAnalysis.ar(wsData, SoundIn.ar(0), 1);
+	RTWavesetAnalysis.ar(wsData, SoundIn.ar(0), 1);
 }.play;
 )
 ::

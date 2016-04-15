@@ -1,10 +1,10 @@
-TITLE:: RTWaveSetPlayerTriggered
+TITLE:: RTWavesetPlayerTriggered
 summary:: Play wavesets on trigger.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetFeatureExtractor, Classes/RTWaveSetData
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
 
 DESCRIPTION::
-Use the results of a RTWaveSetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).
+Use the results of a RTWavesetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).
 
 There are several parameters to adjust the playback. These are grabbed on trigger and can not influence a runnging playback.
 
@@ -13,7 +13,7 @@ CLASSMETHODS::
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWaveSetData object containing buffers with waveset data.
+RTWavesetData object containing buffers with waveset data.
 
 ARGUMENT:: trig
 Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible. (audio rate)

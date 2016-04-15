@@ -1,12 +1,12 @@
 #ifndef WAVESETDATA_H
 #define WAVESETDATA_H
 
-#include "WaveSetProcessing/WsStorage.h"
+#include "WavesetProcessing/WsStorage.h"
 #include "RingBuffer.h"
-#include "WaveSetDualBuf.h"
-#include "WaveSetProcessing/WaveSetBuilder.h"
+#include "WavesetDualBuf.h"
+#include "WavesetProcessing/WavesetBuilder.h"
 
-typedef RingBuffer<WaveSetDualBuf::Data> WaveSetRingBuffer;
+typedef RingBuffer<WavesetDualBuf::Data> WavesetRingBuffer;
 typedef RingBuffer<float> FloatRingBuffer;
 
 class WsStorageDualBuf : public WsStorage
@@ -17,15 +17,15 @@ public:
     FloatRingBuffer *audioBuf;
 
     /** Ringbuffer for Wavesets */
-    WaveSetRingBuffer *wsBuf;
+    WavesetRingBuffer *wsBuf;
 
-    WsStorageDualBuf(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf);
+    WsStorageDualBuf(FloatRingBuffer *audioBuf, WavesetRingBuffer *wsBuf);
     WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit* unit);
     void cleanUp();
 
     template <typename T>
     static RingBuffer<T>* createRingBufferInBuffer(float fbufnum, Unit *unit);
-    static SndBuf* RTWaveSetBase_getSndBuf(float fbufnum, Unit* unit);
+    static SndBuf* RTWavesetBase_getSndBuf(float fbufnum, Unit* unit);
 
     /** WsStorage Interface Functions */
 
@@ -35,13 +35,13 @@ public:
      * @return
      */
 
-    virtual Waveset* getWaveSet(int idx){ return new WaveSetDualBuf(this,wsBuf->get(idx)); }
+    virtual Waveset* getWaveset(int idx){ return new WavesetDualBuf(this,wsBuf->get(idx)); }
     virtual int getFirstWsIdx(){ return wsBuf->getFirstPos(); }
     virtual int getLastWsIdx(){ return wsBuf->getLastPos(); }
     virtual int isValidWsIdx(int idx){ return wsBuf->isInRange(idx); }
     virtual int getNumWsInStorage(){return wsBuf->getLen(); }
     virtual int getMaxWsCapacity(){ return wsBuf->getSize(); }
-    virtual WaveSetBuilder* createWaveSetBuilder();
+    virtual WavesetBuilder* createWavesetBuilder();
     virtual AudioPiece* createGroup(int wsIdx, int groupSize);
 };
 

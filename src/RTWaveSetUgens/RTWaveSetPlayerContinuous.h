@@ -1,16 +1,16 @@
-#ifndef RTWaveSetPlayerContinuous_H
-#define RTWaveSetPlayerContinuous_H
+#ifndef RTWavesetPlayerContinuous_H
+#define RTWavesetPlayerContinuous_H
 
-#include "RTWaveSetBase.h"
-#include "WaveSetProcessing/SynthContinuous.h"
+#include "RTWavesetBase.h"
+#include "WavesetProcessing/SynthContinuous.h"
 
-struct RTWaveSetPlayerContinuous : public RTWaveSetBase {
+struct RTWavesetPlayerContinuous : public RTWavesetBase {
 
     SynthContinuous wsSynth;
 };
 
-void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit);
-void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSamples);
-void RTWaveSetPlayerContinuous_Dtor(RTWaveSetPlayerContinuous *unit);
+void RTWavesetPlayerContinuous_Ctor(RTWavesetPlayerContinuous *unit);
+void RTWavesetPlayerContinuous_next(RTWavesetPlayerContinuous *unit, int inNumSamples);
+void RTWavesetPlayerContinuous_Dtor(RTWavesetPlayerContinuous *unit);
 
-#endif // RTWaveSetPlayerContinuous_H
+#endif // RTWavesetPlayerContinuous_H

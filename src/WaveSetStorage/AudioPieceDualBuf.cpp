@@ -36,7 +36,7 @@ float AudioPieceDualBuf::getSampleInterpolated(double pos)
     int idxRound = (int) (floatIdx+0.5f);
 
     // check idx range
-    if(!wsData->audioBuf->isInRange(idxRound)) throw "WaveSet playback failed! (out of audio buffer Range)\n";
+    if(!wsData->audioBuf->isInRange(idxRound)) throw "Waveset playback failed! (out of audio buffer Range)\n";
 
     // check if interpolation is needed
     bool doInterpolation = fabs(ceilf(floatIdx)-floatIdx) > interpThreshold; // interpolate only > 1% offset

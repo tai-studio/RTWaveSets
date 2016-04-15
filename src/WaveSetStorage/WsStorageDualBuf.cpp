@@ -1,6 +1,6 @@
 #include "WsStorageDualBuf.h"
-#include "WaveSetBuilderDualBuf.h"
-#include "WaveSetProcessing/AudioPiece.h"
+#include "WavesetBuilderDualBuf.h"
+#include "WavesetProcessing/AudioPiece.h"
 #include "AudioPieceDualBuf.h"
 
 /**
@@ -13,7 +13,7 @@
 WsStorageDualBuf::WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit *unit)
 {
     this->audioBuf = createRingBufferInBuffer<float>(fbufnumAudio,unit);
-    this->wsBuf = createRingBufferInBuffer<WaveSetDualBuf::Data>(fbufnumWS,unit);
+    this->wsBuf = createRingBufferInBuffer<WavesetDualBuf::Data>(fbufnumWS,unit);
 }
 
 /**
@@ -22,7 +22,7 @@ WsStorageDualBuf::WsStorageDualBuf(float fbufnumAudio, float fbufnumWS, Unit *un
  * @param wsBuf
  */
 
-WsStorageDualBuf::WsStorageDualBuf(FloatRingBuffer *audioBuf, WaveSetRingBuffer *wsBuf)
+WsStorageDualBuf::WsStorageDualBuf(FloatRingBuffer *audioBuf, WavesetRingBuffer *wsBuf)
 {
     this->audioBuf = audioBuf;
     this->wsBuf = wsBuf;
@@ -40,7 +40,7 @@ WsStorageDualBuf::WsStorageDualBuf(FloatRingBuffer *audioBuf, WaveSetRingBuffer 
 template <typename T>
 RingBuffer<T> *WsStorageDualBuf::createRingBufferInBuffer(float fbufnum, Unit *unit)
 {
-    SndBuf* buf = RTWaveSetBase_getSndBuf(fbufnum,unit);
+    SndBuf* buf = RTWavesetBase_getSndBuf(fbufnum,unit);
     if(buf==NULL) throw "no valid buffer!";
 
     float* data = (float*) buf->data;
@@ -70,7 +70,7 @@ RingBuffer<T> *WsStorageDualBuf::createRingBufferInBuffer(float fbufnum, Unit *u
  * @return pointer to the SndBuf.
  */
 
-SndBuf *WsStorageDualBuf::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
+SndBuf *WsStorageDualBuf::RTWavesetBase_getSndBuf(float fbufnum, Unit *unit)
 {
     SndBuf* buf;
 
@@ -115,9 +115,9 @@ SndBuf *WsStorageDualBuf::RTWaveSetBase_getSndBuf(float fbufnum, Unit *unit)
  * @return
  */
 
-WaveSetBuilder* WsStorageDualBuf::createWaveSetBuilder()
+WavesetBuilder* WsStorageDualBuf::createWavesetBuilder()
 {
-    return new WaveSetBuilderDualBuf(this);
+    return new WavesetBuilderDualBuf(this);
 }
 
 /**
@@ -170,7 +170,7 @@ AudioPiece* WsStorageDualBuf::createGroup(int wsIdx, int groupSize){
 
         if(isnan(end) || isnan(start) || end<1 || start<0)
         {
-            printf("RTWaveSetPlayer Warning: no valid WaveSet found in xing Buffer!\n");
+            printf("RTWavesetPlayer Warning: no valid Waveset found in xing Buffer!\n");
             return NULL;
         }
 

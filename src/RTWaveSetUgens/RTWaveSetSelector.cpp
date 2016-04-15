@@ -1,4 +1,4 @@
-#include "RTWaveSetSelector.h"
+#include "RTWavesetSelector.h"
 #include <float.h>
 
 /**
@@ -6,14 +6,14 @@
  * @param unit
  */
 
-void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
+void RTWavesetSelector_Ctor(RTWavesetSelector *unit)
 {
-    RTWaveSetBase_Ctor(unit);
+    RTWavesetBase_Ctor(unit);
     new(&unit->wsSelector) WsSelector(unit->wsData);
 
-    SETCALC(RTWaveSetSelector_next);
+    SETCALC(RTWavesetSelector_next);
 
-    RTWaveSetSelector_next(unit, 1);
+    RTWavesetSelector_next(unit, 1);
 }
 
 /**
@@ -22,7 +22,7 @@ void RTWaveSetSelector_Ctor(RTWaveSetSelector *unit)
  * @param inNumSamples
  */
 
-void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
+void RTWavesetSelector_next(RTWavesetSelector *unit, int inNumSamples)
 {
     float *out = OUT(0);
 
@@ -53,7 +53,7 @@ void RTWaveSetSelector_next(RTWaveSetSelector *unit, int inNumSamples)
  * @param unit
  */
 
-void RTWaveSetSelector_Dtor(RTWaveSetSelector *unit)
+void RTWavesetSelector_Dtor(RTWavesetSelector *unit)
 {
 
 }

@@ -7,7 +7,7 @@ s.waitForBoot{
 	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
 	*/
 	b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,r);
-	wsData = RTWaveSetData();
+	wsData = RTWavesetData();
 	//NdefMixer(s);
 
 };
@@ -20,15 +20,15 @@ x = SynthDef(\wstest, {
 	arg repetition=10, groupSize=10, rate=1, desiredDur=(1), desiredRMS=(-1), analysisOn=1;
 	var idx, out, trig;
 
-	RTWaveSetAnalysis.ar(wsData, PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2), analysisOn).poll;
+	RTWavesetAnalysis.ar(wsData, PlayBuf.ar(b.numChannels, b.bufnum, BufRateScale.kr(b.bufnum), loop: 2), analysisOn).poll;
 desiredDur.poll;
 		desiredRMS.poll;
 	trig = Dust.ar(10);
-	idx = RTWaveSetSelector.ar(wsData, 0.1, -1);
-	RTWaveSetFeatureExtractor.kr(wsData, \rms , idx).poll(label:"rms");
-	RTWaveSetFeatureExtractor.kr(wsData, \dur, idx).poll(label:"dur");
+	idx = RTWavesetSelector.ar(wsData, 0.1, -1);
+	RTWavesetFeatureExtractor.kr(wsData, \rms , idx).poll(label:"rms");
+	RTWavesetFeatureExtractor.kr(wsData, \dur, idx).poll(label:"dur");
 
-	out = RTWaveSetPlayerTriggered.ar(
+	out = RTWavesetPlayerTriggered.ar(
 			wsData, trig, idx-groupSize+1,  rate, groupSize, repetition);
 	Out.ar(0,out);
 

@@ -1,10 +1,10 @@
-TITLE:: RTWaveSetAnalysis
+TITLE:: RTWavesetAnalysis
 summary:: Provides waveset analysis of a realtime signal.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetFeatureExtractor
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
 
 DESCRIPTION::
-A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWaveSetPlayerTriggered for playback and RTWaveSetSelector for waveset selection by criteria.
+A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWavesetPlayerTriggered for playback and RTWavesetSelector for waveset selection by criteria.
 
 CLASSMETHODS::
 
@@ -12,7 +12,7 @@ METHOD:: ar
 Analyse an input signal.
 
 ARGUMENT:: wsData
-RTWaveSetData object containing buffers for waveset data.
+RTWavesetData object containing buffers for waveset data.
 
 ARGUMENT:: in
 Input signal to be analysed. It's recommended to remove a DC offset from the signal i.e. using the LeadDC UGen.
@@ -26,7 +26,7 @@ Minimal Waveset length in seconds. Shorter wavesets will be combined with the fo
 returns::
 Output is the first index oldest available and the the latest waveset.
 code::
-#idxOldest,idxNewest = RTWaveSetAnalysis.ar(wsData, SoundIn.ar(0));
+#idxOldest,idxNewest = RTWavesetAnalysis.ar(wsData, SoundIn.ar(0));
 ::
 
 

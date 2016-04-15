@@ -3,11 +3,11 @@
 
 #include "ScObject.h"
 
-class WaveSetBuilder
+class WavesetBuilder
 {
 public:
-    virtual ~WaveSetBuilder(){}
-    virtual void startNewWaveSet()=0;
+    virtual ~WavesetBuilder(){}
+    virtual void startNewWaveset()=0;
     virtual void addAudio(float val)=0;
     virtual int getRunningLegnth()=0;
     virtual void saveAndStartNew()=0;

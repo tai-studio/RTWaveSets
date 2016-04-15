@@ -4,7 +4,7 @@ Server.killAll;
 
 s.waitForBoot{
 
-	var srcFile = "/Volumes/Fabi HD/Dropbox/5MA/WaveSets/Audiosamples/flute.wav";
+	var srcFile = "/Volumes/Fabi HD/Dropbox/5MA/Wavesets/Audiosamples/flute.wav";
 	//var srcFile = Platform.resourceDir +/+ "sounds/a11wlk01.wav";
 	//var srcFile = "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav";
 
@@ -12,7 +12,7 @@ s.waitForBoot{
 
 
 	//b = Buffer.read(s, "/Volumes/Fabi HD/Music/Christian Löffler/Young Alaska/03 Notes (Original Mix).wav",0,-1,r);
-	q = RTWaveSetData(10000000,30000);
+	q = RTWavesetData(10000000,30000);
 	NdefMixer(s);
 
 };
@@ -37,7 +37,7 @@ Ndef(\wsRepeat).addSpec(\randBack, [0, 2000, \lin, 1]);
 Ndef(\wsAnalysis, {
 	arg analysisOn=1;
 	var idxStart,idxEnd;
-	RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
+	RTWavesetAnalysis.ar(q, Ndef(\sound).ar(1), analysisOn);
 });
 
 
@@ -45,26 +45,26 @@ Ndef(\wsRepeat, {
 		arg repetition=1, groupSize=100, rate=1, desiredLen=(-1), desiredRMS=(-1), desiredPeaks=(-1), selLookBack=(-1), idxOffset=0, randBack=0;
 		var idx, idx2, out, trig, trig2, rms, idxRange;
 
-		//idxRange = RTWaveSetAnalysis.ar(q, Ndef(\sound).ar(1));
+		//idxRange = RTWavesetAnalysis.ar(q, Ndef(\sound).ar(1));
 
 		trig = Impulse.ar(\trigRate.kr(1));
 		//idxRange.poll(trig);
 		//trig = Impulse.ar(EnvGen.ar(Env.perc, trig, 100,0,0.5)); // try to create "clouds"
 
-		idx = RTWaveSetSelector.ar(q, desiredLen/1000, desiredRMS, desiredPeaks ,selLookBack);
+		idx = RTWavesetSelector.ar(q, desiredLen/1000, desiredRMS, desiredPeaks ,selLookBack);
 		//idx.poll(trig);
-		//rms = RTWaveSetFeatureExtractor.kr(q, \dur, idx);
+		//rms = RTWavesetFeatureExtractor.kr(q, \dur, idx);
 		//rms.poll;
 
-		RTWaveSetFeatureExtractor.kr(q, \peaks, idx).poll;
-		out = RTWaveSetPlayerTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
+		RTWavesetFeatureExtractor.kr(q, \peaks, idx).poll;
+		out = RTWavesetPlayerTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
 
 		//out = DC.ar(0);
 		//trig = out;
 		//*EnvGen.ar(Env.sine, trig, 1,0,K2A.ar(dur)); // try envelope
 		//Ndef(\sound).ar(1)*EnvGen.ar(Env.sine, trig, 1,0,1); // envelope tryouts
 
-		//out = RTWaveSetPlayerContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
+		//out = RTWavesetPlayerContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
 
 		Out.ar(0,Pan2.ar(out));
 

@@ -1,7 +1,7 @@
-TITLE:: RTWaveSetFeatureExtractor
+TITLE:: RTWavesetFeatureExtractor
 summary:: Get the feature values of a waveset.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetSelector, Classes/RTWaveSetData
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetData
 
 DESCRIPTION::
 Get the values of waveset features that was calculated during analysis. Available Features:
@@ -16,7 +16,7 @@ CLASSMETHODS::
 METHOD:: kr
 
 ARGUMENT:: wsData
-RTWaveSetData object containing buffers with waveset data.
+RTWavesetData object containing buffers with waveset data.
 
 ARGUMENT:: feature
 Specify feature as symbol. (\dur, \rms)
@@ -38,8 +38,8 @@ q = ();
 q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
 {
-var idx = RTWaveSetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
-RTWaveSetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms, idx).poll;
+var idx = RTWavesetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
+RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms, idx).poll;
 }.play;
 )
 ::

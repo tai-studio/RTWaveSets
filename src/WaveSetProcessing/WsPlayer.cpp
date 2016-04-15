@@ -3,7 +3,7 @@
 
 
 /**
- * @brief WaveSetPlayer::WaveSetPlayer Constructor, just init values.
+ * @brief WavesetPlayer::WavesetPlayer Constructor, just init values.
  */
 
 WsPlayer::WsPlayer() {
@@ -34,7 +34,7 @@ double WsPlayer::nextPos() {
         val = playPos;
 
         if(val < 0 || val >= INT32_MAX){
-            printf("WaveSetPlayer::next(): Error! invalid playPos");
+            printf("WavesetPlayer::next(): Error! invalid playPos");
             val = -1;
             repeat = -1; // stop playback
         }
@@ -70,7 +70,7 @@ float WsPlayer::nextSample()
 
 /**
  * @brief playWS
- * @param ws WaveSet to play.
+ * @param ws Waveset to play.
  * @param repeat Number of repetitons (1..*).
  * @param step Step size for the playback (i.e. -1 for reverse oder 2 for double speed).
  */

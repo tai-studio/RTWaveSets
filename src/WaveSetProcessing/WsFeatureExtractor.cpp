@@ -7,7 +7,7 @@ WsFeatureExtractor::WsFeatureExtractor(WsStorage *wsData) : wsData(wsData)
 
 float WsFeatureExtractor::getFeature(int wsIdx, int featureID)
 {
-    Waveset* ws = this->wsData->getWaveSet(wsIdx);
+    Waveset* ws = this->wsData->getWaveset(wsIdx);
 
 
     float result;

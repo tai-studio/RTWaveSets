@@ -26,7 +26,7 @@ float SynthContinuous::getNextOutput()
 
     float outSample = 0.0;
 
-    // Play WaveSets from Iterator
+    // Play Wavesets from Iterator
     try
     {
         if(!wsPlayer.endOfPlay()) {
@@ -36,7 +36,7 @@ float SynthContinuous::getNextOutput()
     catch(...)
     {
         // TODO move exeption handling with stop to WsPlayer
-        printf("WaveSet playback failed! (unknown exception)\n");
+        printf("Waveset playback failed! (unknown exception)\n");
         wsPlayer = WsPlayer(); // stop playback by resetting
     }
 

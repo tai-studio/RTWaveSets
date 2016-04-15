@@ -1,15 +1,15 @@
-#ifndef RTWaveSetFeatureExtractor_H
-#define RTWaveSetFeatureExtractor_H
+#ifndef RTWavesetFeatureExtractor_H
+#define RTWavesetFeatureExtractor_H
 
-#include "RTWaveSetBase.h"
-#include "WaveSetProcessing/WsFeatureExtractor.h"
+#include "RTWavesetBase.h"
+#include "WavesetProcessing/WsFeatureExtractor.h"
 
-struct RTWaveSetFeatureExtractor : public RTWaveSetBase  {
+struct RTWavesetFeatureExtractor : public RTWavesetBase  {
     WsFeatureExtractor wsExtractor;
 };
 
-void RTWaveSetFeatureExtractor_Ctor(RTWaveSetFeatureExtractor *unit);
-void RTWaveSetFeatureExtractor_next(RTWaveSetFeatureExtractor *unit, int inNumSamples);
-void RTWaveSetFeatureExtractor_Dtor(RTWaveSetFeatureExtractor *unit);
+void RTWavesetFeatureExtractor_Ctor(RTWavesetFeatureExtractor *unit);
+void RTWavesetFeatureExtractor_next(RTWavesetFeatureExtractor *unit, int inNumSamples);
+void RTWavesetFeatureExtractor_Dtor(RTWavesetFeatureExtractor *unit);
 
-#endif // RTWaveSetFeatureExtractor_H
+#endif // RTWavesetFeatureExtractor_H

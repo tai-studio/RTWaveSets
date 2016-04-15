@@ -1,12 +1,12 @@
-#include "RTWaveSetPlayerContinuous.h"
+#include "RTWavesetPlayerContinuous.h"
 
-void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit){
+void RTWavesetPlayerContinuous_Ctor(RTWavesetPlayerContinuous *unit){
 
-    RTWaveSetBase_Ctor(unit);
+    RTWavesetBase_Ctor(unit);
     new (&unit->wsSynth) SynthContinuous(unit->wsData);
 
-    SETCALC(RTWaveSetPlayerContinuous_next);
-    RTWaveSetPlayerContinuous_next(unit, 1);
+    SETCALC(RTWavesetPlayerContinuous_next);
+    RTWavesetPlayerContinuous_next(unit, 1);
 }
 
 
@@ -16,7 +16,7 @@ void RTWaveSetPlayerContinuous_Ctor(RTWaveSetPlayerContinuous *unit){
  * @param inNumSamples
  */
 
-void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSamples){
+void RTWavesetPlayerContinuous_next(RTWavesetPlayerContinuous *unit, int inNumSamples){
 
     // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
@@ -28,7 +28,7 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
     // Outputs:
     float *out = OUT(0);
 
-    // WaveSet Playback
+    // Waveset Playback
     for ( int i=0; i<inNumSamples; ++i) {
 
         // get Index Input
@@ -44,6 +44,6 @@ void RTWaveSetPlayerContinuous_next(RTWaveSetPlayerContinuous *unit, int inNumSa
 }
 
 
-void RTWaveSetPlayerContinuous_Dtor(RTWaveSetPlayerContinuous *unit){
+void RTWavesetPlayerContinuous_Dtor(RTWavesetPlayerContinuous *unit){
 
 }

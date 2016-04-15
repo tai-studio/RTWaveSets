@@ -48,7 +48,7 @@ void WsSelector::setSearchParams(int desiredLen, float desiredAmp,int desiredPea
             || this->bestIdx < inStartSearchIdx // last result out of lookback range?
             || inStartSearchIdx < this->startSearchIdx
             || !this->wsData->isValidWsIdx(this->bestIdx) // last result out of xing buffer range?
-            //|| !this->wsData->audioBuf->isInRange(this->wsData->getWaveSet(this->bestIdx).start) // out of audio buffer range?
+            //|| !this->wsData->audioBuf->isInRange(this->wsData->getWaveset(this->bestIdx).start) // out of audio buffer range?
             )
     {
         // restart Searching by resetting variables
@@ -106,7 +106,7 @@ void WsSelector::findBestIdx(){
         int idx;
         for(idx = this->searchIdx; idx<=this->wsData->getLastWsIdx(); idx++)
         {
-            Waveset* ws = this->wsData->getWaveSet(idx);
+            Waveset* ws = this->wsData->getWaveset(idx);
 
             float diff = calcDiff(ws);
 

@@ -1,13 +1,13 @@
-#ifndef WaveSetDualBuf_H
-#define WaveSetDualBuf_H
+#ifndef WavesetDualBuf_H
+#define WavesetDualBuf_H
 
 #include "RingBuffer.h"
-#include "WaveSetProcessing/Waveset.h"
+#include "WavesetProcessing/Waveset.h"
 #include "ScObject.h"
 #include "AudioPieceDualBuf.h"
-#include "WaveSetProcessing/WsMedatData.h"
+#include "WavesetProcessing/WsMedatData.h"
 
-class WaveSetDualBuf : public Waveset, public ScObject, public AudioPieceDualBuf {
+class WavesetDualBuf : public Waveset, public ScObject, public AudioPieceDualBuf {
 public:
 
     struct Data{
@@ -27,12 +27,12 @@ public:
 
     Data data;
 
-    WaveSetDualBuf(WsStorageDualBuf *wsData,int start, int end) : AudioPieceDualBuf(wsData,start,end){
+    WavesetDualBuf(WsStorageDualBuf *wsData,int start, int end) : AudioPieceDualBuf(wsData,start,end){
         this->data.start = start;
         this->data.end = end;
     }
 
-    WaveSetDualBuf(WsStorageDualBuf *wsData, WaveSetDualBuf::Data data) : data(data) , AudioPieceDualBuf(wsData,data.start,data.end){
+    WavesetDualBuf(WsStorageDualBuf *wsData, WavesetDualBuf::Data data) : data(data) , AudioPieceDualBuf(wsData,data.start,data.end){
     }
 
     void calcMetaData()
@@ -41,7 +41,7 @@ public:
     }
 
     /**
-     * @brief Length of the WaveSet in samples.
+     * @brief Length of the Waveset in samples.
      * @return
      */
     virtual int getLength() { return this->data.end-this->data.start; } // TODO replace by getMetadata

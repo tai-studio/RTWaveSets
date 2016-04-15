@@ -10,7 +10,7 @@ public:
     virtual ~Waveset(){}
 
     /**
-     * @brief Length of the WaveSet in samples.
+     * @brief Length of the Waveset in samples.
      * @return
      */
     virtual int getLength()=0; // TODO remove an replace by AudioPiece getLen

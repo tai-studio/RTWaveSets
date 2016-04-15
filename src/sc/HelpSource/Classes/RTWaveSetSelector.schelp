@@ -1,17 +1,17 @@
-TITLE:: RTWaveSetSelector
+TITLE:: RTWavesetSelector
 summary:: Select wavesets by criteria.
-categories:: UGens>RTWaveSets
-related:: Classes/RTWaveSetAnalysis, Classes/RTWaveSetPlayerTriggered, Classes/RTWaveSetPlayerContinuous, Classes/RTWaveSetFeatureExtractor, Classes/RTWaveSetData
+categories:: UGens>RTWavesets
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
 
 DESCRIPTION::
-Use the results of a RTWaveSetAnalysis UGen and select wavesets by criteria.
+Use the results of a RTWavesetAnalysis UGen and select wavesets by criteria.
 
 CLASSMETHODS::
 
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWaveSetData object containing buffers with waveset data.
+RTWavesetData object containing buffers with waveset data.
 
 ARGUMENT:: dur
 The desired length of the waveset in seconds. Pass -1 to ignore the length. (control rate input)
