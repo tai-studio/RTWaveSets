@@ -12,7 +12,7 @@ s.waitForBoot{
 
 
 	//b = Buffer.read(s, "/Volumes/Fabi HD/Music/Christian Löffler/Young Alaska/03 Notes (Original Mix).wav",0,-1,r);
-	q = RTWavesetData(10000000,30000);
+	q = WavesetData(10000000,30000);
 	NdefMixer(s);
 
 };

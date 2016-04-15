@@ -12,7 +12,7 @@ METHOD:: ar
 Analyse an input signal.
 
 ARGUMENT:: wsData
-RTWavesetData object containing buffers for waveset data.
+WavesetData object containing buffers for waveset data.
 
 ARGUMENT:: in
 Input signal to be analysed. It's recommended to remove a DC offset from the signal i.e. using the LeadDC UGen.

@@ -2,7 +2,7 @@
 s.waitForBoot{
 	b = Buffer.read(s, "/localvol/workshops-lehre/2015-mlabHelsinki/squeaky_shoe_and_fifth_floor_office_chair.wav",0,-1);
 	//b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav",0,-1,f);
-	q = RTWavesetData();
+	q = WavesetData();
 };
 
 )

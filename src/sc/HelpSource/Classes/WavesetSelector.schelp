@@ -1,7 +1,7 @@
 TITLE:: WavesetSelector
 summary:: Select wavesets by criteria.
 categories:: UGens>RTWavesets
-related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetGetFeature, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetGetFeature, Classes/WavesetData
 
 DESCRIPTION::
 Use the results of a WavesetAnalysis UGen and select wavesets by criteria.
@@ -11,7 +11,7 @@ CLASSMETHODS::
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWavesetData object containing buffers with waveset data.
+WavesetData object containing buffers with waveset data.
 
 ARGUMENT:: dur
 The desired length of the waveset in seconds. Pass -1 to ignore the length. (control rate input)

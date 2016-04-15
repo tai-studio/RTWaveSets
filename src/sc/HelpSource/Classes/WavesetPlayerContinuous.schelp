@@ -1,7 +1,7 @@
 TITLE:: WavesetSynthContinuous
 summary:: Play wavesets continuously.
 categories:: UGens>RTWavesets
-related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/WavesetData
 
 DESCRIPTION::
 Use the results of a WavesetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 
@@ -11,7 +11,7 @@ CLASSMETHODS::
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWavesetData object containing buffers with waveset data.
+WavesetData object containing buffers with waveset data.
 
 ARGUMENT:: idx
 Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)

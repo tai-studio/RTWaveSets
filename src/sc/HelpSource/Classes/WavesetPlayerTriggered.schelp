@@ -1,7 +1,7 @@
 TITLE:: WavesetSynthTriggered
 summary:: Play wavesets on trigger.
 categories:: UGens>RTWavesets
-related:: Classes/WavesetAnalysis, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/WavesetData
 
 DESCRIPTION::
 Use the results of a WavesetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).
@@ -13,7 +13,7 @@ CLASSMETHODS::
 METHOD:: ar
 
 ARGUMENT:: wsData
-RTWavesetData object containing buffers with waveset data.
+WavesetData object containing buffers with waveset data.
 
 ARGUMENT:: trig
 Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible. (audio rate)

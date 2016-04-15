@@ -1,7 +1,7 @@
 TITLE:: WavesetGetFeature
 summary:: Get the feature values of a waveset.
 categories:: UGens>RTWavesets
-related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/RTWavesetData
+related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/WavesetData
 
 DESCRIPTION::
 Get the values of waveset features that was calculated during analysis. Available Features:
@@ -16,7 +16,7 @@ CLASSMETHODS::
 METHOD:: kr
 
 ARGUMENT:: wsData
-RTWavesetData object containing buffers with waveset data.
+WavesetData object containing buffers with waveset data.
 
 ARGUMENT:: feature
 Specify feature as symbol. (\dur, \rms)

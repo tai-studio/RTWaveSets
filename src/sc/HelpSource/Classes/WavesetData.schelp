@@ -1,4 +1,4 @@
-TITLE:: RTWavesetData
+TITLE:: WavesetData
 summary:: Allocate and encapsulate buffers for waveset data.
 categories:: UGens>RTWavesets
 related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/WavesetGetFeature
@@ -48,7 +48,7 @@ EXAMPLES::
 
 code::
 (
-var wsData = RTWavesetData();
+var wsData = WavesetData();
 {
 	WavesetAnalysis.ar(wsData, SoundIn.ar(0), 1);
 }.play;

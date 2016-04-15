@@ -3,7 +3,7 @@
 
 (
 
-var wsData =  RTWavesetData.new;
+var wsData =  WavesetData.new;
 
 {
 	var idx,idx2;

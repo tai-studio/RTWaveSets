@@ -1,4 +1,4 @@
-RTWavesetData {
+WavesetData {
 	var <audioBufSize, <wsBufSize;
 	var <server;
 	var <audioBuf, <wsBuf;
