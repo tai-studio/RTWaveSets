@@ -81,7 +81,7 @@ Ndef(\wsRepeat, {
 	//
 	//
 
-	(RTWavesetPlayerTriggered.ar(q,
+	(RTWavesetSynthTriggered.ar(q,
 		trig, idx-(numWS-1), rate + [0, 0.124], numWS, repetitions)).tanh;
 });
 )
@@ -121,7 +121,7 @@ Notes:
 + for longer periods of silence: just pause analysis and recording (?)
 -> TODO
 
-## RTWavesetPlayerRepeat -> now RTWavesetPlayerTriggered
+## RTWavesetSynthRepeat -> now RTWavesetSynthTriggered
 
 + Trigger: each time a trigger is received (A trigger occurs when at argument trig that signal changes from negative value to positive value), spawn a sound from the player, following the following parameters:
 -> DONE: Argument trig: Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible.

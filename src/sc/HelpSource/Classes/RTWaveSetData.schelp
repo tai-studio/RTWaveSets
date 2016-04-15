@@ -1,7 +1,7 @@
 TITLE:: RTWavesetData
 summary:: Allocate and encapsulate buffers for waveset data.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
 
 DESCRIPTION::
 Allocate a buffer for audio data and waveset data in which a running RTWavesetAnalysis can write the results.

@@ -1,6 +1,6 @@
-#include "RTWavesetPlayerTriggered.h"
+#include "RTWavesetSynthTriggered.h"
 
-void RTWavesetPlayerTriggered_Ctor(RTWavesetPlayerTriggered *unit){
+void RTWavesetSynthTriggered_Ctor(RTWavesetSynthTriggered *unit){
 
     // init UGen
     RTWavesetBase_Ctor(unit);
@@ -8,8 +8,8 @@ void RTWavesetPlayerTriggered_Ctor(RTWavesetPlayerTriggered *unit){
     unit->prevTrig = 1.0;
 
 
-    SETCALC(RTWavesetPlayerTriggered_next);
-    RTWavesetPlayerTriggered_next(unit, 1);
+    SETCALC(RTWavesetSynthTriggered_next);
+    RTWavesetSynthTriggered_next(unit, 1);
 }
 
 
@@ -19,7 +19,7 @@ void RTWavesetPlayerTriggered_Ctor(RTWavesetPlayerTriggered *unit){
  * @param inNumSamples
  */
 
-void RTWavesetPlayerTriggered_next(RTWavesetPlayerTriggered *unit, int inNumSamples){
+void RTWavesetSynthTriggered_next(RTWavesetSynthTriggered *unit, int inNumSamples){
 
     // ^this.multiNew('audio', audioBuf, wsBuf, trig, idx, rate, groupSize, repeat)
 
@@ -60,6 +60,6 @@ void RTWavesetPlayerTriggered_next(RTWavesetPlayerTriggered *unit, int inNumSamp
 }
 
 
-void RTWavesetPlayerTriggered_Dtor(RTWavesetPlayerTriggered *unit){
+void RTWavesetSynthTriggered_Dtor(RTWavesetSynthTriggered *unit){
 
 }

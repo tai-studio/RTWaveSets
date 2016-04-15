@@ -170,7 +170,7 @@ AudioPiece* WsStorageDualBuf::createGroup(int wsIdx, int groupSize){
 
         if(isnan(end) || isnan(start) || end<1 || start<0)
         {
-            printf("RTWavesetPlayer Warning: no valid Waveset found in xing Buffer!\n");
+            printf("RTWavesetSynth Warning: no valid Waveset found in xing Buffer!\n");
             return NULL;
         }
 

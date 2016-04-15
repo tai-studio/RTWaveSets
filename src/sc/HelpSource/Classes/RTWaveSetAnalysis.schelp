@@ -1,10 +1,10 @@
 TITLE:: RTWavesetAnalysis
 summary:: Provides waveset analysis of a realtime signal.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
+related:: Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor
 
 DESCRIPTION::
-A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWavesetPlayerTriggered for playback and RTWavesetSelector for waveset selection by criteria.
+A UGen that detects zerocrossings of a signal and split it into wavesets following the ideas by Trevor Wishart. The analysis results can be used by RTWavesetSynthTriggered for playback and RTWavesetSelector for waveset selection by criteria.
 
 CLASSMETHODS::
 

@@ -57,14 +57,14 @@ Ndef(\wsRepeat, {
 		//rms.poll;
 
 		RTWavesetFeatureExtractor.kr(q, \peaks, idx).poll;
-		out = RTWavesetPlayerTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
+		out = RTWavesetSynthTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
 
 		//out = DC.ar(0);
 		//trig = out;
 		//*EnvGen.ar(Env.sine, trig, 1,0,K2A.ar(dur)); // try envelope
 		//Ndef(\sound).ar(1)*EnvGen.ar(Env.sine, trig, 1,0,1); // envelope tryouts
 
-		//out = RTWavesetPlayerContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
+		//out = RTWavesetSynthContinuous.ar(q, idxRange[1],  rate, groupSize, repetition);
 
 		Out.ar(0,Pan2.ar(out));
 

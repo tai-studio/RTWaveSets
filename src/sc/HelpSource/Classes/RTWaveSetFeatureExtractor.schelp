@@ -1,7 +1,7 @@
 TITLE:: RTWavesetFeatureExtractor
 summary:: Get the feature values of a waveset.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetPlayerTriggered, Classes/RTWavesetPlayerContinuous, Classes/RTWavesetSelector, Classes/RTWavesetData
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetData
 
 DESCRIPTION::
 Get the values of waveset features that was calculated during analysis. Available Features:

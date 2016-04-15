@@ -35,13 +35,13 @@ RTWavesetSelector : UGen {
 	}
 }
 
-RTWavesetPlayerTriggered : UGen {
+RTWavesetSynthTriggered : UGen {
 	*ar { arg wsData, trig, idx, rate=1, groupSize=1, repeat=1;
 		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, trig, idx, rate, groupSize, repeat)
 	}
 }
 
-RTWavesetPlayerContinuous : UGen {
+RTWavesetSynthContinuous : UGen {
 	*ar { arg wsData, idx, rate=1, groupSize=1, repeat=1;
 		^this.multiNew('audio', wsData.audioBuf, wsData.wsBuf, idx, rate, groupSize, repeat)
 	}

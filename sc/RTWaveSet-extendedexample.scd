@@ -28,7 +28,7 @@ desiredDur.poll;
 	RTWavesetFeatureExtractor.kr(wsData, \rms , idx).poll(label:"rms");
 	RTWavesetFeatureExtractor.kr(wsData, \dur, idx).poll(label:"dur");
 
-	out = RTWavesetPlayerTriggered.ar(
+	out = RTWavesetSynthTriggered.ar(
 			wsData, trig, idx-groupSize+1,  rate, groupSize, repetition);
 	Out.ar(0,out);
 

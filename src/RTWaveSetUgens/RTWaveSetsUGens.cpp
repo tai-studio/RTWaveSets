@@ -1,9 +1,9 @@
 #include "SC_PlugIn.h"
 #include "RTWavesetAnalysis.h"
-#include "RTWavesetPlayerTriggered.h"
+#include "RTWavesetSynthTriggered.h"
 #include "RTWavesetSelector.h"
 #include "RTWavesetFeatureExtractor.h"
-#include "RTWavesetPlayerContinuous.h"
+#include "RTWavesetSynthContinuous.h"
 #include "ScObject.h"
 
 static InterfaceTable *ft;
@@ -16,8 +16,8 @@ PluginLoad(RTWavesetAnalysis)
     ScObject::setScInterface(ft);
 
     DefineDtorUnit(RTWavesetAnalysis);
-    DefineDtorUnit(RTWavesetPlayerTriggered);
-    DefineDtorUnit(RTWavesetPlayerContinuous);
+    DefineDtorUnit(RTWavesetSynthTriggered);
+    DefineDtorUnit(RTWavesetSynthContinuous);
     DefineDtorUnit(RTWavesetSelector);
     DefineDtorUnit(RTWavesetFeatureExtractor);
 }

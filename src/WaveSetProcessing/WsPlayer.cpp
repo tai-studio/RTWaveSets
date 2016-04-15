@@ -3,7 +3,7 @@
 
 
 /**
- * @brief WavesetPlayer::WavesetPlayer Constructor, just init values.
+ * @brief WavesetSynth::WavesetSynth Constructor, just init values.
  */
 
 WsPlayer::WsPlayer() {
@@ -34,7 +34,7 @@ double WsPlayer::nextPos() {
         val = playPos;
 
         if(val < 0 || val >= INT32_MAX){
-            printf("WavesetPlayer::next(): Error! invalid playPos");
+            printf("WavesetSynth::next(): Error! invalid playPos");
             val = -1;
             repeat = -1; // stop playback
         }
