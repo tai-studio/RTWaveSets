@@ -16,8 +16,8 @@ var wsData =  RTWavesetData.new;
 	//idx2 = RTWavesetSelector(wsData, idx,RTWavesetFeatureRMS,desiredRMS,RTWavesetFeatureLength,desiredLen);
 
 	//idx = RTWavesetSelector.ar(q.aBuf, q.xBuf, -1, 1);
-	//RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms , idx).poll(label:"rms");
-	//RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \dur, idx).poll(label:"dur");
+	//RTWavesetGetFeature.kr(q.aBuf, q.xBuf, \rms , idx).poll(label:"rms");
+	//RTWavesetGetFeature.kr(q.aBuf, q.xBuf, \dur, idx).poll(label:"dur");
 	RTWavesetSynthContinuous.ar(wsData,idx2,  rate, groupSize, 1);
 	//RTWavesetSynthTriggered.ar(wsData, trig, idx,  rate, groupSize, 1);
 

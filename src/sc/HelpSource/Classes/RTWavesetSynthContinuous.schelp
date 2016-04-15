@@ -1,7 +1,7 @@
 TITLE:: RTWavesetSynthContinuous
 summary:: Play wavesets continuously.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSelector, Classes/RTWavesetGetFeature, Classes/RTWavesetData
 
 DESCRIPTION::
 Use the results of a RTWavesetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 

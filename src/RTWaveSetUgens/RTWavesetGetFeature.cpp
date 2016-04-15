@@ -1,18 +1,18 @@
-#include "RTWavesetFeatureExtractor.h"
+#include "RTWavesetGetFeature.h"
 
 /**
  * @brief UGen Constructor.
  * @param unit
  */
 
-void RTWavesetFeatureExtractor_Ctor(RTWavesetFeatureExtractor *unit)
+void RTWavesetGetFeature_Ctor(RTWavesetGetFeature *unit)
 {
     RTWavesetBase_Ctor(unit);
-    new(&unit->wsExtractor) WsFeatureExtractor(unit->wsData);
+    new(&unit->wsExtractor) WsGetFeature(unit->wsData);
 
-    SETCALC(RTWavesetFeatureExtractor_next);
+    SETCALC(RTWavesetGetFeature_next);
 
-    RTWavesetFeatureExtractor_next(unit, 1);
+    RTWavesetGetFeature_next(unit, 1);
 }
 
 /**
@@ -21,7 +21,7 @@ void RTWavesetFeatureExtractor_Ctor(RTWavesetFeatureExtractor *unit)
  * @param inNumSamples
  */
 
-void RTWavesetFeatureExtractor_next(RTWavesetFeatureExtractor *unit, int inNumSamples)
+void RTWavesetGetFeature_next(RTWavesetGetFeature *unit, int inNumSamples)
 {
     float *out = OUT(0);
     float inFeatureID = IN0(2);
@@ -42,7 +42,7 @@ void RTWavesetFeatureExtractor_next(RTWavesetFeatureExtractor *unit, int inNumSa
  * @param unit
  */
 
-void RTWavesetFeatureExtractor_Dtor(RTWavesetFeatureExtractor *unit)
+void RTWavesetGetFeature_Dtor(RTWavesetGetFeature *unit)
 {
 
 }

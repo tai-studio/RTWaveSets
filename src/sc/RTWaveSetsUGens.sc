@@ -47,7 +47,7 @@ RTWavesetSynthContinuous : UGen {
 	}
 }
 
-RTWavesetFeatureExtractor : UGen {
+RTWavesetGetFeature : UGen {
 	*kr { arg wsData, feature, idx;
 		var featureID = switch(feature,\dur , 0, \rms, 1, \peaks, 2);
 		^this.multiNew('control', wsData.audioBuf, wsData.wsBuf, featureID, idx)

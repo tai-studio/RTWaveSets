@@ -1,12 +1,10 @@
-TITLE:: RTWavesetSynthTriggered
-summary:: Play wavesets on trigger.
+TITLE:: RTWavesetSynthContinuous
+summary:: Play wavesets continuously.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetGetFeature, Classes/RTWavesetData
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
 
 DESCRIPTION::
-Use the results of a RTWavesetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).
-
-There are several parameters to adjust the playback. These are grabbed on trigger and can not influence a runnging playback.
+Use the results of a RTWavesetAnalysis UGen to play (a groups of) wavesets after each other. There are several parameters to adjust the playback. 
 
 CLASSMETHODS::
 
@@ -14,9 +12,6 @@ METHOD:: ar
 
 ARGUMENT:: wsData
 RTWavesetData object containing buffers with waveset data.
-
-ARGUMENT:: trig
-Trigger to start the playback of the defined wavesets. There are up to 30 parallel playbacks possible. (audio rate)
 
 ARGUMENT:: idx
 Index of the (first) waveset to be played. Depending on numWS the following wavesets will be added to a group. (audio rate)
@@ -31,7 +26,7 @@ ARGUMENT:: groupSize
 Number of wavesets that will be combined to a group and played. The group will be expanded forward and backward from the given idx. If the end or beginning is reached the group will be extended in the possible direction. (control rate input)
 
 ARGUMENT:: repeat
-Number of playback repetitions of the waveset group. (control rate)
+Number of playback repetitions of the waveset group. (control rate input)
 
 returns:: Output is the playback signal.
 

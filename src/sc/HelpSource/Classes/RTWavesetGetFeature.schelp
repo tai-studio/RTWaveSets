@@ -1,4 +1,4 @@
-TITLE:: RTWavesetFeatureExtractor
+TITLE:: RTWavesetGetFeature
 summary:: Get the feature values of a waveset.
 categories:: UGens>RTWavesets
 related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthTriggered, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetData
@@ -39,7 +39,7 @@ q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
 q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
 {
 var idx = RTWavesetAnalysis.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
-RTWavesetFeatureExtractor.kr(q.aBuf, q.xBuf, \rms, idx).poll;
+RTWavesetGetFeature.kr(q.aBuf, q.xBuf, \rms, idx).poll;
 }.play;
 )
 ::

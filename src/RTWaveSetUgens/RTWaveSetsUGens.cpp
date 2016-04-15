@@ -2,7 +2,7 @@
 #include "RTWavesetAnalysis.h"
 #include "RTWavesetSynthTriggered.h"
 #include "RTWavesetSelector.h"
-#include "RTWavesetFeatureExtractor.h"
+#include "RTWavesetGetFeature.h"
 #include "RTWavesetSynthContinuous.h"
 #include "ScObject.h"
 
@@ -19,5 +19,5 @@ PluginLoad(RTWavesetAnalysis)
     DefineDtorUnit(RTWavesetSynthTriggered);
     DefineDtorUnit(RTWavesetSynthContinuous);
     DefineDtorUnit(RTWavesetSelector);
-    DefineDtorUnit(RTWavesetFeatureExtractor);
+    DefineDtorUnit(RTWavesetGetFeature);
 }

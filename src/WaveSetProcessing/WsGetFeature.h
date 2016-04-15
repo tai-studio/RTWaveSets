@@ -3,12 +3,12 @@
 
 #include "WsStorage.h"
 
-class WsFeatureExtractor : public ScObject
+class WsGetFeature : public ScObject
 {
 private:
     WsStorage* wsData;
 public:
-    WsFeatureExtractor(WsStorage* wsData);
+    WsGetFeature(WsStorage* wsData);
     float getFeature(int wsIdx, int featureID);
 };
 

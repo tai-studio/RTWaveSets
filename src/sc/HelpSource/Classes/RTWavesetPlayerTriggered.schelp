@@ -1,7 +1,7 @@
 TITLE:: RTWavesetSynthTriggered
 summary:: Play wavesets on trigger.
 categories:: UGens>RTWavesets
-related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetGetFeature, Classes/RTWavesetData
+related:: Classes/RTWavesetAnalysis, Classes/RTWavesetSynthContinuous, Classes/RTWavesetSelector, Classes/RTWavesetFeatureExtractor, Classes/RTWavesetData
 
 DESCRIPTION::
 Use the results of a RTWavesetAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing (currently there is a fixed limit of 30 parallel playbacks).

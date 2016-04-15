@@ -1,11 +1,11 @@
-#include "WsFeatureExtractor.h"
+#include "WsGetFeature.h"
 
-WsFeatureExtractor::WsFeatureExtractor(WsStorage *wsData) : wsData(wsData)
+WsGetFeature::WsGetFeature(WsStorage *wsData) : wsData(wsData)
 {
 
 }
 
-float WsFeatureExtractor::getFeature(int wsIdx, int featureID)
+float WsGetFeature::getFeature(int wsIdx, int featureID)
 {
     Waveset* ws = this->wsData->getWaveset(wsIdx);
 

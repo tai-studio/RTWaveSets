@@ -53,10 +53,10 @@ Ndef(\wsRepeat, {
 
 		idx = RTWavesetSelector.ar(q, desiredLen/1000, desiredRMS, desiredPeaks ,selLookBack);
 		//idx.poll(trig);
-		//rms = RTWavesetFeatureExtractor.kr(q, \dur, idx);
+		//rms = RTWavesetGetFeature.kr(q, \dur, idx);
 		//rms.poll;
 
-		RTWavesetFeatureExtractor.kr(q, \peaks, idx).poll;
+		RTWavesetGetFeature.kr(q, \peaks, idx).poll;
 		out = RTWavesetSynthTriggered.ar(q, trig, idx+TIRand.ar(0,randBack,trig)+idxOffset,  rate, groupSize, repetition);
 
 		//out = DC.ar(0);

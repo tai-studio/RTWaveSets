@@ -25,8 +25,8 @@ desiredDur.poll;
 		desiredRMS.poll;
 	trig = Dust.ar(10);
 	idx = RTWavesetSelector.ar(wsData, 0.1, -1);
-	RTWavesetFeatureExtractor.kr(wsData, \rms , idx).poll(label:"rms");
-	RTWavesetFeatureExtractor.kr(wsData, \dur, idx).poll(label:"dur");
+	RTWavesetGetFeature.kr(wsData, \rms , idx).poll(label:"rms");
+	RTWavesetGetFeature.kr(wsData, \dur, idx).poll(label:"dur");
 
 	out = RTWavesetSynthTriggered.ar(
 			wsData, trig, idx-groupSize+1,  rate, groupSize, repetition);
