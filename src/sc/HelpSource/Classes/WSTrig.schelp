@@ -1,0 +1,50 @@
+TITLE:: WSTrig
+summary:: Play wavesets on trigger.
+categories:: UGens>RTWavesets
+related:: Classes/WAnalyse, Classes/WSCont, Classes/WSSelect, Classes/WSFeature, Classes/WSData
+
+DESCRIPTION::
+Use the results of a WAnalysis UGen to play a group of wavesets on trigger. It's possible to spawn a new parallel playback by trigger while others are still playing
+
+note::
+There is a limit of 30 parallel playbacks.
+::
+
+Parameters affecting playback are read for each spawn event and thus do not influence already existing waves.
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: wsData
+WSData object with analysis data.
+
+ARGUMENT:: trig
+spawn playback of a wave. There are up to 30 parallel playbacks possible. (ar modulatable)
+
+ARGUMENT:: idx
+(ar modulatable).
+Index of the (first) wave to be played. Depending on code::groupSize::, the following waves will be added to a group.
+If the idx is out of the waveset buffer range and not negative it will be folded to a valdid idx using modulo. If the idx is negative nothing will be played.
+
+ARGUMENT:: rate
+Playback rate 1=normal playback, 1.5 = faster, -0.275 = slowly backwards.
+(no interpolation implemented, just repeat/skip samples.)
+(kr modulatable)
+
+ARGUMENT:: groupSize
+Number of wavesets that will be combined to a group and played. The group will be expanded forward and backward from the given idx. If the end or beginning is reached the group will be extended in the possible direction. (kr modulatable)
+
+ARGUMENT:: repeat
+Number of playback repetitions of the waveset group. (control rate)
+
+returns:: Output is the playback signal.
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::

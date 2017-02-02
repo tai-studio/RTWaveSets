@@ -1,0 +1,34 @@
+TITLE:: WSSelect
+summary:: Select waves by criteria.
+categories:: UGens>Wavesets
+related:: Classes/WavesetAnalysis, Classes/WSTrig, Classes/WSCont, Classes/WSFeature, Classes/WSData
+
+DESCRIPTION::
+Search for waves by given criteria
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: wsData
+WSData object containing buffers with waveset data.
+
+ARGUMENT:: dur
+Desired length of the wave in seconds. Pass -1 to ignore. (control rate input)
+
+ARGUMENT:: rms
+Desired amplitude (RMS) 0..1. Pass -1 to ignore. (control rate input)
+
+ARGUMENT:: lookBackLimit
+Consider only newest x wavesets for the selection. Set -1 to consider all wavesets.
+
+returns:: index of wave which closest to criterias.
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::

@@ -1,0 +1,45 @@
+TITLE:: WSFeature
+summary:: Get the feature values of a waveset.
+categories:: UGens>Wavesets
+related:: Classes/WAnalyse, Classes/WSTrig, Classes/WSCont, Classes/WSSelect, Classes/WSData
+
+DESCRIPTION::
+Lookup wave features calculated during analysis. Available Features:
+
+list::
+## \dur: length of the wave in seconds
+## \rms: Root Mean Square of the wave
+::
+
+CLASSMETHODS::
+
+METHOD:: kr
+
+ARGUMENT:: wsData
+WSData object containing buffers with waveset data.
+
+ARGUMENT:: feature
+Specify feature as symbol. (\dur, \rms)
+
+ARGUMENT:: idx
+Index of wave.
+
+returns:: value of the feature
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(
+q = ();
+q.aBuf = Buffer.alloc(s, 100 * s.sampleRate, 1);
+q.xBuf = Buffer.alloc(s, 10 * s.sampleRate, 1);
+{
+var idx = WSAnalyse.ar(q.aBuf, q.xBuf, WhiteNoise.ar(), 1);
+WSFeature.kr(q.aBuf, q.xBuf, \rms, idx).poll;
+}.play;
+)
+::

@@ -1,15 +1,15 @@
-TITLE:: WavesetData
+TITLE:: WSData
 summary:: Allocate and encapsulate buffers for waveset data.
-categories:: UGens>RTWavesets
-related:: Classes/WavesetAnalysis, Classes/WavesetSynthTriggered, Classes/WavesetSynthContinuous, Classes/WavesetSelector, Classes/WavesetGetFeature
+categories:: UGens>Wavesets
+related:: Classes/WSAnalysis, Classes/WSTrig, Classes/WSCont, Classes/WSSelect, Classes/WSFeature
 
 DESCRIPTION::
-Allocate a buffer for audio data and waveset data in which a running WavesetAnalysis can write the results.
+Manages server-side buffers for audio and waveset data. Used by link::Classes/WSAnalysis::, link::Classes/WSTrig::, link::Classes/WSCont::, link::Classes/WSSelect::, link::Classes/WSFeature::.
 
 CLASSMETHODS::
 
 METHOD:: new
-Create object and allocate buffers.
+Create and allocate buffers.
 
 ARGUMENT:: audioBufSize
 size of the audio buffer.
@@ -17,30 +17,21 @@ size of the audio buffer.
 ARGUMENT:: wsBufSize
 size of the waveset buffer.
 
-returns:: the new object.
-
 INSTANCEMETHODS::
 
 METHOD:: audioBufSize
-getter
 returns:: size of the audio buffer.
 
 METHOD:: init
 initialize object by setting variables and allocating buffers.
 
 METHOD:: wsBufSize
-getter
-
 returns:: size of the waveset buffer.
 
 METHOD:: audioBuf
-getter
-
 returns:: the audio buffer.
 
 METHOD:: wsBuf
-getter
-
 returns:: the waveset buffer.
 
 
@@ -48,9 +39,9 @@ EXAMPLES::
 
 code::
 (
-var wsData = WavesetData();
+var wsData = WSData();
 {
-	WavesetAnalysis.ar(wsData, SoundIn.ar(0), 1);
+	WSAnalyse.ar(wsData, SoundIn.ar(0), 1);
 }.play;
 )
 ::

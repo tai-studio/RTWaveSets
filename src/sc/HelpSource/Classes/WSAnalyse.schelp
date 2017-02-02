@@ -1,0 +1,43 @@
+TITLE:: WSAnalyse
+summary:: Provides waveset analysis of a realtime signal.
+categories:: UGens>Wavesets
+related:: Classes/WSTrig, Classes/WSCont, Classes/WSSelect, Classes/WSFeature
+
+DESCRIPTION::
+Detect zerocrossings in a signal and split it into a waveset, following ideas by Trevor Wishart. The analysis results can be played by link::Classes/WSTrig:: and link::Classes/WSCont::. See also link::Classes/WSSelect:: for feature selection.
+
+CLASSMETHODS::
+
+METHOD:: ar
+Analyse an input signal.
+
+ARGUMENT:: wsData
+WSData object containing buffers for waveset data.
+
+ARGUMENT:: in
+Input signal to be analysed.
+note::
+Remove DC offset for proper reults, i.e. with link::Classes/LeadDC::.
+::
+
+ARGUMENT:: active
+Enable (>0) or pause (<=0) the analysis. (control rate)
+
+ARGUMENT:: minWSLen
+Minimal length of a wave in seconds. Shorter waves will be combined with the following wavesets unit the min. length is reached.
+
+returns::
+array of first and last wave index
+code::
+#idxOldest,idxNewest = WSAnalyse.ar(wsData, SoundIn.ar(0));
+::
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(TODO)
+::
