@@ -16,7 +16,7 @@ var wsData =  WavesetData(server: s);
 	// var trig = Dust.ar(50);
 	var wRms, wDur;
 
-	#oldestIdx, newestIdx= WavesetAnalysis.ar(wsData, SoundIn.ar(0), 1);
+	#oldestIdx, newestIdx= WavesetAnalysis.ar(wsData, LeakDC.ar(SoundIn.ar(0)), 1);
 
 	// select newest WS
 	// idx = newestIdx;
