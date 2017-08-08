@@ -9,10 +9,11 @@ var wsData =  WavesetData(server: s);
 
 {
 	var newestIdx, oldestIdx, idx;
-	var rate = 1;
-	var groupSize = MouseX.kr(1, 100);
+	var rate;
+	var groupSize;
 	var repeat = 10;
-	var trig = Dust.ar(50);
+	var trig = Impulse.ar(10);
+	// var trig = Dust.ar(50);
 	var wRms, wDur;
 
 	#oldestIdx, newestIdx= WavesetAnalysis.ar(wsData, SoundIn.ar(0), 1);
@@ -36,8 +37,16 @@ var wsData =  WavesetData(server: s);
 
 	wDur = WavesetGetFeature.kr(wsData, \dur, idx);//.poll(label:"dur");
 
+	// set scope
+	groupSize = MouseX.kr(1, 100);
+
+	// set playback rate
+	rate = MouseY.kr(0.125, 2).round(0.125);
+
 	// use one of these to resynthesize
 	// WavesetSynthContinuous.ar(wsData,idx,  rate, groupSize, 1);
+
+	// rate is atm. non-interpolating
 	WavesetSynthTriggered.ar(wsData, trig, idx,  rate, groupSize, 1);
 
 }.play;
